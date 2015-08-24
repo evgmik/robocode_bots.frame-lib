@@ -32,6 +32,7 @@ public class fighterBot implements waveListener, botListener {
 	protected gameInfo _gameinfo;
 	protected baseRadar _radar;
 	protected basicMotion _motion;
+	protected gunManager _gunManager;
 	protected long latestWaveHitTime=0;
 
 	public botProxy proxy;
@@ -52,6 +53,7 @@ public class fighterBot implements waveListener, botListener {
 			_radar = new universalRadar( this );
 			//_motion = new dangerMapMotion( this );
 			_motion = new exactPathDangerMotion( this );
+			_gunManager = new gunManager( this );
 			//_dangerMap.add( new Point2D.Double(125,125) );
 			//_dangerMap.add( new Point2D.Double(5,5) );
 
@@ -65,6 +67,10 @@ public class fighterBot implements waveListener, botListener {
 
 	public boolean isItMasterBotDriver() {
 		return  getName().equals( _gameinfo.getMasterBot().getName() );  
+	}
+
+	public InfoBot getInfoBot() {
+		return fBot;
 	}
 
 	public String getName() {
@@ -128,6 +134,7 @@ public class fighterBot implements waveListener, botListener {
 	public void manage() {
 		_radar.manage();
 		_motion.manage();
+		_gunManager.manage();
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions( InfoBot tBot, long time, double bulletEnergy ) {
