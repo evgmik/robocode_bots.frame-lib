@@ -54,8 +54,6 @@ public class fighterBot implements waveListener, botListener {
 			//_motion = new dangerMapMotion( this );
 			_motion = new exactPathDangerMotion( this );
 			_gunManager = new masterBotGunManager( this );
-			//_dangerMap.add( new Point2D.Double(125,125) );
-			//_dangerMap.add( new Point2D.Double(5,5) );
 
 		} else {
 			// this bot is in charge of the enemy bot
