@@ -16,6 +16,11 @@ public interface proxyBotInterface {
 	public void setAhead(double d);
 
 
+	// gun
+	public void setTurnGunRight(double a);
+	public void setFireBullet(double e);
+	public double getGunHeading();
+
 
 
 }

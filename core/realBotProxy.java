@@ -40,4 +40,17 @@ public class realBotProxy extends botProxy {
 	public void setAhead(double d) {
 		masterBot.setAhead(d);
 	}
+
+	// gun
+	public void setTurnGunRight(double a){
+		masterBot.setTurnGunRight( a );
+	}
+
+	public void setFireBullet(double e){
+		masterBot.setFireBullet( e );
+	}
+
+	public double getGunHeading() {
+		return masterBot.getGunHeading();
+	}
 }

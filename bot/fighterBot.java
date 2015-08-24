@@ -53,7 +53,7 @@ public class fighterBot implements waveListener, botListener {
 			_radar = new universalRadar( this );
 			//_motion = new dangerMapMotion( this );
 			_motion = new exactPathDangerMotion( this );
-			_gunManager = new gunManager( this );
+			_gunManager = new masterBotGunManager( this );
 			//_dangerMap.add( new Point2D.Double(125,125) );
 			//_dangerMap.add( new Point2D.Double(5,5) );
 
@@ -62,6 +62,7 @@ public class fighterBot implements waveListener, botListener {
 			proxy = new nullProxy( _gameinfo.getMasterBot() );
 			_radar = new nullRadar( this );
 			_motion = new basicMotion( this );
+			_gunManager = new enemyBotGunManager( this );
 		}
 	}
 
