@@ -24,14 +24,23 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public void manage() {
-		// very simple: chose first bot in list and fire to it
+		// very simple: chose the nearest bot
 		if ( myBot.getEnemyBots().size() == 0 ) {
 			return;
 		}
-		fighterBot eBot = myBot.getEnemyBots().getFirst();
-		if ( eBot != null ) {
+		double dist2closestBot = 1e6; // something very large
+		double distNew;
+		fighterBot targetBot = myBot.getEnemyBots().getFirst();
+		for ( fighterBot eBot: myBot.getEnemyBots() ) {
+			distNew = myBot.getPosition().distance( eBot.getPosition() );
+			if ( distNew < dist2closestBot ) {
+				dist2closestBot = distNew;
+				targetBot = eBot;
+			}
+		}
+		if ( targetBot != null ) {
 			double bulletEnergy = 1;
-			LinkedList<firingSolution> fSols = gunList.getFirst().getFiringSolutions( myBot.getInfoBot(), eBot.getInfoBot(), myBot.getTime(), bulletEnergy );
+			LinkedList<firingSolution> fSols = gunList.getFirst().getFiringSolutions( myBot.getInfoBot(), targetBot.getInfoBot(), myBot.getTime(), bulletEnergy );
 			if ( fSols.size() >= 1) {
 				firingSolution fS = fSols.getFirst();
 				double firingAngle = fS.firingAngle;
