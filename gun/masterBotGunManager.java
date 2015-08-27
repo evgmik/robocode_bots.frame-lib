@@ -24,13 +24,36 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public void manage() {
-		// very simple: chose the nearest bot
-		if ( myBot.getEnemyBots().size() == 0 ) {
-			return;
+		fighterBot targetBot = getTarget();
+		if ( targetBot != null ) {
+			double bulletEnergy = 1;
+			firingSolution fS = getTheBestFiringSolution( targetBot, bulletEnergy );
+			if ( fS != null) {
+				aimAndFire( fS );
+			}
 		}
+	}
+
+	public void aimAndFire( firingSolution fS ) {
+		double bulletEnergy = fS.bulletEnergy;
+		double firingAngle = fS.firingAngle;
+		double gunAngle = myBot.proxy.getGunHeading();
+		double angle = math.shortest_arc(firingAngle-gunAngle);
+		myBot.proxy.setTurnGunRight(angle);
+		if ( angle  <= robocode.Rules.GUN_TURN_RATE ) {
+			myBot.proxy.setFireBullet(bulletEnergy);
+		}
+	}
+
+	public fighterBot getTarget() {
+		fighterBot targetBot = null;
+		if ( myBot.getEnemyBots().size() == 0 ) {
+			return targetBot;
+		}
+		// very simple algorithm: chose the nearest bot
 		double dist2closestBot = 1e6; // something very large
 		double distNew;
-		fighterBot targetBot = myBot.getEnemyBots().getFirst();
+		targetBot = myBot.getEnemyBots().getFirst();
 		for ( fighterBot eBot: myBot.getEnemyBots() ) {
 			distNew = myBot.getPosition().distance( eBot.getPosition() );
 			if ( distNew < dist2closestBot ) {
@@ -38,21 +61,19 @@ public class masterBotGunManager extends gunManager {
 				targetBot = eBot;
 			}
 		}
-		if ( targetBot != null ) {
-			double bulletEnergy = 1;
-			LinkedList<firingSolution> fSols = gunList.getFirst().getFiringSolutions( myBot.getInfoBot(), targetBot.getInfoBot(), myBot.getTime(), bulletEnergy );
-			if ( fSols.size() >= 1) {
-				firingSolution fS = fSols.getFirst();
-				double firingAngle = fS.firingAngle;
-				double gunAngle = myBot.proxy.getGunHeading();
-				double angle = math.shortest_arc(firingAngle-gunAngle);
-				myBot.proxy.setTurnGunRight(angle);
-				if ( angle  <= robocode.Rules.GUN_TURN_RATE ) {
-					myBot.proxy.setFireBullet(bulletEnergy);
-				}
-			}
-		}
+		return targetBot;
 	}
-
+	
+	public firingSolution getTheBestFiringSolution( fighterBot targetBot, double bulletEnergy ) {
+		firingSolution fS = null;
+		// here we do very simple choice
+		// we use the first gun form the list 
+		LinkedList<firingSolution> fSols = gunList.getFirst().getFiringSolutions( myBot.getInfoBot(), targetBot.getInfoBot(), myBot.getTime(), bulletEnergy );
+		// and chose first available solution 
+		if ( fSols.size() >= 1) {
+			fS = fSols.getFirst();
+		}
+		return fS;
+	}
 	
 }
