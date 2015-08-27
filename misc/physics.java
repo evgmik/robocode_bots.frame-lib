@@ -47,6 +47,7 @@ public class physics {
 	public static double bulletSpeed( double firePower ) {
 		if ( firePower > maximalAllowedBulletEnergy ) {
 			logger.warning("bulletSpeed(): Forbiden bullet energy requested: " + firePower + " > " + maximalAllowedBulletEnergy);
+			firePower = maximalAllowedBulletEnergy;
 		}
 		double bSpeed;
 		//bSpeed = ( 20 - firePower * 3 ); // see wiki
