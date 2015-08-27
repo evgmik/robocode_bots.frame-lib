@@ -255,7 +255,7 @@ public class fighterBot implements waveListener, botListener {
 			drawThisBot( g, timeNow );
 			// draw enemy waves
 			for ( waveWithBullets eW: enemyWaves ) {
-				eW.onPaint( g, timeNow );
+				//eW.onPaint( g, timeNow );
 			}
 			// draw known enemy bots
 			for ( fighterBot eB: getEnemyBots() ) {
@@ -263,6 +263,7 @@ public class fighterBot implements waveListener, botListener {
 			}
 			// draw motion
 			_motion.onPaint( g );
+
 			// draw gun manager
 			_gunManager.onPaint( g );
 		}
