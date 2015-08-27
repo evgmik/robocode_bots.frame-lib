@@ -263,6 +263,8 @@ public class fighterBot implements waveListener, botListener {
 			}
 			// draw motion
 			_motion.onPaint( g );
+			// draw gun manager
+			_gunManager.onPaint( g );
 		}
 	}
 

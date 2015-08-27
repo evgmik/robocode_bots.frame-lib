@@ -14,6 +14,7 @@ import java.awt.Color;
 public class gunManager implements gunManagerInterface {
 	public LinkedList<baseGun> gunList = new LinkedList<baseGun>();
 	public fighterBot myBot;
+	fighterBot targetBot = null;
 
 	public	gunManager() {
 		gunList = new LinkedList<baseGun>();
@@ -28,5 +29,11 @@ public class gunManager implements gunManagerInterface {
 	public void manage() {
 	}
 
-	
+	public void onPaint(Graphics2D g) {
+		g.setColor(new Color(0xff, 0x00, 0x00, 0x80));
+		if ( targetBot != null ) {
+			double R = 50;
+			graphics.drawCircle( g, targetBot.getPosition(), R );
+		}
+	}
 }

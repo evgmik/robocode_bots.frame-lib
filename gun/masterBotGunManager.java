@@ -24,7 +24,7 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public void manage() {
-		fighterBot targetBot = getTarget();
+		targetBot = findTheBestTarget();
 		if ( targetBot != null ) {
 			double bulletEnergy = bulletEnergyVsDistance( targetBot );
 			if ( bulletEnergy >= (myBot.getEnergy() - 1e-4) ) {
@@ -61,7 +61,7 @@ public class masterBotGunManager extends gunManager {
 		}
 	}
 
-	public fighterBot getTarget() {
+	public fighterBot findTheBestTarget() {
 		fighterBot targetBot = null;
 		if ( myBot.getEnemyBots().size() == 0 ) {
 			return targetBot;
@@ -91,5 +91,4 @@ public class masterBotGunManager extends gunManager {
 		}
 		return fS;
 	}
-	
 }
