@@ -26,12 +26,27 @@ public class masterBotGunManager extends gunManager {
 	public void manage() {
 		fighterBot targetBot = getTarget();
 		if ( targetBot != null ) {
-			double bulletEnergy = 1;
+			double bulletEnergy = bulletEnergyVsDistance( targetBot );
+			if ( bulletEnergy >= (myBot.getEnergy() - 1e-4) ) {
+				// do not fire or we will get ourself disabled
+				return;
+			}
 			firingSolution fS = getTheBestFiringSolution( targetBot, bulletEnergy );
 			if ( fS != null) {
 				aimAndFire( fS );
 			}
 		}
+	}
+
+	protected double bulletEnergyVsDistance( fighterBot targetBot ) {
+		double targetDistance = myBot.getPosition().distance( targetBot.getPosition() );
+		double bulletEnergy = Math.min( 500/targetDistance, robocode.Rules.MAX_BULLET_POWER);
+		// no point to fire bullets more energetic than enemy bot energy level
+		bulletEnergy = Math.min( bulletEnergy, physics.minReqBulEnergyToKillTarget( targetBot.getEnergy() ) );
+
+		bulletEnergy = Math.max( bulletEnergy, robocode.Rules.MIN_BULLET_POWER );
+
+		return bulletEnergy;
 	}
 
 	public void aimAndFire( firingSolution fS ) {
@@ -41,6 +56,7 @@ public class masterBotGunManager extends gunManager {
 		double angle = math.shortest_arc(firingAngle-gunAngle);
 		myBot.proxy.setTurnGunRight(angle);
 		if ( angle  <= robocode.Rules.GUN_TURN_RATE ) {
+			bulletEnergy = Math.max( bulletEnergy, 0 ); // zero means no fire
 			myBot.proxy.setFireBullet(bulletEnergy);
 		}
 	}
