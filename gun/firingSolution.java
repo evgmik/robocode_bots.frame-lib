@@ -109,6 +109,7 @@ public class firingSolution {
 	public String toString() {
 		String str = "";
 		str += "Firing solultion at time: " + firedTime + "\n";
+		str += "qualityOfSolution " + qualityOfSolution + "\n";
 		str += "firingPosition" + firingPosition + ":\n";
 		str += "firingAngle" + firingAngle + ":\n";
 		if ( targetPosition != null ) {
