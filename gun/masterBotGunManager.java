@@ -13,6 +13,8 @@ import java.awt.Color;
 
 public class masterBotGunManager extends gunManager {
 
+	double firingSolutionQualityThreshold = .5;
+
 	public	masterBotGunManager() {
 		gunList = new LinkedList<baseGun>();
 		gunList.add( new linearGun() );
@@ -58,6 +60,9 @@ public class masterBotGunManager extends gunManager {
 		double gunAngle = myBot.proxy.getGunHeading();
 		double angle = math.shortest_arc(firingAngle-gunAngle);
 		myBot.proxy.setTurnGunRight(angle);
+		if ( fS.getQualityOfSolution() < firingSolutionQualityThreshold ) {
+			return;
+		}
 		if ( angle  <= robocode.Rules.GUN_TURN_RATE ) {
 			bulletEnergy = Math.max( bulletEnergy, 0 ); // zero means no fire
 			myBot.proxy.setFireBullet(bulletEnergy);
