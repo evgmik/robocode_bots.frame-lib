@@ -38,6 +38,17 @@ public class linearGun extends baseGun {
 		Point2D.Double tFPos = misc.linear_predictor( bSpeed, tPos, vTvec,  fPos);
 
 		firingSolution fS = new firingSolution( fPos, tFPos, time, bulletEnergy );
+
+		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
+		if ( infoLagTime <= 0  ) {
+			// time point from the future
+			fS.setQualityOfSolution(1); // 1 is the best
+		}
+		if ( infoLagTime > 0  ) {
+			// we are using outdated info
+			fS.setQualityOfSolution( 1./(2*infoLagTime) );
+		}
+
 		logger.noise("linear gun firingSolution: " + fS.toString());
 		fSolultions.add(fS);
 		return fSolultions;
