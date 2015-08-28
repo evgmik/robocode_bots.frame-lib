@@ -50,6 +50,9 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public void aimAndFire( firingSolution fS ) {
+		if ( fS == null) {
+			return;
+		}
 		double bulletEnergy = fS.bulletEnergy;
 		double firingAngle = fS.firingAngle;
 		double gunAngle = myBot.proxy.getGunHeading();
