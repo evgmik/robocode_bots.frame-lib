@@ -48,6 +48,10 @@ public class linearGun extends baseGun {
 			// we are using outdated info
 			fS.setQualityOfSolution( 1./(2*infoLagTime) );
 		}
+		// check if the future target point is within botReacheable space
+		if ( physics.shortestDist2wall( tFPos ) < physics.robotHalfSize ) {
+			fS.setQualityOfSolution( 0 ); // bad solution
+		}
 
 		logger.noise("linear gun firingSolution: " + fS.toString());
 		fSolultions.add(fS);
