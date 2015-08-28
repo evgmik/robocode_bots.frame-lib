@@ -112,7 +112,7 @@ public class firingSolution {
 		str += "firingPosition" + firingPosition + ":\n";
 		str += "firingAngle" + firingAngle + ":\n";
 		if ( targetPosition != null ) {
-			str += "targerPosition" + firingPosition + ":\n";
+			str += "targerPosition" + targetPosition + ":\n";
 		}
 		return str;
 	}
