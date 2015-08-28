@@ -28,6 +28,17 @@ public class headOnGun extends baseGun {
 			return fSolultions;
 
 		firingSolution fS = new firingSolution( fP, tP, time, bulletEnergy );
+
+		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
+		if ( infoLagTime <= 0  ) {
+			// time point from the future
+			fS.setQualityOfSolution(1); // 1 is the best
+		}
+		if ( infoLagTime > 0  ) {
+			// we are using outdated info
+			fS.setQualityOfSolution( 1./(2*infoLagTime) );
+		}
+
 		fSolultions.add(fS);
 		return fSolultions;
 	}
