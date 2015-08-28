@@ -13,6 +13,15 @@ public class firingSolution {
 	public double bulletEnergy;
 	public Point2D.Double firingPosition;
 	public Point2D.Double targetPosition;
+	// Guns algorithm should set qualityOfSolution.
+	// The idea bihind that some guns need sertain number of info points in a raw
+	// (pattern matcher would be an example)
+	// others would produce outdated solutions if they fire based on outdated info
+	// (for example if linear gun use old info 
+	// the targer bot might change the direction by that time).
+	// qualityOfSolution = 1 is the best
+	// qualityOfSolution = 0 is the worst
+	public double qualityOfSolution = 0; 
 
 	public firingSolution() {
 		firingAngle = Double.NaN;
@@ -77,6 +86,14 @@ public class firingSolution {
 		double timeInFlight = time - firedTime;
 		double distTraveled = timeInFlight * physics.bulletSpeed( bulletEnergy );
 		return distTraveled;
+	}
+
+	public void setQualityOfSolution(double q) {
+		qualityOfSolution = q;
+	}
+
+	public double getQualityOfSolution() {
+		return qualityOfSolution;
 	}
 
 	public Point2D.Double getLocationAt( long time ) {
