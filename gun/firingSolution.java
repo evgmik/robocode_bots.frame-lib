@@ -110,10 +110,10 @@ public class firingSolution {
 		String str = "";
 		str += "Firing solultion at time: " + firedTime + "\n";
 		str += "qualityOfSolution " + qualityOfSolution + "\n";
-		str += "firingPosition" + firingPosition + ":\n";
-		str += "firingAngle" + firingAngle + ":\n";
+		str += "firingPosition " + firingPosition + ":\n";
+		str += "firingAngle " + firingAngle + ":\n";
 		if ( targetPosition != null ) {
-			str += "targerPosition" + targetPosition + ":\n";
+			str += "targerPosition " + targetPosition + ":\n";
 		}
 		return str;
 	}
