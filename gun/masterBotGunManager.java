@@ -63,8 +63,13 @@ public class masterBotGunManager extends gunManager {
 		if ( fS.getQualityOfSolution() < firingSolutionQualityThreshold ) {
 			return;
 		}
-		if ( angle  <= robocode.Rules.GUN_TURN_RATE ) {
-			bulletEnergy = Math.max( bulletEnergy, 0 ); // zero means no fire
+		bulletEnergy = Math.max( bulletEnergy, 0 ); // zero means no fire
+		// now we need to be smart robocode engine first fires than rotate
+		// the gun see
+		// http://robowiki.net/wiki/Robocode/Game_Physics#Firing_Pitfall
+		// so we need to fire only if required gun rotation smaller than
+		// target arc.
+		if ( Math.abs( Math.toRadians(angle) )  <= 0.8*physics.robotHalfSize/myBot.getPosition().distance( targetBot.getPosition() ) ) {
 			myBot.proxy.setFireBullet(bulletEnergy);
 		}
 	}
