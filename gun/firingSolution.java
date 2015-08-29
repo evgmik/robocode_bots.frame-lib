@@ -13,6 +13,7 @@ public class firingSolution {
 	public double bulletEnergy;
 	public Point2D.Double firingPosition;
 	public Point2D.Double targetPosition;
+	public String gunName = "";
 	// Guns algorithm should set qualityOfSolution.
 	// The idea bihind that some guns need sertain number of info points in a raw
 	// (pattern matcher would be an example)
@@ -45,6 +46,18 @@ public class firingSolution {
 		this.bulletEnergy = bulletEnergy;
 	}
 
+	public firingSolution(baseGun gun, Point2D.Double fP, Point2D.Double tP, long time, double bulletEnergy) {
+		this( fP, tP, time, bulletEnergy );
+		setGunName( gun.getName() );
+	}
+
+	public void setGunName( String name ) {
+		gunName = name;
+	}
+
+	public String getGunName() {
+		return gunName;
+	}
 	public double smallestDistanceToBulletPath( Point2D.Double p ) {
 		double a = math.game_angles2cortesian( firingAngle );
 
