@@ -75,19 +75,29 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public fighterBot findTheBestTarget() {
-		fighterBot targetBot = null;
+		double distThreshold=100; // we keep old target if candidate is not closer than this
+		// above should help with continues gun shift
+		// when to bots are at about same distance
+
+		long infoDelayTimeThreshold = (long) (360/robocode.Rules.RADAR_TURN_RATE + 1);
 		if ( myBot.getEnemyBots().size() == 0 ) {
-			return targetBot;
+			return null;
 		}
 		// very simple algorithm: chose the nearest bot
 		double dist2closestBot = 1e6; // something very large
+		if  (targetBot != null) {
+		       if ( (myBot.getTime() - targetBot.getLastSeenTime()) < infoDelayTimeThreshold ) {
+			// let's keep old target bot as reference point
+			dist2closestBot = myBot.getPosition().distance( targetBot.getPosition() );
+		       }
+		}
 		double distNew;
-		targetBot = myBot.getEnemyBots().getFirst();
 		for ( fighterBot eBot: myBot.getEnemyBots() ) {
 			distNew = myBot.getPosition().distance( eBot.getPosition() );
-			if ( distNew < dist2closestBot ) {
+			if ( ((distNew + distThreshold) < dist2closestBot) && ((myBot.getTime() - eBot.getLastSeenTime()) < infoDelayTimeThreshold) ) {
 				dist2closestBot = distNew;
 				targetBot = eBot;
+				logger.dbg(" dist to " + eBot.getName() + " " + distNew);
 			}
 		}
 		return targetBot;
