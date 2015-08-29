@@ -16,6 +16,8 @@ public class gunManager implements gunManagerInterface {
 	public fighterBot myBot;
 	fighterBot targetBot = null;
 	double firingSolutionQualityThreshold = .5;
+	long fireAtTime = -9999; // gun manager will set this time
+	firingSolution finalFiringSolution = null;
 
 	public	gunManager() {
 		gunList = new LinkedList<baseGun>();
