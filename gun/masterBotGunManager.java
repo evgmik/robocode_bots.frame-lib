@@ -16,6 +16,7 @@ public class masterBotGunManager extends gunManager {
 	public	masterBotGunManager() {
 		gunList = new LinkedList<baseGun>();
 		gunList.add( new linearGun() );
+		gunList.add( new headOnGun() );
 	}
 
 	public	masterBotGunManager(fighterBot bot) {
@@ -29,7 +30,6 @@ public class masterBotGunManager extends gunManager {
 			// http://robowiki.net/wiki/Robocode/Game_Physics#Firing_Pitfall
 			// essentially we need to set firing solution at previous tick
 			myBot.proxy.setFireBullet(finalFiringSolution.bulletEnergy);
-
 		}
 		targetBot = findTheBestTarget();
 		if ( targetBot != null ) {
