@@ -120,12 +120,16 @@ public class masterBotGunManager extends gunManager {
 	
 	public firingSolution getTheBestFiringSolution( fighterBot targetBot, double bulletEnergy ) {
 		firingSolution fS = null;
-		// here we do very simple choice
-		// we use the first gun form the list 
-		LinkedList<firingSolution> fSols = gunList.getFirst().getFiringSolutions( myBot.getInfoBot(), targetBot.getInfoBot(), myBot.getTime(), bulletEnergy );
-		// and chose first available solution 
-		if ( fSols.size() >= 1) {
-			fS = fSols.getFirst();
+		// try each gun and chose solution with best quality
+		double bestQSol = -1000;
+		for ( baseGun g : gunList ) {
+			LinkedList<firingSolution> fSols = g.getFiringSolutions( myBot.getInfoBot(), targetBot.getInfoBot(), myBot.getTime(), bulletEnergy );
+			for ( firingSolution curFS : fSols ) {
+				if ( curFS.getQualityOfSolution() > bestQSol ) {
+					fS = curFS;
+					bestQSol = curFS.getQualityOfSolution();
+				}
+			}
 		}
 		return fS;
 	}
