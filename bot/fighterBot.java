@@ -114,6 +114,10 @@ public class fighterBot implements waveListener, botListener {
 		return _gameinfo.getNumEnemyAlive();
 	}
 
+	public long getLastSeenTime() {
+		return fBot.getLast().getTime();
+	}
+
 	public gameInfo getGameInfo() {
 		return _gameinfo;
 	}
