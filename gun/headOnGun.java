@@ -40,7 +40,7 @@ public class headOnGun extends baseGun {
 		}
 		if ( infoLagTime > 0  ) {
 			// we are using outdated info
-			fS.setQualityOfSolution( 1./(2*infoLagTime) );
+			fS.setQualityOfSolution( Math.exp(infoLagTime/5) );
 		}
 
 		fSolultions.add(fS);
