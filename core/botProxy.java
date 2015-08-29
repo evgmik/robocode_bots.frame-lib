@@ -49,4 +49,8 @@ public class botProxy implements proxyBotInterface {
 	public double getGunHeading() {
 		return 0;
 	}
+
+	public double getGunTurnRemaining() {
+		return 0;
+	}
 }

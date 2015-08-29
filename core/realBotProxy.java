@@ -53,4 +53,8 @@ public class realBotProxy extends botProxy {
 	public double getGunHeading() {
 		return masterBot.getGunHeading();
 	}
+
+	public double getGunTurnRemaining() {
+		return masterBot.getGunTurnRemaining();
+	}
 }
