@@ -11,8 +11,6 @@ import java.awt.Color;
 
 
 public class headOnGun extends baseGun {
-	public String gunName;
-
 	public headOnGun() {
 		gunName = "headOnGun";
 	}
@@ -31,7 +29,7 @@ public class headOnGun extends baseGun {
 		if (tP == null)
 			return fSolultions;
 
-		firingSolution fS = new firingSolution( fP, tP, time, bulletEnergy );
+		firingSolution fS = new firingSolution( this, fP, tP, time, bulletEnergy );
 
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
 		if ( infoLagTime <= 0  ) {

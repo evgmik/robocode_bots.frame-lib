@@ -11,8 +11,6 @@ import java.awt.Color;
 
 
 public class linearGun extends baseGun {
-	public String gunName;
-
 	public linearGun() {
 		gunName = "linearGun";
 	}
@@ -37,7 +35,7 @@ public class linearGun extends baseGun {
 		// where target will be at wave intersection according to linear predictor
 		Point2D.Double tFPos = misc.linear_predictor( bSpeed, tPos, vTvec,  fPos);
 
-		firingSolution fS = new firingSolution( fPos, tFPos, time, bulletEnergy );
+		firingSolution fS = new firingSolution( this, fPos, tFPos, time, bulletEnergy );
 
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
 		if ( infoLagTime <= 0  ) {
