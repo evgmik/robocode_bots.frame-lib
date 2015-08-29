@@ -24,6 +24,13 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public void manage() {
+		if ( myBot.getTime() == fireAtTime &&  myBot.proxy.getGunTurnRemaining() == 0) {
+			// see firing pitfalls
+			// http://robowiki.net/wiki/Robocode/Game_Physics#Firing_Pitfall
+			// essentially we need to set firing solution at previous tick
+			myBot.proxy.setFireBullet(finalFiringSolution.bulletEnergy);
+
+		}
 		targetBot = findTheBestTarget();
 		if ( targetBot != null ) {
 			double bulletEnergy = bulletEnergyVsDistance( targetBot );
@@ -31,10 +38,16 @@ public class masterBotGunManager extends gunManager {
 				// do not fire or we will get ourself disabled
 				return;
 			}
-			firingSolution fS = getTheBestFiringSolution( targetBot, bulletEnergy );
-			if ( fS != null) {
-				aimAndFire( fS );
+			bulletEnergy = Math.max( bulletEnergy, 0 ); // zero means no fire
+			if ( bulletEnergy <= 0 ) {
+				return; // bad bullet
 			}
+			firingSolution fS = getTheBestFiringSolution( targetBot, bulletEnergy );
+			if ( fS == null) {
+				logger.noise("time " + myBot.getTime() + " Veto on fire: no firing solution");
+				return; // no solution
+			}
+			aimAndSetGun( fS );
 		}
 	}
 
@@ -49,27 +62,31 @@ public class masterBotGunManager extends gunManager {
 		return bulletEnergy;
 	}
 
-	public void aimAndFire( firingSolution fS ) {
+	public void aimAndSetGun( firingSolution fS ) {
 		if ( fS == null) {
+			finalFiringSolution = null;
 			return;
 		}
+		if ( fS.getQualityOfSolution() < firingSolutionQualityThreshold ) {
+			logger.noise("time " + myBot.getTime() + " Veto on fire: no good enough solution");
+			return; // no good enough solution
+		}
+		logger.noise("time " + myBot.getTime() + " firing solution is good");
+
 		double bulletEnergy = fS.bulletEnergy;
 		double firingAngle = fS.firingAngle;
 		double gunAngle = myBot.proxy.getGunHeading();
 		double angle = math.shortest_arc(firingAngle-gunAngle);
 		myBot.proxy.setTurnGunRight(angle);
-		if ( fS.getQualityOfSolution() < firingSolutionQualityThreshold ) {
-			return;
-		}
-		bulletEnergy = Math.max( bulletEnergy, 0 ); // zero means no fire
+		fireAtTime = myBot.getTime() + 1;
+		finalFiringSolution = fS;
 		// now we need to be smart robocode engine first fires than rotate
 		// the gun see
 		// http://robowiki.net/wiki/Robocode/Game_Physics#Firing_Pitfall
 		// so we need to fire only if required gun rotation smaller than
 		// target arc.
-		if ( Math.abs( Math.toRadians(angle) )  <= 0.8*physics.robotHalfSize/myBot.getPosition().distance( targetBot.getPosition() ) ) {
-			myBot.proxy.setFireBullet(bulletEnergy);
-		}
+		// So we do not fire now, instead we will check at next click
+		// that gun did rotate enough
 	}
 
 	public fighterBot findTheBestTarget() {
