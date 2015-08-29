@@ -46,10 +46,12 @@ public class linearGun extends baseGun {
 		}
 		if ( infoLagTime > 0  ) {
 			// we are using outdated info
-			fS.setQualityOfSolution( 1./(2*infoLagTime) );
+			fS.setQualityOfSolution( Math.exp(infoLagTime/5) );
+			logger.noise("time " + time + " target info is outdated by " + infoLagTime);
 		}
 		// check if the future target point is within botReacheable space
 		if ( physics.shortestDist2wall( tFPos ) < physics.robotHalfSize ) {
+			logger.noise("time " + time + " unphysical future target positon");
 			fS.setQualityOfSolution( 0 ); // bad solution
 		}
 
