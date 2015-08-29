@@ -15,6 +15,7 @@ public class gunManager implements gunManagerInterface {
 	public LinkedList<baseGun> gunList = new LinkedList<baseGun>();
 	public fighterBot myBot;
 	fighterBot targetBot = null;
+	double firingSolutionQualityThreshold = .5;
 
 	public	gunManager() {
 		gunList = new LinkedList<baseGun>();

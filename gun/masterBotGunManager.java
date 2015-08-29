@@ -13,8 +13,6 @@ import java.awt.Color;
 
 public class masterBotGunManager extends gunManager {
 
-	double firingSolutionQualityThreshold = .5;
-
 	public	masterBotGunManager() {
 		gunList = new LinkedList<baseGun>();
 		gunList.add( new linearGun() );
