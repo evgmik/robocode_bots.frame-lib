@@ -3,6 +3,7 @@
 package eem.frame.bot;
 
 import eem.frame.core.*;
+import eem.config.*;
 import eem.frame.event.*;
 import eem.frame.bot.*;
 import eem.frame.radar.*;
@@ -27,15 +28,16 @@ import robocode.Rules.*;
  * Use it for both enemy and our own, but set motion, radar, ... methods appropriately.
  * */
 
-public class fighterBot implements waveListener, botListener {
+// IMPORTANT
+// fighterBotConfig must implement
+// public void setDrivers( fighterBot bot,  gameInfo gInfo, boolean isItMasterBotDriver 
+// which sets proxy, _radar, _motion, _gunManager 
+// for masterBot and enemyBot
+
+public class fighterBot extends fighterBotConfig implements waveListener, botListener {
 	protected InfoBot fBot;
 	protected gameInfo _gameinfo;
-	protected baseRadar _radar;
-	protected basicMotion _motion;
-	protected gunManager _gunManager;
 	protected long latestWaveHitTime=0;
-
-	public botProxy proxy;
 
 	public LinkedList<waveWithBullets> enemyWaves = new LinkedList<waveWithBullets>();
 	public LinkedList<waveWithBullets> myWaves    = new LinkedList<waveWithBullets>();
@@ -47,21 +49,7 @@ public class fighterBot implements waveListener, botListener {
 		_gameinfo = gInfo;
 		_gameinfo._wavesManager.addWaveListener( this );
 		_gameinfo._botsmanager.addBotListener( this );
-		if ( isItMasterBotDriver() ) {
-			// this bot is in charge of the master bot
-			proxy = new realBotProxy( _gameinfo.getMasterBot() );
-			_radar = new universalRadar( this );
-			//_motion = new dangerMapMotion( this );
-			_motion = new exactPathDangerMotion( this );
-			_gunManager = new masterBotGunManager( this );
-
-		} else {
-			// this bot is in charge of the enemy bot
-			proxy = new nullProxy( _gameinfo.getMasterBot() );
-			_radar = new nullRadar( this );
-			_motion = new basicMotion( this );
-			_gunManager = new enemyBotGunManager( this );
-		}
+		setDrivers( this,  _gameinfo, isItMasterBotDriver() );
 	}
 
 	public boolean isItMasterBotDriver() {
