@@ -130,15 +130,16 @@ public class masterBotGunManager extends gunManager {
 	
 	public firingSolution getTheBestFiringSolution( fighterBot targetBot, double bulletEnergy ) {
 		firingSolution fS = null;
+		firingSolutions = new LinkedList<firingSolution>();
 		// try each gun and chose solution with best quality
 		double bestQSol = -1000;
 		for ( baseGun g : gunList ) {
-			firingSolutions = g.getFiringSolutions( myBot.getInfoBot(), targetBot.getInfoBot(), myBot.getTime(), bulletEnergy );
-			for ( firingSolution curFS : firingSolutions ) {
-				if ( curFS.getQualityOfSolution() > bestQSol ) {
-					fS = curFS;
-					bestQSol = curFS.getQualityOfSolution();
-				}
+			firingSolutions.addAll( g.getFiringSolutions( myBot.getInfoBot(), targetBot.getInfoBot(), myBot.getTime(), bulletEnergy ) );
+		}
+		for ( firingSolution curFS : firingSolutions ) {
+			if ( curFS.getQualityOfSolution() > bestQSol ) {
+				fS = curFS;
+				bestQSol = curFS.getQualityOfSolution();
 			}
 		}
 		return fS;
