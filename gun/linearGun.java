@@ -13,6 +13,7 @@ import java.awt.Color;
 public class linearGun extends baseGun {
 	public linearGun() {
 		gunName = "linearGun";
+		color = new Color(0xff, 0x00, 0x00, 0xff);
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions( InfoBot fBot, InfoBot tBot, long time, double bulletEnergy ) {

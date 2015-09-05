@@ -13,6 +13,7 @@ import java.awt.Color;
 public class headOnGun extends baseGun {
 	public headOnGun() {
 		gunName = "headOnGun";
+		color = new Color(0x00, 0x00, 0x00, 0xff);
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions( InfoBot fBot, InfoBot tBot, long time, double bulletEnergy ) {

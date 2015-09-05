@@ -12,6 +12,7 @@ import java.awt.Color;
 
 public class baseGun {
 	public String gunName;
+	public Color color = new Color(0x00, 0x00, 0x00, 0xff); // default color
 
 	public baseGun() {
 		gunName = "baseGun";
@@ -25,6 +26,12 @@ public class baseGun {
 		return new LinkedList<firingSolution>();
 	}
 
+	public void setColor( Color c ) {
+		color = c;
+	}
 
+	public Color getColor() {
+		return color;
+	}
 }
 

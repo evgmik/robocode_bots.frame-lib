@@ -14,6 +14,7 @@ public class firingSolution {
 	public Point2D.Double firingPosition;
 	public Point2D.Double targetPosition;
 	public String gunName = "";
+	public Color color = new Color(0x00, 0x00, 0x00, 0xff); // default color
 	// Guns algorithm should set qualityOfSolution.
 	// The idea bihind that some guns need sertain number of info points in a raw
 	// (pattern matcher would be an example)
@@ -49,6 +50,15 @@ public class firingSolution {
 	public firingSolution(baseGun gun, Point2D.Double fP, Point2D.Double tP, long time, double bulletEnergy) {
 		this( fP, tP, time, bulletEnergy );
 		setGunName( gun.getName() );
+		setColor( gun.getColor() );
+	}
+
+	public void setColor( Color c ) {
+		color = c;
+	}
+
+	public Color getColor() {
+		return color;
 	}
 
 	public void setGunName( String name ) {
@@ -135,34 +145,35 @@ public class firingSolution {
 		if ( firingPosition == null ) {
 			logger.error( "This should not happen: the firing solution does not have firingPosition" );
 		} else {
-			g.setColor( new Color(0xFF, 0x00, 0x00, 0xff) );
+			g.setColor( color );
 			graphics.drawRect( g, firingPosition, 20, 20 );
 		}
 
 		if ( targetPosition != null ) {
-			g.setColor( new Color(0xFF, 0x00, 0x00, 0xff) );
+			g.setColor( color );
 			graphics.drawRect( g, targetPosition, 20, 20 );
 		}
 
 		if ( firingAngle == Double.NaN ) {
 			logger.error( "This should not happen: the firing solution does not have firingAngle" );
 		} else {
-			g.setColor( new Color(0xFF, 0x00, 0x00, 0xff) );
+			g.setColor( color );
 			Point2D.Double endP = getLocationAt( time );
 			graphics.drawLine( g, firingPosition,  endP );
 		}
 	}
 
 	public void onPaint(Graphics2D g ) {
+			logger.dbg( "This should not happen: the firing solution does not have firingPosition" );
 		if ( firingPosition == null ) {
 			logger.error( "This should not happen: the firing solution does not have firingPosition" );
 		} else {
-			g.setColor( new Color(0xFF, 0x00, 0x00, 0xff) );
+			g.setColor( color );
 			graphics.drawRect( g, firingPosition, 20, 20 );
 		}
 
 		if ( targetPosition != null ) {
-			g.setColor( new Color(0xFF, 0x00, 0x00, 0xff) );
+			g.setColor( color );
 			graphics.drawRect( g, targetPosition, 20, 20 );
 		}
 
@@ -170,7 +181,7 @@ public class firingSolution {
 			logger.error( "This should not happen: the firing solution does not have firingAngle" );
 		} else {
 			
-			g.setColor( new Color(0xFF, 0x00, 0x00, 0xff) );
+			g.setColor( color );
 			if ( targetPosition != null ) {
 				graphics.drawLine( g, firingPosition,  targetPosition );
 			} else {
