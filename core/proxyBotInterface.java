@@ -21,6 +21,7 @@ public interface proxyBotInterface {
 	public void setFireBullet(double e);
 	public double getGunHeading();
 	public double getGunTurnRemaining();
+	public double getGunHeat();
 
 
 
