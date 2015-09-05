@@ -179,6 +179,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				_motion.needToRecalculate = true;
 				_motion.predictionEndTime = hitTime ;
 			}
+		} else {
+			//logger.dbg("Detecting my own wave");
 		}
 	}
 
@@ -248,6 +250,10 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			// draw enemy waves
 			for ( waveWithBullets eW: enemyWaves ) {
 				//eW.onPaint( g, timeNow );
+			}
+			// draw my waves
+			for ( waveWithBullets w: myWaves ) {
+				w.onPaint( g, timeNow );
 			}
 			// draw known enemy bots
 			for ( fighterBot eB: getEnemyBots() ) {

@@ -5,6 +5,7 @@ package eem.frame.gun;
 import eem.frame.gun.*;
 import eem.frame.bot.*;
 import eem.frame.misc.*;
+import eem.frame.wave.*;
 
 import java.util.LinkedList;
 import java.awt.geom.Point2D;
@@ -29,7 +30,16 @@ public class masterBotGunManager extends gunManager {
 			// see firing pitfalls
 			// http://robowiki.net/wiki/Robocode/Game_Physics#Firing_Pitfall
 			// essentially we need to set firing solution at previous tick
-			myBot.proxy.setFireBullet(finalFiringSolution.bulletEnergy);
+			if ( myBot.proxy.getGunHeat() == 0 ) {
+				myBot.proxy.setFireBullet(bestFiringSolution.bulletEnergy);
+				wave nW = new wave( myBot.getInfoBot(), myBot.getTime(), bestFiringSolution.bulletEnergy );
+				myBot.getGameInfo()._wavesManager.add( nW );
+				waveWithBullets wB = new waveWithBullets( nW );
+				for ( firingSolution fS: firingSolutions ) {
+					wB.addFiringSolution(fS);
+				}
+				myBot.myWaves.add(wB);
+			}
 		}
 		targetBot = findTheBestTarget();
 		if ( targetBot != null ) {
@@ -64,7 +74,7 @@ public class masterBotGunManager extends gunManager {
 
 	public void aimAndSetGun( firingSolution fS ) {
 		if ( fS == null) {
-			finalFiringSolution = null;
+			bestFiringSolution = null;
 			return;
 		}
 		if ( fS.getQualityOfSolution() < firingSolutionQualityThreshold ) {
@@ -79,7 +89,7 @@ public class masterBotGunManager extends gunManager {
 		double angle = math.shortest_arc(firingAngle-gunAngle);
 		myBot.proxy.setTurnGunRight(angle);
 		fireAtTime = myBot.getTime() + 1;
-		finalFiringSolution = fS;
+		bestFiringSolution = fS;
 		// now we need to be smart robocode engine first fires than rotate
 		// the gun see
 		// http://robowiki.net/wiki/Robocode/Game_Physics#Firing_Pitfall
@@ -123,8 +133,8 @@ public class masterBotGunManager extends gunManager {
 		// try each gun and chose solution with best quality
 		double bestQSol = -1000;
 		for ( baseGun g : gunList ) {
-			LinkedList<firingSolution> fSols = g.getFiringSolutions( myBot.getInfoBot(), targetBot.getInfoBot(), myBot.getTime(), bulletEnergy );
-			for ( firingSolution curFS : fSols ) {
+			firingSolutions = g.getFiringSolutions( myBot.getInfoBot(), targetBot.getInfoBot(), myBot.getTime(), bulletEnergy );
+			for ( firingSolution curFS : firingSolutions ) {
 				if ( curFS.getQualityOfSolution() > bestQSol ) {
 					fS = curFS;
 					bestQSol = curFS.getQualityOfSolution();
