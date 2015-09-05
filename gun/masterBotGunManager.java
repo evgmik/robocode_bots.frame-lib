@@ -122,7 +122,6 @@ public class masterBotGunManager extends gunManager {
 			if ( ((distNew + distThreshold) < dist2closestBot) && ((myBot.getTime() - eBot.getLastSeenTime()) < infoDelayTimeThreshold) ) {
 				dist2closestBot = distNew;
 				targetBot = eBot;
-				logger.dbg(" dist to " + eBot.getName() + " " + distNew);
 			}
 		}
 		return targetBot;
