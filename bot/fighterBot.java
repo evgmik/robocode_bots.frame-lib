@@ -118,7 +118,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		return enemyWaves;
 	}
 
-	public LinkedList<waveWithBullets> geMyWaves() {
+	public LinkedList<waveWithBullets> getMyWaves() {
 		return myWaves;
 	}
 
