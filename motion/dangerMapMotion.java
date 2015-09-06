@@ -24,7 +24,6 @@ public class dangerMapMotion extends basicMotion {
 	protected fighterBot myBot;
 	public dangerMap _dangerMap;
 	private double superDanger = 1e8;
-	public dangerPoint destPoint = null;
 	
 	public void initTic() {
 		_dangerMap.calculateDanger( myBot.getTime() );

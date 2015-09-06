@@ -23,7 +23,6 @@ import java.awt.Color;
 public class exactPathDangerMotion extends basicMotion {
 	protected fighterBot myBot;
 	private double superDanger = 1e8;
-	public dangerPoint destPoint = null;
 	dangerPath path = new dangerPath();
 	long minimalPathLength = (long) ( 2*Math.ceil(robocode.Rules.MAX_VELOCITY/robocode.Rules.DECELERATION) ); // so we do not end up moving to the wall without chance to stop, currently 4
 	// tune below to avoid skipped turns
