@@ -16,9 +16,14 @@ public class headOnGun extends baseGun {
 		color = new Color(0x00, 0x00, 0x00, 0xff);
 	}
 
-	public LinkedList<firingSolution> getFiringSolutions( InfoBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
+	public LinkedList<firingSolution> getFiringSolutions( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
+		Point2D.Double fP = fBot.getMotion().getPositionAtTime( time );
+		return getFiringSolutions( fP, tBot, time, bulletEnergy);
+	}
+
+	public LinkedList<firingSolution> getFiringSolutions( Point2D.Double fP, InfoBot tBot, long time, double bulletEnergy ) {
 		LinkedList<firingSolution> fSolultions = new LinkedList<firingSolution>();
-		Point2D.Double fP = fBot.getPositionClosestToTime( time );
+
 		if (fP == null)
 			return fSolultions;
 
@@ -33,17 +38,15 @@ public class headOnGun extends baseGun {
 		firingSolution fS = new firingSolution( this, fP, tP, time, bulletEnergy );
 
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
-		if ( infoLagTime <= 0  ) {
-			// time point from the future
-			fS.setQualityOfSolution(1); // 1 is the best
-		}
-		if ( infoLagTime > 0  ) {
-			// we are using outdated info
-			fS.setQualityOfSolution( Math.exp(infoLagTime/5) );
-		}
+		fS.setQualityOfSolution( getLagTimePenalty( infoLagTime ) );
 
 		fSolultions.add(fS);
 		return fSolultions;
+
+	}
+	public LinkedList<firingSolution> getFiringSolutions( InfoBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
+		Point2D.Double fP = fBot.getPositionClosestToTime( time );
+		return getFiringSolutions( fP, tBot, time, bulletEnergy);
 	}
 
 }
