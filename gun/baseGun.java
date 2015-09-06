@@ -30,6 +30,16 @@ public class baseGun {
 		return new LinkedList<firingSolution>();
 	}
 
+	public double getLagTimePenalty( long infoLagTime ) {
+		if ( infoLagTime <= 0  ) {
+			// time point from the future
+			return 1.0; // 1 is the best solution
+		} else {
+			// we are using outdated info
+			return Math.exp(infoLagTime/5);
+		}
+	}
+
 	public void setColor( Color c ) {
 		color = c;
 	}
