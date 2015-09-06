@@ -134,7 +134,7 @@ public class masterBotGunManager extends gunManager {
 		double bestQSol = -1000;
 		for ( baseGun g : gunList ) {
 			// note getTime()+1, the fire command is executed at next tic
-			firingSolutions.addAll( g.getFiringSolutions( myBot.getInfoBot(), targetBot.getInfoBot(), myBot.getTime()+1, bulletEnergy ) );
+			firingSolutions.addAll( g.getFiringSolutions( myBot, targetBot.getInfoBot(), myBot.getTime()+1, bulletEnergy ) );
 		}
 		for ( firingSolution curFS : firingSolutions ) {
 			if ( curFS.getQualityOfSolution() > bestQSol ) {
