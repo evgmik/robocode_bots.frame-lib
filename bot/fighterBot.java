@@ -132,6 +132,10 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		_gunManager.manage();
 	}
 
+	public basicMotion getMotion() {
+		return _motion;
+	}
+
 	public LinkedList<firingSolution> getFiringSolutions( InfoBot tBot, long time, double bulletEnergy ) {
 		// how this bot fires to the targer bot
 		LinkedList<firingSolution> fSolutions = new LinkedList<firingSolution>();
