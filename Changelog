@@ -1,0 +1,12 @@
+# Changelog
+
+## v0.5
+Master bot use position in future to calculate its firing position, thus
+correct path prediction of my own bullets. So far I still use only headOn and
+linear guns.
+
+
+## v0.4 - 0.1
+lost in history since the frame work was taken from IWillFireNoBullet robot.
+So see its version history.
+
