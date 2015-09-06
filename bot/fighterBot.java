@@ -224,7 +224,6 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	public void onRobotDeath(InfoBot b){
 		enemyBots.remove( b.getName() ) ;
 	}
-
 	
 	public void drawThisBot( Graphics2D g, long timeNow ) {
 		double size = 40;
@@ -243,6 +242,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			graphics.drawSquare( g, p, size );
 		}
 	}
+
 	public void onPaint( Graphics2D g, long timeNow ) {
 		if ( isItMasterBotDriver() ) {
 			// draw itself
