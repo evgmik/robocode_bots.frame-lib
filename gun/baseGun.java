@@ -26,6 +26,10 @@ public class baseGun {
 		return new LinkedList<firingSolution>();
 	}
 
+	public LinkedList<firingSolution> getFiringSolutions( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
+		return new LinkedList<firingSolution>();
+	}
+
 	public void setColor( Color c ) {
 		color = c;
 	}
