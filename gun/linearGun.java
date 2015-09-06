@@ -16,10 +16,25 @@ public class linearGun extends baseGun {
 		color = new Color(0xff, 0x00, 0x00, 0xff);
 	}
 
+	public LinkedList<firingSolution> getFiringSolutions( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
+		Point2D.Double fPos = fBot.getMotion().getPositionAtTime( time );
+		return getFiringSolutions( fPos, tBot, time, bulletEnergy);
+	}
+
 	public LinkedList<firingSolution> getFiringSolutions( InfoBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		LinkedList<firingSolution> fSolultions = new LinkedList<firingSolution>();
+
 		botStatPoint fBStat = fBot.getStatClosestToTime( time );
 		if (fBStat == null)
+			return fSolultions;
+		Point2D.Double fPos = (Point2D.Double) fBStat.getPosition().clone();
+
+		return getFiringSolutions( fPos, tBot, time, bulletEnergy);
+	}
+
+	public LinkedList<firingSolution> getFiringSolutions( Point2D.Double fPos, InfoBot tBot, long time, double bulletEnergy ) {
+		LinkedList<firingSolution> fSolultions = new LinkedList<firingSolution>();
+		if (fPos == null )
 			return fSolultions;
 
 		botStatPoint tBStat = tBot.getStatClosestToTime( time );
@@ -27,7 +42,6 @@ public class linearGun extends baseGun {
 			return fSolultions;
 
 		// OK we know fire point and at least one target position
-		Point2D.Double fPos = (Point2D.Double) fBStat.getPosition().clone();
 		Point2D.Double tPos = (Point2D.Double) tBStat.getPosition().clone();
 		Point2D.Double vTvec = (Point2D.Double) tBStat.getVelocity().clone();
 
