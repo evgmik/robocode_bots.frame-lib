@@ -181,10 +181,6 @@ public class CoreBot extends AdvancedRobot
 			initTic() ;
 			if ( getOthers() == 0 ) {
 				//logger.dbg("Round is over");
-				setAhead(0);
-				setStop();
-				execute();
-				continue;
 			}
 
 			//FIXME
