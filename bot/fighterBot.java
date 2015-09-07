@@ -253,11 +253,11 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			drawThisBot( g, timeNow );
 			// draw enemy waves
 			for ( waveWithBullets eW: enemyWaves ) {
-				//eW.onPaint( g, timeNow );
+				eW.onPaint( g, timeNow );
 			}
 			// draw my waves
 			for ( waveWithBullets w: myWaves ) {
-				w.onPaint( g, timeNow );
+				//w.onPaint( g, timeNow );
 			}
 			// draw known enemy bots
 			for ( fighterBot eB: getEnemyBots() ) {
