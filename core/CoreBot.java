@@ -134,7 +134,6 @@ public class CoreBot extends AdvancedRobot
 		
 		if ( numEnemyBotsAlive == 0 ) {
 			//logger.dbg("Round is over");
-			return;
 		}
 
 		myCoord.x = getX();
