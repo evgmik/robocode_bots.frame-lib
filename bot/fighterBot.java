@@ -137,7 +137,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions( InfoBot tBot, long time, double bulletEnergy ) {
-		// how this bot fires to the targer bot
+		// how this bot fires to the target bot
 		LinkedList<firingSolution> fSolutions = new LinkedList<firingSolution>();
 
 		LinkedList<firingSolution> gunFSs = null;
