@@ -48,6 +48,7 @@ public class realBotProxy extends botProxy {
 
 	public void setFireBullet(double e){
 		masterBot.setFireBullet( e );
+		masterBot.bulletFiredCnt++;
 	}
 
 	public double getGunHeading() {

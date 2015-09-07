@@ -52,6 +52,7 @@ public class CoreBot extends AdvancedRobot
 	public static int  hitWallStats[] = null;
 	public static int  hitByBulletStats[] = null;
 	public static int bulletFiredCnt = 0;
+	public static int bulletHitEnemyCnt = 0;
         public static int bulletHitByPredictedCnt = 0;	
 	private static int numTicsWhenGunInColdState = 0;
 
@@ -209,6 +210,7 @@ public class CoreBot extends AdvancedRobot
 
 	// our bullet hit someone
 	public void  onBulletHit(BulletHitEvent e) {
+		bulletHitEnemyCnt++;
 	}
 
 	// our bullet missed and hit the wall
@@ -270,6 +272,7 @@ public class CoreBot extends AdvancedRobot
 		logger.routine("Hit by bullet: " + Arrays.toString(hitByBulletStats) );
 		logger.routine("Wall hits stats: " + Arrays.toString(hitWallStats) );
 		logger.routine("Skipped turns stats: " + Arrays.toString(skippedTurnStats) );
+		logger.routine("Hit rate stats: " + logger.hitRateFormat( bulletHitEnemyCnt, bulletFiredCnt ) );
 		logger.routine("Rounds ratio of win/lose = " + roundsWon + "/" + roundsLost );
 		logger.routine("Finishing places stats: " + Arrays.toString( finishingPlacesStats ) );
 	}
