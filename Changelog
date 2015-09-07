@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.6-pre
+Improved enemy firing solution generation. Take in account that at fire time
+they now target bot stats for the previous tick time.
+
+My bot does not anymore slam the brake, when all enemy are dead. Since bullets
+are still flying.
+
 ## v0.5
 Master bot use position in future to calculate its firing position, thus
 correct path prediction of my own bullets. So far I still use only headOn and
