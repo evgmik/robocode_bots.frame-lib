@@ -202,23 +202,26 @@ public class CoreBot extends AdvancedRobot
 
 	}
 
-	/**
-	 * onHitByBullet: What to do when you're hit by a bullet
-	 */
+	// someone bullet hit us
 	public void onHitByBullet(HitByBulletEvent e) {
 		hitByBulletStats[getRoundNum()]++;
 	}
 
+	// our bullet hit someone
 	public void  onBulletHit(BulletHitEvent e) {
 	}
 
+	// our bullet missed and hit the wall
 	public void  onBulletMissed(BulletMissedEvent e) {
+	}
+
+	// our bullet hit one of theirs
+	public void onBulletHitBullet(BulletHitBulletEvent e) {
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
 		_gameinfo.onRobotDeath(e);
 	}
-
 
 	public void onHitWall(HitWallEvent e) {
 		hitWallStats[getRoundNum()]++;
