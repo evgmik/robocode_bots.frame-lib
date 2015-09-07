@@ -37,7 +37,8 @@ public class linearGun extends baseGun {
 		if (fPos == null )
 			return fSolultions;
 
-		botStatPoint tBStat = tBot.getStatClosestToTime( time );
+		// the latest time, when target stats are known, is at 'time-1'
+		botStatPoint tBStat = tBot.getStatClosestToTime( time - 1 );
 		if (tBStat == null)
 			return fSolultions;
 
