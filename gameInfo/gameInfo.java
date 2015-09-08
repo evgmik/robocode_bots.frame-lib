@@ -152,6 +152,14 @@ public class gameInfo implements botListener {
 		}
 	}
 
+	// someone bullet hit us
+	public void onHitByBullet(HitByBulletEvent e) {
+		HashMap<String,fighterBot> allBots = getAllFighterBots(); 
+		for ( fighterBot fB: allBots.values() ) {
+			fB.onHitByBullet(e);
+		}
+	}
+
 	public HashMap<String,fighterBot> getAllFighterBots() {
 		HashMap<String,fighterBot> allBots = new HashMap<String, fighterBot>();
 		allBots.putAll( liveBots);

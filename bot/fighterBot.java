@@ -262,12 +262,17 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		enemyBots.remove( b.getName() ) ;
 	}
 
-	// master bot bullet hit someone
-	public void  onBulletHit(BulletHitEvent e) {
-		String trgtBotName = e.getName();
-		String fireBotName = _gameinfo.getMasterBot().getName();
+	// someone hit the master bot
+	public void onHitByBullet(HitByBulletEvent e) {
+		String trgtBotName = _gameinfo.getMasterBot().getName();
+		String fireBotName = e.getName();
+
+		incrHitCounts( trgtBotName, fireBotName );
+	}
+
+	public void incrHitCounts( String trgtBotName, String fireBotName ) {
 		if ( getName().equals( trgtBotName ) ) {
-			// this bot is hit by master bot
+			// this bot is hit by other
 			if ( hitByOther.containsKey( fireBotName ) ) {
 				Integer cnt = hitByOther.get( fireBotName );
 				cnt++;
@@ -277,7 +282,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			}
 		}
 		if ( getName().equals( fireBotName ) ) {
-			// this is master bot
+			// this bot hit someone
 			if ( hitByMe.containsKey( trgtBotName ) ) {
 				Integer cnt = hitByMe.get( trgtBotName );
 				cnt++;
@@ -286,6 +291,13 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				hitByMe.put( trgtBotName, 1 );
 			}
 		}
+	}
+
+	// master bot bullet hit someone
+	public void  onBulletHit(BulletHitEvent e) {
+		String trgtBotName = e.getName();
+		String fireBotName = _gameinfo.getMasterBot().getName();
+		incrHitCounts( trgtBotName, fireBotName );
 	}
 	
 	public void drawThisBot( Graphics2D g, long timeNow ) {
