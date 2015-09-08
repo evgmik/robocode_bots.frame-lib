@@ -210,6 +210,7 @@ public class CoreBot extends AdvancedRobot
 
 	// our bullet hit someone
 	public void  onBulletHit(BulletHitEvent e) {
+		_gameinfo.onBulletHit(e);
 		bulletHitEnemyCnt++;
 	}
 
