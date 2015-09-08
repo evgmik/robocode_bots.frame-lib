@@ -29,6 +29,7 @@ public class gunManager implements gunManagerInterface {
 
 	public HashMap<String,Integer> hitByOther = new HashMap<String, Integer>();
 	public HashMap<String,Integer> hitByMe = new HashMap<String, Integer>();
+	public HashMap<String,Integer> firedAt = new HashMap<String, Integer>();
 
 
 	public	gunManager() {
@@ -96,9 +97,16 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public void reportHitByMe(){
-		logger.routine("hit rate for the following bot(s)");
-		for ( String bName: hitByMe.keySet() ) {
-			logger.routine( " " + bName + ": " + logger.hitRateFormat( hitByMe.get( bName ), firedCount) );
+		logger.routine("hit rate for the following bot(s) out of " + firedCount + " shots");
+		for ( String bName: firedAt.keySet() ) {
+			Integer fCnt;
+			fCnt = getHashCounter( firedAt, bName );
+			if ( fCnt == 0 ) {
+				// we have no clue to whom we fired
+				// using total firedCount
+				fCnt = firedCount;
+			}
+			logger.routine( " " + bName + ": " + logger.hitRateFormat( getHashCounter( hitByMe, bName ), fCnt ) );
 		}
 		if ( hitByMe.size() == 0 ) {
 			logger.routine( " did not hit anyone: " + logger.hitRateFormat( 0, firedCount) );
