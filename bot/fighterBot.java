@@ -38,6 +38,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	protected InfoBot fBot;
 	protected gameInfo _gameinfo;
 	protected long latestWaveHitTime=0;
+	protected int  firedCount = 0;
+	protected int  hitCount = 0;
 
 	public LinkedList<waveWithBullets> enemyWaves = new LinkedList<waveWithBullets>();
 	public LinkedList<waveWithBullets> myWaves    = new LinkedList<waveWithBullets>();
@@ -184,8 +186,14 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				_motion.predictionEndTime = hitTime ;
 			}
 		} else {
+			firedCount++;
 			//logger.dbg("Detecting my own wave");
 		}
+	}
+
+	public void reportStats() {
+		logger.routine("--- bot " + getName() + " stats:");
+		logger.routine("fired Count " + firedCount);
 	}
 
 	public void waveRemoved(wave w) {

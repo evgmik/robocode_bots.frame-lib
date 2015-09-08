@@ -249,12 +249,14 @@ public class CoreBot extends AdvancedRobot
 		//logger.dbg("onWin");
 		roundsWon++;
 		updateFinishingPlacesStats();
+		_gameinfo.onWin(e);
 		winOrLoseRoundEnd();
 	}
 
-	public void onDeath(DeathEvent e ) {
+	public void onDeath(DeathEvent e) {
 		roundsLost++;
 		updateFinishingPlacesStats();
+		_gameinfo.onDeath(e);
 		winOrLoseRoundEnd();
 	}
 

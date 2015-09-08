@@ -136,6 +136,23 @@ public class gameInfo implements botListener {
 		logger.noise( this.toString() );
 	}
 
+	public void onWin(WinEvent  e) {
+		botsReportStats();
+	}
+
+	public void onDeath(DeathEvent e) {
+		botsReportStats();
+	}
+
+	public void botsReportStats() {
+		for ( fighterBot fB: deadBots.values() ) {
+			fB.reportStats();
+		}
+		for ( fighterBot fB: liveBots.values() ) {
+			fB.reportStats();
+		}
+	}
+
 	public void onPaint( Graphics2D g ) {
 		_botsmanager.onPaint(g);
 		//_wavesManager.onPaint(g);
