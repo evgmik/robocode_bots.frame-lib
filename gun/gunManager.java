@@ -59,26 +59,25 @@ public class gunManager implements gunManagerInterface {
 		incrHitCounts( trgtBotName, fireBotName );
 	}
 	
+	//helper method to increment count in HashMap
+	public void incrHashCounter( HashMap<String,Integer> map, String key ) {
+		if ( map.containsKey( key ) ) {
+			Integer cnt = map.get( key );
+			cnt++;
+			map.put( key, cnt );
+		} else {
+			map.put( key, 1 );
+		}
+	}
+	
 	public void incrHitCounts( String trgtBotName, String fireBotName ) {
 		if ( myBot.getName().equals( trgtBotName ) ) {
 			// this bot is hit by other
-			if ( hitByOther.containsKey( fireBotName ) ) {
-				Integer cnt = hitByOther.get( fireBotName );
-				cnt++;
-				hitByOther.put( fireBotName, cnt );
-			} else {
-				hitByOther.put( fireBotName, 1 );
-			}
+			incrHashCounter( hitByOther, fireBotName);
 		}
 		if ( myBot.getName().equals( fireBotName ) ) {
 			// this bot hit someone
-			if ( hitByMe.containsKey( trgtBotName ) ) {
-				Integer cnt = hitByMe.get( trgtBotName );
-				cnt++;
-				hitByMe.put( trgtBotName, cnt );
-			} else {
-				hitByMe.put( trgtBotName, 1 );
-			}
+			incrHashCounter( hitByMe, trgtBotName);
 		}
 	}
 
