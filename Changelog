@@ -7,7 +7,7 @@ they now target bot stats for the previous tick time.
 My bot does not anymore slam the brake, when all enemy are dead. Since bullets
 are still flying.
 
-Keep track of my total hit rate.
+Keep track of bots hit rate and hit by others rate
 
 ## v0.5
 Master bot use position in future to calculate its firing position, thus
