@@ -89,6 +89,9 @@ public class basicMotion {
 		// find new path for the following ticsCount
 	}
 
+	public void reportStats() {
+	}
+
 	public void onPaint(Graphics2D g) {
 	}
 

@@ -194,6 +194,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	public void reportStats() {
 		logger.routine("--- bot " + getName() + " stats:");
 		logger.routine("fired Count " + firedCount);
+		_motion.reportStats();
 	}
 
 	public void waveRemoved(wave w) {

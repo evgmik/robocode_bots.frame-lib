@@ -29,6 +29,8 @@ public class exactPathDangerMotion extends basicMotion {
 	long maximalPathLength = 40;
 	long nTrials = 20;
 	
+	long wrongPathPredictionCount = 0;
+	
 	public void initTic() {
 		// here I check exact path simulator
 		if ( path.size() >= 1) {
@@ -45,11 +47,12 @@ public class exactPathDangerMotion extends basicMotion {
 		if ( (path.size() >= 1) && !needToRecalculate ) {
 			// NOTE: this is for algorithm mistakes notifications
 			if ( myBot.getPosition().distance( path.getFirst().getPosition() ) > 1 ) {
-				logger.warning("--- Check path simulator! ---");
-				logger.warning("tic time: " + myBot.getTime() );
-				logger.warning("path size " + path.size() );
-				logger.warning("current  path point = " + myBot.getStatClosestToTime( myBot.getTime() ).format() );
-				logger.warning("expected path point = " + path.getFirst().toString() );
+				//logger.warning("--- Check path simulator! ---");
+				//logger.warning("tic time: " + myBot.getTime() );
+				//logger.warning("path size " + path.size() );
+				//logger.warning("current  path point = " + myBot.getStatClosestToTime( myBot.getTime() ).format() );
+				//logger.warning("expected path point = " + path.getFirst().toString() );
+				wrongPathPredictionCount++;
 				needToRecalculate = true;
 			}
 			// end of algorithm check
@@ -117,6 +120,11 @@ public class exactPathDangerMotion extends basicMotion {
 	public void makeMove() {
 		// for basic motion we do nothing
 	}
+
+	public void reportStats() {
+		logger.routine("wrong path prediction count: " +  wrongPathPredictionCount + " <------------------------------ improve me!");
+	}
+
 	public void drawFullDangerMap(Graphics2D g) {
 		// here I draw full danger map picture at current time
 		dangerMap _dangerMapFull = new dangerMap( myBot );
