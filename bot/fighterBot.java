@@ -45,6 +45,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	public LinkedList<waveWithBullets> myWaves    = new LinkedList<waveWithBullets>();
 
 	public HashMap<String,fighterBot> enemyBots = new HashMap<String, fighterBot>();
+	public HashMap<String,fighterBot> allKnownEnemyBots = new HashMap<String, fighterBot>();
 
 	public fighterBot( InfoBot fBot, gameInfo gInfo) {
 		this.fBot = fBot;
@@ -115,6 +116,11 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	public LinkedList<fighterBot> getEnemyBots() {
 		return new LinkedList<fighterBot>(enemyBots.values());
 	}
+
+	public LinkedList<fighterBot> getAllKnownEnemyBots() {
+		return new LinkedList<fighterBot>(allKnownEnemyBots.values());
+	}
+
 
 	public LinkedList<waveWithBullets> getEnemyWaves() {
 		return enemyWaves;
@@ -234,6 +240,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		if ( !getName().equals( b.getName() ) ) {
 			logger.noise("Fighter bot " + getName() + " scanned " + b.getName() );
 			enemyBots.put( b.getName(),  _gameinfo.liveBots.get( b.getName() ) );
+			allKnownEnemyBots.put( b.getName(), _gameinfo.liveBots.get( b.getName() ) );
 		}
 	}
 
