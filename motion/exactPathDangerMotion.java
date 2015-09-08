@@ -31,6 +31,17 @@ public class exactPathDangerMotion extends basicMotion {
 	
 	public void initTic() {
 		// here I check exact path simulator
+		if ( path.size() >= 1) {
+			long curTime = myBot.getTime();
+			while ( path.getFirst().getBotStatPoint().getTime() < curTime ) {
+				// this point from the past, may be we had skipped turns
+				// or its new turn but we are holding old path
+				path.removeFirst();
+				if ( path.size() == 0 ) {
+					break;
+				}
+			}
+		}
 		if ( (path.size() >= 1) && !needToRecalculate ) {
 			// NOTE: this is for algorithm mistakes notifications
 			if ( myBot.getPosition().distance( path.getFirst().getPosition() ) > 1 ) {
