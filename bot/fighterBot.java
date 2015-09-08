@@ -177,6 +177,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				wB.addFiringSolution(fS);
 			}
 			enemyWaves.add(wB);
+			_gunManager.incrFiredByEnemy( enemyName ); 
 			// calculate time when wave hits us if we do not move
 			long hitTime = (long) (w.getFiredTime() + w.getTimeToReach( fBot.getPosition() ) );
 
