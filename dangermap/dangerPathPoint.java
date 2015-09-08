@@ -27,6 +27,10 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 		return dangerLevel;
 	}
 
+	public botStatPoint getBotStatPoint() {
+		return botStat;
+	}
+
 	public double calculateDanger( fighterBot myBot ) {
 		double dL = 0;
 		long time = botStat.getTime();
