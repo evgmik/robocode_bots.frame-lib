@@ -144,13 +144,26 @@ public class gameInfo implements botListener {
 		botsReportStats();
 	}
 
+	public HashMap<String,fighterBot> getAllFighterBots() {
+		HashMap<String,fighterBot> allBots = new HashMap<String, fighterBot>();
+		allBots.putAll( liveBots);
+		allBots.putAll( deadBots);
+		return allBots;
+	}
+
 	public void botsReportStats() {
-		for ( fighterBot fB: deadBots.values() ) {
-			fB.reportStats();
+		HashMap<String,fighterBot> allBots = getAllFighterBots(); 
+
+		fighterBot masterBot = null;
+		for ( fighterBot fB: allBots.values() ) {
+			if ( fB.getName().equals( myBot.getName() ) ) {
+				// we will output master bot stats later
+				masterBot = fB;
+			} else {
+				fB.reportStats();
+			}
 		}
-		for ( fighterBot fB: liveBots.values() ) {
-			fB.reportStats();
-		}
+		masterBot.reportStats();
 	}
 
 	public void onPaint( Graphics2D g ) {
