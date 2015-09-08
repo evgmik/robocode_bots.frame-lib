@@ -45,8 +45,6 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	public LinkedList<waveWithBullets> myWaves    = new LinkedList<waveWithBullets>();
 
 	public HashMap<String,fighterBot> enemyBots = new HashMap<String, fighterBot>();
-	public HashMap<String,Integer> hitByOther = new HashMap<String, Integer>();
-	public HashMap<String,Integer> hitByMe = new HashMap<String, Integer>();
 
 	public fighterBot( InfoBot fBot, gameInfo gInfo) {
 		this.fBot = fBot;
@@ -189,6 +187,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			}
 		} else {
 			firedCount++;
+			_gunManager.incrFiredCount();
 			//logger.dbg("Detecting my own wave");
 		}
 	}
@@ -197,29 +196,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		logger.routine("--- bot " + getName() + " stats:");
 		if ( isItMasterBotDriver() ) {
 			_motion.reportStats();
-			reportHitByOther();
 		}
-		reportHitByMe();
-	}
-
-	public void reportHitByOther(){
-		logger.routine("Hit me count by the following bot(s)");
-		for ( String bName: hitByOther.keySet() ) {
-			logger.routine( " " + bName + ": " + hitByOther.get( bName ) );
-		}
-		if ( hitByOther.size() == 0 ) {
-			logger.routine( " none to report" );
-		}
-	}
-
-	public void reportHitByMe(){
-		logger.routine("hit rate for the following bot(s)");
-		for ( String bName: hitByMe.keySet() ) {
-			logger.routine( " " + bName + ": " + logger.hitRateFormat( hitByMe.get( bName ), firedCount) );
-		}
-		if ( hitByMe.size() == 0 ) {
-			logger.routine( " did not hit anyone" );
-		}
+		_gunManager.reportStats();
 	}
 
 	public void waveRemoved(wave w) {
@@ -265,42 +243,14 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 
 	// someone hit the master bot
 	public void onHitByBullet(HitByBulletEvent e) {
-		String trgtBotName = _gameinfo.getMasterBot().getName();
-		String fireBotName = e.getName();
-
-		incrHitCounts( trgtBotName, fireBotName );
-	}
-
-	public void incrHitCounts( String trgtBotName, String fireBotName ) {
-		if ( getName().equals( trgtBotName ) ) {
-			// this bot is hit by other
-			if ( hitByOther.containsKey( fireBotName ) ) {
-				Integer cnt = hitByOther.get( fireBotName );
-				cnt++;
-				hitByOther.put( fireBotName, cnt );
-			} else {
-				hitByOther.put( fireBotName, 1 );
-			}
-		}
-		if ( getName().equals( fireBotName ) ) {
-			// this bot hit someone
-			if ( hitByMe.containsKey( trgtBotName ) ) {
-				Integer cnt = hitByMe.get( trgtBotName );
-				cnt++;
-				hitByMe.put( trgtBotName, cnt );
-			} else {
-				hitByMe.put( trgtBotName, 1 );
-			}
-		}
+		_gunManager.onHitByBullet(e);
 	}
 
 	// master bot bullet hit someone
 	public void  onBulletHit(BulletHitEvent e) {
-		String trgtBotName = e.getName();
-		String fireBotName = _gameinfo.getMasterBot().getName();
-		incrHitCounts( trgtBotName, fireBotName );
+		_gunManager.onBulletHit(e);
 	}
-	
+
 	public void drawThisBot( Graphics2D g, long timeNow ) {
 		double size = 40;
 		Point2D.Double  p = fBot.getPositionClosestToTime( timeNow );
