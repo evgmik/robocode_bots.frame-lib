@@ -61,12 +61,16 @@ public class gunManager implements gunManagerInterface {
 	
 	//helper method to increment count in HashMap
 	public void incrHashCounter( HashMap<String,Integer> map, String key ) {
+		Integer cnt = getHashCounter( map, key );
+		cnt++;
+		map.put( key, cnt );
+	}
+
+	public Integer getHashCounter( HashMap<String,Integer> map, String key ) {
 		if ( map.containsKey( key ) ) {
-			Integer cnt = map.get( key );
-			cnt++;
-			map.put( key, cnt );
+			return map.get( key );
 		} else {
-			map.put( key, 1 );
+			return 0;
 		}
 	}
 	
