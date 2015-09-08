@@ -194,13 +194,12 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public void reportStats() {
+		logger.routine("--- bot " + getName() + " stats:");
 		if ( isItMasterBotDriver() ) {
-			logger.routine("--- bot " + getName() + " stats:");
 			_motion.reportStats();
-			logger.routine("fired Count " + firedCount);
 			reportHitByOther();
-			reportHitByMe();
 		}
+		reportHitByMe();
 	}
 
 	public void reportHitByOther(){
@@ -214,12 +213,12 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public void reportHitByMe(){
-		logger.routine("this bot hits the following bot(s)");
+		logger.routine("hit rate for the following bot(s)");
 		for ( String bName: hitByMe.keySet() ) {
-			logger.routine( " " + bName + ": " + hitByMe.get( bName ) );
+			logger.routine( " " + bName + ": " + logger.hitRateFormat( hitByMe.get( bName ), firedCount) );
 		}
 		if ( hitByMe.size() == 0 ) {
-			logger.routine( " none to report" );
+			logger.routine( " did not hit anyone" );
 		}
 	}
 
