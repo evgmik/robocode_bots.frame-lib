@@ -24,7 +24,13 @@ public class exactPathDangerMotion extends basicMotion {
 	protected fighterBot myBot;
 	private double superDanger = 1e8;
 	dangerPath path = new dangerPath();
-	long minimalPathLength = (long) ( 2*Math.ceil(robocode.Rules.MAX_VELOCITY/robocode.Rules.DECELERATION) ); // so we do not end up moving to the wall without chance to stop, currently 4
+	long stopTime = (long) ( Math.ceil(robocode.Rules.MAX_VELOCITY/robocode.Rules.DECELERATION) );
+	long antiRammerPathTics = 32;
+	// To  not end up moving into the wall without chance to stop 
+	// We need at least
+	// stopTime tick, but than our planning horizon is to shallow
+	// Which is bad against rammers, so I chose  the largest of it
+	long minimalPathLength = (long) ( Math.max( 32, 2*stopTime ) ); 
 	// tune below to avoid skipped turns
 	long maximalPathLength = 40;
 	long nTrials = 20;
