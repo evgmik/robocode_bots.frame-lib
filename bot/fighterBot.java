@@ -38,6 +38,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	protected InfoBot fBot;
 	protected gameInfo _gameinfo;
 	protected long latestWaveHitTime=0;
+	protected double scheduledEdrop = 0;
 	protected int  firedCount = 0;
 	protected int  hitCount = 0;
 
@@ -131,7 +132,24 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public void initTic() {
+		processScheduledEnergyDrop();
 		_motion.initTic();
+	}
+
+	protected void processScheduledEnergyDrop() {
+		double eDrop = scheduledEdrop;
+		if ( !isItMasterBotDriver() ) {
+			// here we try to detect enemy wave fired
+			if ( eDrop >= robocode.Rules.MIN_BULLET_POWER ) {
+				// wave/bullet is fired
+				// FIXME: be smarter about it: check for collisions with walls
+				// Enemy energy drop due to fire is detected by one tic later thus -1
+				eDrop = Math.min( eDrop, robocode.Rules.MAX_BULLET_POWER );
+				wave w = new wave( getInfoBot(), getTime()-1, eDrop );
+				_gameinfo._wavesManager.add( w );
+			}
+		}
+		scheduledEdrop = 0;
 	}
 
 	public void manage() {
@@ -245,14 +263,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		} else {
 			// the scanned bot is this one
 			double eDrop = b.energyDrop();
-			if ( eDrop > 0 ) {
-				// wave/bullet is fired
-				// FIXME: be smarter about it: check collisions and bullets hits
-				// enemy energy drop detected by one tic later thus -1
-				eDrop = Math.min( eDrop, robocode.Rules.MAX_BULLET_POWER );
-				wave w = new wave( b, getTime()-1, eDrop );
-				_gameinfo._wavesManager.add( w );
-			}
+			scheduledEdrop += eDrop;
 		}
 	}
 
@@ -267,6 +278,15 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 
 	// master bot bullet hit someone
 	public void  onBulletHit(BulletHitEvent e) {
+		if ( getName().equals( e.getName() ) ) {
+			// this bot was hit
+			// FIXME we can use bullet hit position to get some info about bot
+			// if radar is looking at different direction at this tick
+			double bulletEnergy = e.getBullet().getPower();
+			// subtract from potential fired bullet energy
+			// bullet damage for this bot
+			scheduledEdrop -= physics.bulletDamageByEnergy( bulletEnergy );
+		}
 		_gunManager.onBulletHit(e);
 	}
 
