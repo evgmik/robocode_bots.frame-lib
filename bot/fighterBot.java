@@ -242,6 +242,17 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			logger.noise("Fighter bot " + getName() + " scanned " + b.getName() );
 			enemyBots.put( b.getName(),  _gameinfo.liveBots.get( b.getName() ) );
 			allKnownEnemyBots.put( b.getName(), _gameinfo.liveBots.get( b.getName() ) );
+		} else {
+			// the scanned bot is this one
+			double eDrop = b.energyDrop();
+			if ( eDrop > 0 ) {
+				// wave/bullet is fired
+				// FIXME: be smarter about it: check collisions and bullets hits
+				// enemy energy drop detected by one tic later thus -1
+				eDrop = Math.min( eDrop, robocode.Rules.MAX_BULLET_POWER );
+				wave w = new wave( b, getTime()-1, eDrop );
+				_gameinfo._wavesManager.add( w );
+			}
 		}
 	}
 
