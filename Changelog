@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7 - pre
+
+Do not fire enemy wave is energy drop is due to the master bot hit.
+
 ## v0.6
 Improved enemy firing solution generation. Take in account that at fire time
 they now target bot stats for the previous tick time.
