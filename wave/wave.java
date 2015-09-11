@@ -73,6 +73,26 @@ public class wave {
 			return false;
 	}
 
+	public boolean isPassingOverBot(InfoBot bot, long timeNow) {
+		if ( firedBot.getName().equals( bot.getName() ) ) {
+			// this is the wave of the fired bot
+			// no need to check for passing
+			return false;
+		}
+		Point2D.Double botPos = bot.getPosition( timeNow );
+		if ( botPos == null ) {
+			// we do not know the position of the bot at this time
+			// so we report false to avoid wrong hit counts
+			return false;
+		}
+		double distTraveled = getDistanceTraveledAtTime( timeNow );
+		double distToBot = botPos.distance( firedPosition );
+		if ( Math.abs(distTraveled - distToBot) <= physics.robotHalfDiagonal )
+			return true;
+		else
+			return false;
+	}
+
 	public double getTimeToReach( Point2D.Double p ) {
 		double distToTravel = p.distance( firedPosition );
 		return distToTravel/bulletSpeed;
