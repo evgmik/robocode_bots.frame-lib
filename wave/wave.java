@@ -67,7 +67,7 @@ public class wave {
 		double distTraveled = getDistanceTraveledAtTime( timeNow );
 		Point2D.Double botPos = bot.getPositionClosestToTime( timeNow );
 		double distToBot = botPos.distance( firedPosition ); 
-		if ( distTraveled > distToBot + physics.robotHalfSize )
+		if ( distTraveled > distToBot + physics.robotHalfDiagonal )
 			return true;
 		else
 			return false;
