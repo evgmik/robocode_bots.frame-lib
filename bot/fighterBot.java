@@ -290,6 +290,10 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		_gunManager.onBulletHit(e);
 	}
 
+	public void onWavePassingOverBot( wave w, InfoBot bot ) {
+		logger.dbg(" time " + getTime() + " wave from " + w.getFiredBot().getName() + " is passing over " + bot.getName() );
+	}
+
 	public void drawThisBot( Graphics2D g, long timeNow ) {
 		double size = 40;
 		Point2D.Double  p = fBot.getPositionClosestToTime( timeNow );
@@ -318,7 +322,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			}
 			// draw my waves
 			for ( waveWithBullets w: myWaves ) {
-				//w.onPaint( g, timeNow );
+				w.onPaint( g, timeNow );
 			}
 			// draw known enemy bots
 			for ( fighterBot eB: getEnemyBots() ) {

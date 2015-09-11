@@ -159,6 +159,12 @@ public class gameInfo implements botListener {
 		}
 	}
 
+	public void onWavePassingOverBot( wave w, InfoBot bot ) {
+		for ( fighterBot fB: liveBots.values() ) {
+			fB.onWavePassingOverBot( w, bot );
+		}
+	}
+
 	public HashMap<String,fighterBot> getAllFighterBots() {
 		HashMap<String,fighterBot> allBots = new HashMap<String, fighterBot>();
 		allBots.putAll( liveBots);

@@ -26,7 +26,19 @@ public class  wavesManager {
 	}
 
 	public void initTic(long timeNow) {
-		remove ( getListOfPassedWaves( myBot._gameinfo._botsmanager.listOfAliveBots(), timeNow ) );
+		LinkedList<InfoBot> listOfAliveBots = myBot._gameinfo._botsmanager.listOfAliveBots();
+		remove ( getListOfPassedWaves( listOfAliveBots, timeNow ) );
+		checkForPassingOverBotsWaves( listOfAliveBots, timeNow );
+	}
+
+	public void checkForPassingOverBotsWaves( LinkedList<InfoBot> listOfAliveBots, long timeNow ) {
+		for ( wave w: Waves ) {
+			for ( InfoBot bot : listOfAliveBots ) {
+				if ( w.isPassingOverBot( bot, timeNow ) ) {
+					myBot._gameinfo.onWavePassingOverBot( w, bot );	
+				}
+			}
+		}
 	}
 
 	public void add( InfoBot firedBot, long firedTime, double bulletEnergy )  {
