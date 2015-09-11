@@ -37,6 +37,18 @@ public class waveWithBullets extends wave {
 		return dL;
 	}
 
+	public LinkedList<firingSolution> getFiringSolutionsWhichHitBotAt( Point2D.Double p, long time ) {
+		LinkedList<firingSolution> hitSolutions = new LinkedList<firingSolution>();
+
+		for ( firingSolution fS : firingSolutions ) {
+			if ( fS.didItHitBotAtPos( p, time ) ) {
+				// fix me use proper bounding bot 
+				hitSolutions.add( fS );
+			}
+		}
+		return hitSolutions;
+	}
+
 	public void onPaint(Graphics2D g, long time) {
 		super.onPaint( g, time );
 		g.setColor(waveColor);

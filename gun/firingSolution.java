@@ -129,6 +129,15 @@ public class firingSolution {
 			return endP;
 	}
 
+	public boolean didItHitBotAtPos( Point2D.Double p, long time ) {
+		Point2D.Double bulletPos = getLocationAt( time );
+		if ( p.distance( bulletPos ) <= physics.robotHalfDiagonal ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public String toString() {
 		String str = "";
 		str += "Firing solultion at time: " + firedTime + "\n";
