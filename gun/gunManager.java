@@ -98,10 +98,32 @@ public class gunManager implements gunManagerInterface {
 
 	public void onMyWavePassingOverBot( wave w, InfoBot bot ) {
 		// FIXME: update stats
+		// FIXME: firing solution need to know target otherwise
+		//        we count bullets directed to someone else
+		long time = myBot.getTime();
+		String  enemyName = bot.getName();
+		Point2D.Double botPos = bot.getPositionClosestToTime( time );
+
+		for ( waveWithBullets wB: myBot.myWaves ) {
+			if ( w.equals( wB) ) {
+				LinkedList<firingSolution> hitSolutions = wB.getFiringSolutionsWhichHitBotAt( botPos,  time );
+				for ( firingSolution fS : hitSolutions ) {
+					String gunName = fS.getGunName();
+					logger.dbg(" enemy " + enemyName + " hit with " + gunName);
+				}
+			}
+		}
 	}
 
 	public void onWavePassingOverMe( wave w ) {
 		// FIXME: update stats
+		long time = myBot.getTime();
+		Point2D.Double botPos = myBot.getPosition( ); // time is now
+		for ( waveWithBullets wB: myBot.enemyWaves ) {
+			if ( w.equals( wB) ) {
+				LinkedList<firingSolution> hitSolutions = wB.getFiringSolutionsWhichHitBotAt( botPos,  time );
+			}
+		}
 	}
 
 	public void reportHitByMe(){
