@@ -291,7 +291,17 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public void onWavePassingOverBot( wave w, InfoBot bot ) {
-		logger.dbg(" time " + getTime() + " wave from " + w.getFiredBot().getName() + " is passing over " + bot.getName() );
+		if ( w.getFiredBot().getName().equals( getName() ) ) {
+			_gunManager.onMyWavePassingOverBot( w, bot );
+		}
+		if ( bot.getName().equals( getName() ) ) {
+			_gunManager.onWavePassingOverMe( w );
+		}
+		if ( !bot.getName().equals(getName()) && !w.getFiredBot().getName().equals(getName()) ) {
+			// someone else wave passing over other bot
+			// FIXME: think about possible energy drop detection
+			//        to avoid false fired wave generation
+		}
 	}
 
 	public void drawThisBot( Graphics2D g, long timeNow ) {

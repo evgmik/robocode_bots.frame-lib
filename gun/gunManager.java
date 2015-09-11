@@ -3,6 +3,7 @@
 package eem.frame.gun;
 
 import eem.frame.gun.*;
+import eem.frame.wave.*;
 import eem.frame.bot.*;
 import eem.frame.misc.*;
 
@@ -93,6 +94,14 @@ public class gunManager implements gunManagerInterface {
 			String bName = fB.getName();
 			logger.routine( " " + bName + ": " + logger.hitRateFormat( getHashCounter( hitByOther, bName ) , getHashCounter( firedByEnemy, bName ) ) );
 		}
+	}
+
+	public void onMyWavePassingOverBot( wave w, InfoBot bot ) {
+		// FIXME: update stats
+	}
+
+	public void onWavePassingOverMe( wave w ) {
+		// FIXME: update stats
 	}
 
 	public void reportHitByMe(){
