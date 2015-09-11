@@ -11,6 +11,7 @@ import robocode.BattleRules.*;
 
 public class physics {
 	public static int robotHalfSize = 0;
+	public static double robotHalfDiagonal = 0; // same is robotRadius
 	public static double robotRadius = 0;
 	public static Point2D.Double BattleField = new Point2D.Double(0,0);
 	public static double gunCoolingRate = 0; 
@@ -23,6 +24,7 @@ public class physics {
 	public static void init(AdvancedRobot myBot) {
 		robotHalfSize = (int) myBot.getWidth()/2;
 		robotRadius = robotHalfSize*Math.sqrt(2);
+		robotHalfDiagonal = robotHalfSize*Math.sqrt(2);
 		BattleField = new Point2D.Double(myBot.getBattleFieldWidth(), myBot.getBattleFieldHeight());
 		gunCoolingRate = myBot.getGunCoolingRate(); // this sits inside robocode.BattleRules
 		minimalAllowedBulletEnergy = Rules.MIN_BULLET_POWER;
