@@ -97,10 +97,15 @@ public class gunManager implements gunManagerInterface {
 			if ( w.equals( wB) ) {
 				LinkedList<firingSolution> hitSolutions = wB.getFiringSolutionsWhichHitBotAt( botPos,  time );
 				for ( firingSolution fS : hitSolutions ) {
-					String gunName = fS.getGunName();
-					String2D key = new String2D( gunName, enemyName );
-					hitByMyGun.incrHashCounter( key );
-					wB.removeFiringSolution( fS );
+					if ( fS.getTargetBotName().equals(enemyName) ) {
+						// this bullet is intended for this bot
+						String gunName = fS.getGunName();
+						String2D key = new String2D( gunName, enemyName );
+						hitByMyGun.incrHashCounter( key );
+						wB.removeFiringSolution( fS );
+					} else {
+						// FIXME: count somehow unintentional hits
+					}
 				}
 			}
 		}
