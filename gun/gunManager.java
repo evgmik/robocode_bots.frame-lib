@@ -36,6 +36,7 @@ public class gunManager implements gunManagerInterface {
 	// my gun stats
 	public HashCounter<String2D> hitByMyGun = new HashCounter<String2D>();
 	public HashCounter<String2D> hitByEnemyGun = new HashCounter<String2D>();
+	public HashCounter<String2D> firedAtEnemyByGun = new HashCounter<String2D>();
 
 	public	gunManager() {
 		gunList = new LinkedList<baseGun>();
@@ -141,7 +142,7 @@ public class gunManager implements gunManagerInterface {
 		logger.routine("  My virtual gun stats");
 		for( String2D key: hitByMyGun.keySet() ) {
 			logger.routine("    " + key.getX() + " hit bot " + key.getY()
-				       + " " + logger.hitRateFormat( hitByMyGun.getHashCounter( key ), firedAt.getHashCounter( key.getY() ) ) );
+				       + " " + logger.hitRateFormat( hitByMyGun.getHashCounter( key ), firedAtEnemyByGun.getHashCounter( key ) ) );
 		}
 	}
 
@@ -166,6 +167,11 @@ public class gunManager implements gunManagerInterface {
 
 	public void incrFiredCount() {
 		firedCount++;
+	}
+
+	public void incrFiredAtEnemyByGun(firingSolution fS) {
+		String2D key = new String2D( fS.getGunName(), fS.getTargetBotName() );
+		firedAtEnemyByGun.incrHashCounter( key );
 	}
 
 	public void incrFiredByEnemy(String enemyName) {
