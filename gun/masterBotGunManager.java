@@ -32,7 +32,7 @@ public class masterBotGunManager extends gunManager {
 			// essentially we need to set firing solution at previous tick
 			if ( myBot.proxy.getGunHeat() == 0 ) {
 				myBot.proxy.setFireBullet(bestFiringSolution.bulletEnergy);
-				incrHashCounter( firedAt, targetBot.getName() );
+				firedAt.incrHashCounter( targetBot.getName() );
 				wave nW = new wave( myBot.getInfoBot(), myBot.getTime(), bestFiringSolution.bulletEnergy );
 				myBot.getGameInfo()._wavesManager.add( nW );
 				waveWithBullets wB = new waveWithBullets( nW );

@@ -28,10 +28,10 @@ public class gunManager implements gunManagerInterface {
 	LinkedList<firingSolution> firingSolutions = new LinkedList<firingSolution>();
 	firingSolution bestFiringSolution = null;
 
-	public HashMap<String,Integer> hitByOther = new HashMap<String, Integer>();
-	public HashMap<String,Integer> hitByMe = new HashMap<String, Integer>();
-	public HashMap<String,Integer> firedAt = new HashMap<String, Integer>();
-	public HashMap<String,Integer> firedByEnemy = new HashMap<String, Integer>();
+	public HashCounter hitByOther = new HashCounter();
+	public HashCounter hitByMe = new HashCounter();
+	public HashCounter firedAt = new HashCounter();
+	public HashCounter firedByEnemy = new HashCounter();
 
 
 	public	gunManager() {
@@ -62,29 +62,14 @@ public class gunManager implements gunManagerInterface {
 		incrHitCounts( trgtBotName, fireBotName );
 	}
 	
-	//helper method to increment count in HashMap
-	public void incrHashCounter( HashMap<String,Integer> map, String key ) {
-		Integer cnt = getHashCounter( map, key );
-		cnt++;
-		map.put( key, cnt );
-	}
-
-	public Integer getHashCounter( HashMap<String,Integer> map, String key ) {
-		if ( map.containsKey( key ) ) {
-			return map.get( key );
-		} else {
-			return 0;
-		}
-	}
-	
 	public void incrHitCounts( String trgtBotName, String fireBotName ) {
 		if ( myBot.getName().equals( trgtBotName ) ) {
 			// this bot is hit by other
-			incrHashCounter( hitByOther, fireBotName);
+			hitByOther.incrHashCounter( fireBotName );
 		}
 		if ( myBot.getName().equals( fireBotName ) ) {
 			// this bot hit someone
-			incrHashCounter( hitByMe, trgtBotName);
+			hitByMe.incrHashCounter( trgtBotName );
 		}
 	}
 
@@ -92,7 +77,7 @@ public class gunManager implements gunManagerInterface {
 		logger.routine("Hit me count by the following bot(s)");
 		for ( fighterBot fB: myBot.getAllKnownEnemyBots() ) {
 			String bName = fB.getName();
-			logger.routine( " " + bName + ": " + logger.hitRateFormat( getHashCounter( hitByOther, bName ) , getHashCounter( firedByEnemy, bName ) ) );
+			logger.routine( " " + bName + ": " + logger.hitRateFormat( hitByOther.getHashCounter( bName ) , firedByEnemy.getHashCounter( bName ) ) );
 		}
 	}
 
@@ -131,13 +116,13 @@ public class gunManager implements gunManagerInterface {
 		for ( fighterBot fB: myBot.getAllKnownEnemyBots() ) {
 			String bName = fB.getName();
 			Integer fCnt;
-			fCnt = getHashCounter( firedAt, bName );
+			fCnt = firedAt.getHashCounter( bName );
 			if ( fCnt == 0 ) {
 				// we have no clue to whom we fired
 				// using total firedCount
 				fCnt = firedCount;
 			}
-			logger.routine( " " + bName + ": " + logger.hitRateFormat( getHashCounter( hitByMe, bName ), fCnt ) );
+			logger.routine( " " + bName + ": " + logger.hitRateFormat( hitByMe.getHashCounter( bName ), fCnt ) );
 		}
 	}
 
@@ -153,7 +138,7 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public void incrFiredByEnemy(String enemyName) {
-		incrHashCounter( firedByEnemy, enemyName );
+		firedByEnemy.incrHashCounter( enemyName );
 	}
 
 
