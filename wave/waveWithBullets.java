@@ -23,6 +23,10 @@ public class waveWithBullets extends wave {
 		firingSolutions.add(fS);
 	}
 
+	public void removeFiringSolution( firingSolution fS ) {
+		firingSolutions.remove(fS);
+	}
+
 	public double getDanger( long time, Point2D.Double dP ) {
 		double waveDangerRadius = 100;
 		double waveDanger= 1.0;
