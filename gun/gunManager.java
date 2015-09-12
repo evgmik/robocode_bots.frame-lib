@@ -28,10 +28,10 @@ public class gunManager implements gunManagerInterface {
 	LinkedList<firingSolution> firingSolutions = new LinkedList<firingSolution>();
 	firingSolution bestFiringSolution = null;
 
-	public HashCounter hitByOther = new HashCounter();
-	public HashCounter hitByMe = new HashCounter();
-	public HashCounter firedAt = new HashCounter();
-	public HashCounter firedByEnemy = new HashCounter();
+	public HashCounter<String> hitByOther = new HashCounter<String>();
+	public HashCounter<String> hitByMe = new HashCounter<String>();
+	public HashCounter<String> firedAt = new HashCounter<String>();
+	public HashCounter<String> firedByEnemy = new HashCounter<String>();
 
 
 	public	gunManager() {
