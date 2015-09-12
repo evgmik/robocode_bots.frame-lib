@@ -42,9 +42,12 @@ public class masterBotGunManager extends gunManager {
 				myBot.myWaves.add(wB);
 			}
 		}
+		firingSolutions = new LinkedList<firingSolution>(); //clear the list
+		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
 		targetBot = findTheBestTarget();
+		double bulletEnergy = -1000; // intentionally bad
 		if ( targetBot != null ) {
-			double bulletEnergy = bulletEnergyVsDistance( targetBot );
+			bulletEnergy = bulletEnergyVsDistance( targetBot );
 			if ( bulletEnergy >= (myBot.getEnergy() - 1e-4) ) {
 				// do not fire or we will get ourself disabled
 				return;
@@ -53,12 +56,23 @@ public class masterBotGunManager extends gunManager {
 			if ( bulletEnergy <= 0 ) {
 				return; // bad bullet
 			}
-			firingSolution fS = getTheBestFiringSolution( targetBot, bulletEnergy );
+			fSols =  getFiringSolutions( targetBot, bulletEnergy );
+			firingSolutions.addAll( fSols ); // virtual solutions
+			firingSolution fS = getTheBestFiringSolution( fSols ); // real one
 			if ( fS == null) {
 				logger.noise("time " + myBot.getTime() + " Veto on fire: no firing solution");
 				return; // no solution
 			}
 			aimAndSetGun( fS );
+			// now we add virtual solutions for other bots
+			for ( fighterBot eBot: myBot.getEnemyBots() ) {
+				// skip targetBot we already have its firing solutions
+				if ( !eBot.getName().equals( targetBot.getName() ) ) {
+					// FIXME: be smart about game stage, bot distance ...
+					fSols =  getFiringSolutions( eBot, bulletEnergy );
+					firingSolutions.addAll( fSols ); // virtual solutions
+				}
+			}
 		}
 	}
 
@@ -128,16 +142,20 @@ public class masterBotGunManager extends gunManager {
 		return targetBot;
 	}
 	
-	public firingSolution getTheBestFiringSolution( fighterBot targetBot, double bulletEnergy ) {
-		firingSolution fS = null;
-		firingSolutions = new LinkedList<firingSolution>();
-		// try each gun and chose solution with best quality
-		double bestQSol = -1000;
+	public LinkedList<firingSolution> getFiringSolutions( fighterBot targetBot, double bulletEnergy ) {
+		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
+		// generate solutions for each gun
 		for ( baseGun g : gunList ) {
 			// note getTime()+1, the fire command is executed at next tic
-			firingSolutions.addAll( g.getFiringSolutions( myBot, targetBot.getInfoBot(), myBot.getTime()+1, bulletEnergy ) );
+			fSols.addAll( g.getFiringSolutions( myBot, targetBot.getInfoBot(), myBot.getTime()+1, bulletEnergy ) );
 		}
-		for ( firingSolution curFS : firingSolutions ) {
+		return fSols;
+	}
+
+	public firingSolution getTheBestFiringSolution( LinkedList<firingSolution> fSols ) {
+		firingSolution fS = null;
+		double bestQSol = -1000;
+		for ( firingSolution curFS : fSols ) {
 			if ( curFS.getQualityOfSolution() > bestQSol ) {
 				fS = curFS;
 				bestQSol = curFS.getQualityOfSolution();
