@@ -2,6 +2,7 @@
 package eem.frame.misc;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class HashCounter<T> {
 	public HashMap<T,Integer> map = new HashMap<T, Integer>();
@@ -19,5 +20,9 @@ public class HashCounter<T> {
 		} else {
 			return 0;
 		}
+	}
+
+	public Set<T> keySet() {
+		return map.keySet();
 	}
 }
