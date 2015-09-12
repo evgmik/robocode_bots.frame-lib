@@ -33,6 +33,9 @@ public class gunManager implements gunManagerInterface {
 	public HashCounter<String> firedAt = new HashCounter<String>();
 	public HashCounter<String> firedByEnemy = new HashCounter<String>();
 
+	// my gun stats
+	public HashCounter<String2D> hitByMyGun = new HashCounter<String2D>();
+	public HashCounter<String2D> hitByEnemyGun = new HashCounter<String2D>();
 
 	public	gunManager() {
 		gunList = new LinkedList<baseGun>();
@@ -94,19 +97,26 @@ public class gunManager implements gunManagerInterface {
 				LinkedList<firingSolution> hitSolutions = wB.getFiringSolutionsWhichHitBotAt( botPos,  time );
 				for ( firingSolution fS : hitSolutions ) {
 					String gunName = fS.getGunName();
-					logger.dbg(" enemy " + enemyName + " hit with " + gunName);
+					String2D key = new String2D( gunName, enemyName );
+					hitByMyGun.incrHashCounter( key );
+					wB.removeFiringSolution( fS );
 				}
 			}
 		}
 	}
 
 	public void onWavePassingOverMe( wave w ) {
-		// FIXME: update stats
 		long time = myBot.getTime();
 		Point2D.Double botPos = myBot.getPosition( ); // time is now
 		for ( waveWithBullets wB: myBot.enemyWaves ) {
 			if ( w.equals( wB) ) {
 				LinkedList<firingSolution> hitSolutions = wB.getFiringSolutionsWhichHitBotAt( botPos,  time );
+				for ( firingSolution fS : hitSolutions ) {
+					String gunName = fS.getGunName();
+					String2D key = new String2D( gunName, wB.getFiredBot().getName() );
+					hitByEnemyGun.incrHashCounter( key );
+					wB.removeFiringSolution( fS );
+				}
 			}
 		}
 	}
@@ -126,11 +136,32 @@ public class gunManager implements gunManagerInterface {
 		}
 	}
 
+	public void reportMyGunStats() {
+		// FIXME: some wave are still flying and are not fully accounted
+		logger.routine("  My virtual gun stats");
+		for( String2D key: hitByMyGun.keySet() ) {
+			logger.routine("    " + key.getX() + " hit bot " + key.getY()
+				       + " " + logger.hitRateFormat( hitByMyGun.getHashCounter( key ), firedAt.getHashCounter( key.getY() ) ) );
+		}
+	}
+
+	public void reportEnemyGunStats() {
+		// FIXME: some wave are still flying and are not fully accounted
+		logger.routine("  Enemies virtual gun stats");
+		for( String2D key: hitByEnemyGun.keySet() ) {
+			logger.routine("    " + key.getX() + " of bot " + key.getY() + " hit me " + logger.hitRateFormat( hitByEnemyGun.getHashCounter( key ), firedByEnemy.getHashCounter( key.getY() ) ) );
+		}
+	}
+
 	public void reportStats() {
 		if ( myBot.isItMasterBotDriver() ) {
 			reportHitByOther();
+			reportEnemyGunStats();
 		}
 		reportHitByMe();
+		if ( myBot.isItMasterBotDriver() ) {
+			reportMyGunStats();
+		}
 	}
 
 	public void incrFiredCount() {
