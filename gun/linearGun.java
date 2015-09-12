@@ -18,7 +18,9 @@ public class linearGun extends baseGun {
 
 	public LinkedList<firingSolution> getFiringSolutions( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		Point2D.Double fPos = fBot.getMotion().getPositionAtTime( time );
-		return getFiringSolutions( fPos, tBot, time, bulletEnergy);
+		LinkedList<firingSolution> fSols = getFiringSolutions( fPos, tBot, time, bulletEnergy);
+		fSols = setFiringBotName( fBot.getName(), fSols );
+		return fSols;
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions( InfoBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
@@ -29,7 +31,10 @@ public class linearGun extends baseGun {
 			return fSolultions;
 		Point2D.Double fPos = (Point2D.Double) fBStat.getPosition().clone();
 
-		return getFiringSolutions( fPos, tBot, time, bulletEnergy);
+		fSolultions = getFiringSolutions( fPos, tBot, time, bulletEnergy);
+		fSolultions = setFiringBotName( fBot.getName(), fSolultions );
+		return fSolultions;
+
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions( Point2D.Double fPos, InfoBot tBot, long time, double bulletEnergy ) {
@@ -71,6 +76,7 @@ public class linearGun extends baseGun {
 
 		logger.noise("linear gun firingSolution: " + fS.toString());
 		fSolultions.add(fS);
+		fSolultions = setTargetBotName( tBot.getName(), fSolultions );
 		return fSolultions;
 	}
 }

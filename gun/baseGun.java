@@ -30,6 +30,20 @@ public class baseGun {
 		return new LinkedList<firingSolution>();
 	}
 
+	public LinkedList<firingSolution> setFiringBotName( String name, LinkedList<firingSolution> fSols ) {
+		for( firingSolution fS : fSols ) {
+			fS.setFiringBotName( name );
+		}
+		return fSols;
+	}
+
+	public LinkedList<firingSolution> setTargetBotName( String name, LinkedList<firingSolution> fSols ) {
+		for( firingSolution fS : fSols ) {
+			fS.setTargetBotName( name );
+		}
+		return fSols;
+	}
+
 	public double getLagTimePenalty( long infoLagTime ) {
 		if ( infoLagTime <= 0  ) {
 			// time point from the future

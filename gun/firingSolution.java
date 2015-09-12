@@ -11,6 +11,8 @@ public class firingSolution {
 	public double firingAngle;
 	public long firedTime;
 	public double bulletEnergy;
+	public String firingBotName = "";
+	public String targetBotName = "";
 	public Point2D.Double firingPosition;
 	public Point2D.Double targetPosition;
 	public String gunName = "";
@@ -52,6 +54,23 @@ public class firingSolution {
 		setGunName( gun.getName() );
 		setColor( gun.getColor() );
 	}
+
+	public void setFiringBotName( String name ) {
+		firingBotName = name;
+	}
+
+	public String getFiringBotName() {
+		return firingBotName;
+	}
+
+	public void setTargetBotName( String name ) {
+		targetBotName = name;
+	}
+
+	public String getTargetBotName() {
+		return targetBotName;
+	}
+
 
 	public void setColor( Color c ) {
 		color = c;

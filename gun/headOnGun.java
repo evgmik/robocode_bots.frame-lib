@@ -18,7 +18,9 @@ public class headOnGun extends baseGun {
 
 	public LinkedList<firingSolution> getFiringSolutions( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		Point2D.Double fP = fBot.getMotion().getPositionAtTime( time );
-		return getFiringSolutions( fP, tBot, time, bulletEnergy);
+		LinkedList<firingSolution> fSols = getFiringSolutions( fP, tBot, time, bulletEnergy);
+		fSols = setFiringBotName( fBot.getName(), fSols );
+		return fSols;
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions( Point2D.Double fP, InfoBot tBot, long time, double bulletEnergy ) {
@@ -43,12 +45,15 @@ public class headOnGun extends baseGun {
 		fS.setQualityOfSolution( getLagTimePenalty( infoLagTime ) );
 
 		fSolultions.add(fS);
+		fSolultions = setTargetBotName( tBot.getName(), fSolultions );
 		return fSolultions;
 
 	}
 	public LinkedList<firingSolution> getFiringSolutions( InfoBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		Point2D.Double fP = fBot.getPositionClosestToTime( time );
-		return getFiringSolutions( fP, tBot, time, bulletEnergy);
+		LinkedList<firingSolution> fSols = getFiringSolutions( fP, tBot, time, bulletEnergy);
+		fSols = setFiringBotName( fBot.getName(), fSols );
+		return fSols;
 	}
 
 }
