@@ -124,9 +124,9 @@ public class masterBotGunManager extends gunManager {
 			return null;
 		}
 		double bestWeight = -1e6;
-		double w;
+		double w=1;
 		for ( fighterBot eBot: myBot.getEnemyBots() ) {
-			w = botTargetingWeightByDistance(eBot);
+			w *= botTargetingWeightByDistance(eBot);
 			w *= botTargetingWeightByScanLag(eBot);
 			if ( w >=1 ) {
 				// do not even think this bot is so close
@@ -135,9 +135,14 @@ public class masterBotGunManager extends gunManager {
 				bestTargetBot = eBot;
 				break;
 			}
-			w *= botTargetingWeightByFiredShots(eBot);
-			w *= botTargetingWeightByHitRate(eBot);
 			w *= botTargetingWeightByEnemyEnergy(eBot);
+
+			int gunStatsReliableRound = 4; // recall that we count from 0
+			if ( myBot.getGameInfo().getRoundNum() > gunStatsReliableRound ) {
+				//gun stats become reliable only after some time
+				w *= botTargetingWeightByFiredShots(eBot);
+				w *= botTargetingWeightByHitRate(eBot);
+			}
 
 			if (w > bestWeight ) {
 				bestWeight = w;
