@@ -140,7 +140,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		double eDrop = scheduledEdrop;
 		if ( !isItMasterBotDriver() ) {
 			// here we try to detect enemy wave fired
-			if ( eDrop >= robocode.Rules.MIN_BULLET_POWER ) {
+			double safetyMargin = 0.02;
+			if ( eDrop >= robocode.Rules.MIN_BULLET_POWER - safetyMargin ) {
 				// wave/bullet is fired
 				// FIXME: be smarter about it: check for collisions with walls
 				// Enemy energy drop due to fire is detected by one tic later thus -1
