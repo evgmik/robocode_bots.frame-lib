@@ -116,6 +116,10 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public fighterBot findTheBestTarget() {
+		return findTheClosestTargetWithSwitchTrechold();
+	}
+
+	public fighterBot findTheClosestTargetWithSwitchTrechold() {
 		double distThreshold=100; // we keep old target if candidate is not closer than this
 		// above should help with continues gun shift
 		// when to bots are at about same distance
