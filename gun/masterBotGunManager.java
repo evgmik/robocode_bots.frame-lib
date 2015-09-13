@@ -126,6 +126,7 @@ public class masterBotGunManager extends gunManager {
 		double bestWeight = -1e6;
 		double w=1;
 		for ( fighterBot eBot: myBot.getEnemyBots() ) {
+			w = 1;
 			w *= botTargetingWeightByDistance(eBot);
 			w *= botTargetingWeightByScanLag(eBot);
 			if ( w >=1 ) {
