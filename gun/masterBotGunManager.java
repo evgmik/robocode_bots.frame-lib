@@ -7,6 +7,9 @@ import eem.frame.bot.*;
 import eem.frame.misc.*;
 import eem.frame.wave.*;
 
+import robocode.Rules.*;
+import robocode.BattleRules.*;
+
 import java.util.LinkedList;
 import java.awt.geom.Point2D;
 import java.awt.Graphics2D;
@@ -116,7 +119,93 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public fighterBot findTheBestTarget() {
-		return findTheClosestTargetWithSwitchTrechold();
+		fighterBot bestTargetBot = null;
+		if ( myBot.getEnemyBots().size() == 0 ) {
+			return null;
+		}
+		double bestWeight = -1e6;
+		double w;
+		for ( fighterBot eBot: myBot.getEnemyBots() ) {
+			w = botTargetingWeightByDistance(eBot);
+			w *= botTargetingWeightByScanLag(eBot);
+			if ( w >=1 ) {
+				// do not even think this bot is so close
+				// that we will hit it for sure
+				// its info is up-to-date as well
+				bestTargetBot = eBot;
+				break;
+			}
+			w *= botTargetingWeightByFiredShots(eBot);
+			w *= botTargetingWeightByHitRate(eBot);
+			w *= botTargetingWeightByEnemyEnergy(eBot);
+
+			if (w > bestWeight ) {
+				bestWeight = w;
+				bestTargetBot = eBot;
+			}
+		}
+
+		reportBestTargetBot( bestTargetBot );
+		return bestTargetBot;
+	}
+
+	public void reportBestTargetBot( fighterBot bestTargetBot ) {
+		// helper to report bestTargetBot
+		if ( bestTargetBot != null ) {
+			if ( targetBot != null ) {
+				if ( !targetBot.getName().equals( bestTargetBot.getName() ) ) {
+					logger.routine( "" + myBot.getTime() + " best target " + bestTargetBot.getName() );
+				}
+			} else {
+				logger.routine( "" + myBot.getTime() + " best target " + bestTargetBot.getName() );
+			}
+		}
+	}
+
+	public double botTargetingWeightByHitRate(fighterBot bot) {
+		// prey on week and also hope they die first
+		double w=1;
+		w = math.eventRate( hitByMe.getHashCounter( bot.getName() ), firedAt.getHashCounter( bot.getName() ) );
+		return w;
+	}
+
+	public double botTargetingWeightByEnemyEnergy(fighterBot bot) {
+		// prey on week and also hope they die first
+		double w=1;
+		double energy = bot.getEnergy();
+		w = 1 - Math.exp( - energy/20 );
+		return w;
+	}
+
+	public double botTargetingWeightByFiredShots(fighterBot bot) {
+		// see how many shots I fired at this bot
+		// long lived bot are tough to hit so they should be dealt with
+		// when easy are gone
+		double w=1;
+		double fCnt = firedAt.getHashCounter( bot.getName() );
+		w = Math.exp( - fCnt / 40 );
+		return w;
+	}
+
+	public double botTargetingWeightByDistance(fighterBot bot) {
+		double w = 1;
+		double dist = myBot.getPosition().distance( bot.getPosition() );
+		// at certain distances hit probability is 1
+		// this is when escape angle is smaller than bot body angle,
+		// then random hit probability drops accordingly
+		double slowestBulletSpeed = robocode.Rules.getBulletSpeed( robocode.Rules.MAX_BULLET_POWER ); // 11
+		double travelTime = dist/slowestBulletSpeed;
+		double fullEscapeArc = 2*robocode.Rules.MAX_VELOCITY * travelTime;
+		
+		w=(2*physics.robotHalfSize)/fullEscapeArc; // ratio of targer size to arc
+		return w;
+	}
+
+	public double botTargetingWeightByScanLag(fighterBot bot) {
+		long infoDelayTimeThreshold = (long) (360/robocode.Rules.RADAR_TURN_RATE + 1);
+		double w;
+		w = Math.exp ( -(myBot.getTime() - bot.getLastSeenTime()) / (3*infoDelayTimeThreshold) );
+		return w;
 	}
 
 	public fighterBot findTheClosestTargetWithSwitchTrechold() {
