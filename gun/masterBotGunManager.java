@@ -148,7 +148,15 @@ public class masterBotGunManager extends gunManager {
 		// generate solutions for each gun
 		for ( baseGun g : gunList ) {
 			// note getTime()+1, the fire command is executed at next tic
-			fSols.addAll( g.getFiringSolutions( myBot, targetBot.getInfoBot(), myBot.getTime()+1, bulletEnergy ) );
+			LinkedList<firingSolution> gunfSols =  g.getFiringSolutions( myBot, targetBot.getInfoBot(), myBot.getTime()+1, bulletEnergy );
+			String2D key = new String2D( g.getName(), targetBot.getName() );
+			double gunPerfRate = math.perfRate( hitByMyGun.getHashCounter(key) , firedAtEnemyByGun.getHashCounter(key) );
+			for ( firingSolution fS: gunfSols ) {
+				double solQ = fS.getQualityOfSolution();
+				fS.setQualityOfSolution( solQ * gunPerfRate );
+				
+			}
+			fSols.addAll( gunfSols );
 		}
 		return fSols;
 	}
