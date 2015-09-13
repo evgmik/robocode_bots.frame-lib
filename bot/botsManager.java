@@ -93,7 +93,7 @@ public class  botsManager {
 
 	public void onRobotDeath(RobotDeathEvent e) {
 		String botName = e.getName();
-		logger.dbg( "botManager: bot " + botName + " is dead" );
+		logger.noise( "botManager: bot " + botName + " is dead" );
 		InfoBot dBot = liveBots.get(botName);
 		deadBots.put( botName, dBot);
 		liveBots.remove( botName );
