@@ -144,10 +144,24 @@ public class gunManager implements gunManagerInterface {
 
 	public void reportMyGunStats() {
 		// FIXME: some wave are still flying and are not fully accounted
-		logger.routine("  My virtual gun stats");
-		for( String2D key: hitByMyGun.keySet() ) {
-			logger.routine("    " + key.getX() + " hit bot " + key.getY()
-				       + " " + logger.hitRateFormat( hitByMyGun.getHashCounter( key ), firedAtEnemyByGun.getHashCounter( key ) ) );
+		logger.routine("  My virtual gun hit rate stats stats");
+		String str = "  ";
+		// make headers
+		str += String.format( "%25s", "enemy name" );
+		for ( baseGun g: gunList ) {
+			str += String.format( "%25s", g.getName() );
+		}
+		logger.routine( str );
+		for ( fighterBot b: myBot.getAllKnownEnemyBots() ) {
+			str = "  ";
+			String enemyName = b.getName();
+			str += String.format( "%25s", enemyName );
+			for ( baseGun g: gunList ) {
+				String2D key = new String2D( g.getName(), enemyName );
+				str += String.format( "%25s", logger.hitRateFormat( hitByMyGun.getHashCounter( key ), firedAtEnemyByGun.getHashCounter( key ) ) );
+
+			}
+			logger.routine( str );
 		}
 	}
 
