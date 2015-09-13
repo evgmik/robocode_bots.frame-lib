@@ -172,6 +172,8 @@ public class masterBotGunManager extends gunManager {
 		// prey on week and also hope they die first
 		double w=1;
 		w = math.eventRate( hitByMe.getHashCounter( bot.getName() ), firedAt.getHashCounter( bot.getName() ) );
+		double overallWeight = 0.2; // if its large we will fire to far away targets
+		w = ( (1-overallWeight) + overallWeight*w ); // not so large contribution
 		return w;
 	}
 
