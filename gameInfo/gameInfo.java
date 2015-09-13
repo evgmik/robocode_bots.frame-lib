@@ -58,6 +58,10 @@ public class gameInfo implements botListener {
 		}
 	}
 
+	public long getRoundNum() {
+		return myBot.getRoundNum();
+	}
+
 	public long getTime() {
 		return myBot.getTime();
 	}
