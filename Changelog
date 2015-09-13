@@ -1,10 +1,35 @@
 # Changelog
 
-## v0.7 - pre
+TODO: count only passed wave when updating firing stats.
 
-Do not fire enemy wave is energy drop is due to the master bot hit.
+TODO: calclulate danger of a point according to angle at which all bots are
+seen. The smaller the better, since I see all bots with less radar sweeps.
+
+TODO: improve linear gun if the predicted target is outside of the battlefield
+
+TODO: circular factor gun
+
+TODO: guess factor gun
+
+TODO: random  gun
+
+TODO: take in account wave fired by other bots to calculate my guns stats
+
+TODO: chose best firing angle gun, the one which hits most targets
+
+## v1.0
+v0.7 - 0.9 are skipped since v1.0 has quite drastic changes.
+
+Do not fire enemy wave if its energy drop is due to the master bot hit.
 
 Count guns success stats.
+
+Chose gun according to its virtual hit probability.
+
+Chose target according to distance, energy, hit probability, survival stats, etc.
+
+Fix a bug: did not detect a bullet with energy very close to 0.1, Diamond
+likes to fire such one close to the end of melee.
 
 ## v0.6
 Improved enemy firing solution generation. Take in account that at fire time
