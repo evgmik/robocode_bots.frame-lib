@@ -33,11 +33,25 @@ public class misc  {
 		b = 2*( dx*vTvec.x + dy*vTvec.y);
 		c = dist*dist;
 
+		// FIXME avoid precise solver and just do it iteratively.
 		timeToHit = math.quadraticSolverMinPosRoot( a, b, c);
 		tFX = (int) ( tgt_pos.x + vTvec.x*timeToHit );
 		tFY = (int) ( tgt_pos.y + vTvec.y*timeToHit );
 
-		return new Point2D.Double( tFX, tFY );
+		int cnt = 100; // safety count
+		Point2D.Double tFpos = new Point2D.Double( tFX, tFY );
+		while ( !physics.botReacheableBattleField.contains( tFpos ) ) {
+			tFpos.x = tFpos.x - vTvec.x;
+			tFpos.y = tFpos.y - vTvec.y;
+			cnt -= 1;
+			if ( cnt <= 0 ) {
+				logger.error("linear gun cannot converge");
+				logger.error(" target position is = " + tFpos);
+				break;
+			}
+		}
+
+		return tFpos;
 	}
 
 }
