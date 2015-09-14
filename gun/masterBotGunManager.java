@@ -82,7 +82,7 @@ public class masterBotGunManager extends gunManager {
 
 	protected double bulletEnergyVsDistance( fighterBot targetBot ) {
 		double targetDistance = myBot.getPosition().distance( targetBot.getPosition() );
-		double bulletEnergy = Math.min( 1500/targetDistance, robocode.Rules.MAX_BULLET_POWER);
+		double bulletEnergy = Math.min( 500/targetDistance, robocode.Rules.MAX_BULLET_POWER);
 		// no point to fire bullets more energetic than enemy bot energy level
 		bulletEnergy = Math.min( bulletEnergy, physics.minReqBulEnergyToKillTarget( targetBot.getEnergy() ) );
 
