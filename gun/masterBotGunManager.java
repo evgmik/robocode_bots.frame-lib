@@ -174,7 +174,6 @@ public class masterBotGunManager extends gunManager {
 		w = math.eventRate( hitByMe.getHashCounter( bot.getName() ), firedAt.getHashCounter( bot.getName() ) );
 		double overallWeight = 0.2; // if its large we will fire to far away targets
 		w = ( (1-overallWeight) + overallWeight*w ); // not so large contribution
-		logger.dbg(bot.getName() + " hit rate w = " + w);
 		return w;
 	}
 
@@ -195,7 +194,6 @@ public class masterBotGunManager extends gunManager {
 		double w=1;
 		double fCnt = firedAt.getHashCounter( bot.getName() );
 		w = Math.exp( - fCnt / 40 );
-		logger.dbg(bot.getName() + " fired rate w = " + w);
 		return w;
 	}
 
