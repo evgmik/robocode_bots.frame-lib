@@ -38,7 +38,7 @@ public class misc  {
 		tFX = (int) ( tgt_pos.x + vTvec.x*timeToHit );
 		tFY = (int) ( tgt_pos.y + vTvec.y*timeToHit );
 
-		int cnt = 100; // safety count
+		int cnt = 400; // safety count
 		Point2D.Double tFpos = new Point2D.Double( tFX, tFY );
 		while ( !physics.botReacheableBattleField.contains( tFpos ) ) {
 			tFpos.x = tFpos.x - vTvec.x;
