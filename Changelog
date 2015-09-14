@@ -15,9 +15,11 @@ TODO: take in account wave fired by other bots to calculate my guns stats
 
 TODO: chose best firing angle gun, the one which hits most targets
 
-## v1.1 - pre
+## v1.1
 
 Fixed linear gun: does not offer future positions outside the field
+Fixed contribution of enemy energy to the target weight, it use to select 
+most energetic enemies.
 
 Redone weight calculations for best target selection, among other things it
 takes in account enemy hit rate and fire count only after some amount of
