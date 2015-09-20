@@ -164,9 +164,22 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		return _motion;
 	}
 
+	public gunManager getGunManager() {
+		return _gunManager;
+	}
+
 	public LinkedList<firingSolution> getFiringSolutions( InfoBot tBot, long time, double bulletEnergy ) {
+		// this method is called when a master bot detects enemy fire
+		// since our concern is the master bot survival we do some checks
+		
 		// how this bot fires to the target bot
 		LinkedList<firingSolution> fSolutions = new LinkedList<firingSolution>();
+
+		if ( !tBot.getName().equals( this.getGunManager().getClosestTarget().getName() ) && getGameInfo().getNumEnemyAlive() >=3 ) {
+			// target bot bot is not the closest
+			// it is unlikely firing bot would use it as a target.
+			return fSolutions;
+		}
 
 		LinkedList<firingSolution> gunFSs = null;
 		// FIXME: here should be loop over all available guns
@@ -174,10 +187,19 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
 		fSolutions.addAll( gunFSs );
 
+		if ( getGameInfo().getNumEnemyAlive() >= 7 ) {
+			return fSolutions;
+		}
+
 		g = new linearGun();
 		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
 		fSolutions.addAll( gunFSs );
-		
+		if ( getGameInfo().getNumEnemyAlive() >= 5 ) {
+			return fSolutions;
+		}
+
+
+		// now we have small enough enemy number to take all the guns
 		g = new circularGun();
 		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
 		fSolutions.addAll( gunFSs );
