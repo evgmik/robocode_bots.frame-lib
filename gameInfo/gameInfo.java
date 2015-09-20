@@ -77,6 +77,10 @@ public class gameInfo implements botListener {
 		myBot.execute();
 	}
 
+	public String fightType() {
+		return myBot.fightType();
+	}
+
 	public void onScannedRobot(ScannedRobotEvent e) {
 		_botsmanager.onScannedRobot(e);
 		for ( fighterBot b: liveBots.values() ) {
