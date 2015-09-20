@@ -62,12 +62,19 @@ public class circularGun extends baseGun {
 
 		if ( bStatPrev == null ) {
 			phi = 0;
+			return fSolultions; // circular gun is not applicable
 		} else {
 			vTvecPrev = bStatPrev.getVelocity();
 			double phiLast = Math.atan2( vTvec.y, vTvec.x);
 			double phiPrev = Math.atan2( vTvecPrev.y, vTvecPrev.x);
 			double dt =  tBStat.getTime() - bStatPrev.getTime();
-			phi = (phiLast - phiPrev)/dt;
+			if ( dt == 0 ) {
+				// previous point is the same as current
+				phi = 0;
+				return fSolultions; // circular gun is not applicable
+			} else {
+				phi = (phiLast - phiPrev)/dt;
+			}
 		}
 
 		double vx = vTvec.x;
