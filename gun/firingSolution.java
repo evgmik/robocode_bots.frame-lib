@@ -209,7 +209,7 @@ public class firingSolution {
 	public void onPaint(Graphics2D g, long time) {
 		//drawFiringPositon( g, time );
 		//drawTargetPositon( g, time );
-		drawBulletPath( g, time );
+		//drawBulletPath( g, time );
 		drawBulletLocation( g, time );
 	}
 
