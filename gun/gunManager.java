@@ -59,6 +59,20 @@ public class gunManager implements gunManagerInterface {
 		incrHitCounts( trgtBotName, fireBotName );
 	}
 
+	public fighterBot getClosestTarget() {
+		double dist2closestBot = 1e6; // something very large
+		long infoDelayTimeThreshold = (long) (360/robocode.Rules.RADAR_TURN_RATE + 1);
+		double distNew;
+		for ( fighterBot eBot: myBot.getEnemyBots() ) {
+			distNew = myBot.getPosition().distance( eBot.getPosition() );
+			if ( ( distNew < dist2closestBot) && ((myBot.getTime() - eBot.getLastSeenTime()) < infoDelayTimeThreshold) ) {
+				dist2closestBot = distNew;
+				targetBot = eBot;
+			}
+		}
+		return targetBot;
+	}
+
 	// master bot bullet hit someone
 	public void  onBulletHit(BulletHitEvent e) {
 		String trgtBotName = e.getName();
