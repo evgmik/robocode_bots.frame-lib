@@ -195,10 +195,22 @@ public class firingSolution {
 		}
 	}
 
+	public void drawBulletLocation( Graphics2D g, long time) {
+		if ( firingAngle == Double.NaN ) {
+			logger.error( "This should not happen: the firing solution does not have firingAngle" );
+		} else {
+			g.setColor( color );
+			Point2D.Double endP = getLocationAt( time );
+			double R = 4;
+			graphics.drawCircle( g, endP,  R );
+		}
+	}
+
 	public void onPaint(Graphics2D g, long time) {
-		drawFiringPositon( g, time );
-		drawTargetPositon( g, time );
+		//drawFiringPositon( g, time );
+		//drawTargetPositon( g, time );
 		drawBulletPath( g, time );
+		drawBulletLocation( g, time );
 	}
 
 	public void onPaint(Graphics2D g ) {
