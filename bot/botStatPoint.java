@@ -153,7 +153,7 @@ public class botStatPoint {
 	}
 
 	public boolean arePointsOfPathSimilar(botStatPoint refPatStart, botStatPoint refPatCurrent, botStatPoint testPatStart) {
-		profiler.start( "arePointsOfPathSimilar" );
+		//profiler.start( "arePointsOfPathSimilar" );
 		// essentially does this point matches refPatCurrent point.
 		// compare how this stat point with respect to testPatStart
 		// matches reference Start and refPatCurrent
@@ -209,7 +209,7 @@ public class botStatPoint {
 			//logger.dbg( this.format() );
 			//logger.dbg( refPatCurrent.format() );
 		} // end of SameOrDifferent
-		profiler.stop( "arePointsOfPathSimilar" );
+		//profiler.stop( "arePointsOfPathSimilar" );
 		return areSimilar;
 	}
 

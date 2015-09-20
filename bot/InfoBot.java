@@ -74,9 +74,9 @@ public class InfoBot {
 
 	public InfoBot update(botStatPoint statPnt) {
 		String profName = "InfoBot.update for " + getName();
-		profiler.start( profName );
+		//profiler.start( profName );
 		botStats.add(statPnt);
-		profiler.stop( profName );
+		//profiler.stop( profName );
 		return this;
 	}
 
