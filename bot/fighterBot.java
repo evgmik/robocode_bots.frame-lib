@@ -174,13 +174,13 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
 		fSolutions.addAll( gunFSs );
 
-		g = new linearGun();
-		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
-		fSolutions.addAll( gunFSs );
-		
-		g = new circularGun();
-		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
-		fSolutions.addAll( gunFSs );
+		//g = new linearGun();
+		//gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
+		//fSolutions.addAll( gunFSs );
+		//
+		//g = new circularGun();
+		//gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
+		//fSolutions.addAll( gunFSs );
 		
 		return fSolutions;
 	}
