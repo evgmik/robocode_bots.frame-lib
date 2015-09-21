@@ -175,7 +175,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		// how this bot fires to the target bot
 		LinkedList<firingSolution> fSolutions = new LinkedList<firingSolution>();
 
-		if ( !tBot.getName().equals( this.getGunManager().getClosestTarget().getName() ) && getGameInfo().getNumEnemyAlive() >=3 ) {
+		if ( !tBot.getName().equals( this.getGunManager().getClosestTarget().getName() ) && getGameInfo().getNumEnemyAlive() >=4 ) {
 			// target bot bot is not the closest
 			// it is unlikely firing bot would use it as a target.
 			return fSolutions;
@@ -217,13 +217,18 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			String enemyName =  w.firedBot.getName() ;
 			fighterBot eBot = enemyBots.get( enemyName );
 			logger.noise("bot " + fBot.getName() + " added enemy wave from " + enemyName );
+			_gunManager.incrFiredByEnemy( enemyName ); 
 			waveWithBullets wB = new waveWithBullets( w );
 			LinkedList<firingSolution> fSolutions = eBot.getFiringSolutions( fBot, w.getFiredTime(), w.getBulletEnergy() );
 			for ( firingSolution fS: fSolutions ) {
 				wB.addFiringSolution(fS);
 			}
+			if ( fSolutions.size() == 0 ) {
+				// this wave has no threat
+				// ignoring it
+				return; 
+			}
 			enemyWaves.add(wB);
-			_gunManager.incrFiredByEnemy( enemyName ); 
 			// calculate time when wave hits us if we do not move
 			long hitTime = (long) (w.getFiredTime() + w.getTimeToReach( fBot.getPosition() ) );
 
