@@ -30,6 +30,9 @@ Enemy wave directed at us only if master bot is the closest or number of
 enemies >=3. Consequently enemy waves with no dangerous bullet are
 disregarded.
 
+Exact path is calculated for longer time period and is not updated evey tick
+any more (unless there is a fire detected or minimal path length is reached).
+
 ## v1.3
 Fixed circularGun bug which was triggered in melee, when no consequent points
 are available to figure out velocity rotation.
