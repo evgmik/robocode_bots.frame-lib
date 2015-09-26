@@ -24,6 +24,14 @@ TODO: chose best firing angle gun, the one which hits most targets
 
 TODO: add random angle offset if bullet shielders like DrussGT are detected
 
+## v1.5-pre
+All very, strange. Melee score went up, but 1on1 down.
+Apparently, increasing maximalPathLength to 50 from 32. makes 1on1 motion more
+predictable. Will reduce it to see the difference. Or maybe it because path
+was recalculated every tick.
+Maybe it should be different for different game type melee or 1on1.
+
+
 ## v1.4
 Attempt to reduce gun calculations:
 Enemy wave directed at us only if master bot is the closest or number of
