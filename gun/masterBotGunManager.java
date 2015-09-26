@@ -22,6 +22,7 @@ public class masterBotGunManager extends gunManager {
 		gunList.add( new circularGun() );
 		gunList.add( new linearGun() );
 		gunList.add( new headOnGun() );
+		gunList.add( new randomGun() );
 	}
 
 	public	masterBotGunManager(fighterBot bot) {
