@@ -24,6 +24,9 @@ TODO: chose best firing angle gun, the one which hits most targets
 
 TODO: add random angle offset if bullet shielders like DrussGT are detected
 
+TODO: calculate new variants of the path on every tick, instead of numerous
+trial on a single tick, which leads to skipped turns.
+
 ## v1.5-pre
 All very, strange. Melee score went up, but 1on1 down.
 Apparently, increasing maximalPathLength to 50 from 32. makes 1on1 motion more
