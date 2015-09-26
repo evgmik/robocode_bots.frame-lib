@@ -32,7 +32,7 @@ public class exactPathDangerMotion extends basicMotion {
 	// Which is bad against rammers, so I chose  the largest of it
 	long minimalPathLength = (long) ( Math.max( 32, 2*stopTime ) ); 
 	// tune below to avoid skipped turns
-	long maximalPathLength = 40;
+	long maximalPathLength = 50;
 	long nTrials = 20;
 	
 	long wrongPathPredictionCount = 0;
@@ -69,7 +69,7 @@ public class exactPathDangerMotion extends basicMotion {
 			needToRecalculate = true;
 		}
 		if (needToRecalculate) {
-			choseNewPath( predictionEndTime - myBot.getTime() );
+			choseNewPath( Math.max( predictionEndTime - myBot.getTime(), maximalPathLength ) );
 			needToRecalculate = false;
 		}
 
@@ -94,7 +94,7 @@ public class exactPathDangerMotion extends basicMotion {
 	}
 
 	public void choseNewPath() {
-		choseNewPath( minimalPathLength );
+		choseNewPath( maximalPathLength );
 	}
 
 	public void choseNewPath( long pathLength ) {
