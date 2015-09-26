@@ -54,6 +54,18 @@ public class baseGun {
 		}
 	}
 
+	public Point2D.Double shiftFromDirectLine( Point2D.Double fP, Point2D.Double originalTP ){
+		Point2D.Double tP = new Point2D.Double( originalTP.getX(), originalTP.getY() );
+		// some bots like DrussGT use fire shield against simple guns
+		// this should help byllets to sneak through the shield
+		double offAngle = 3*math.signNoZero( Math.random() -0.5 );
+		double angle = math.angle2pt(fP, tP);
+		double dist = fP.distance(tP);
+		tP.x += dist*Math.sin( Math.toRadians( angle + offAngle ) );
+		tP.y += dist*Math.cos( Math.toRadians( angle + offAngle ) );
+		return tP;
+	}
+
 	public void setColor( Color c ) {
 		color = c;
 	}

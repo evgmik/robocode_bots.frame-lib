@@ -39,6 +39,13 @@ public class headOnGun extends baseGun {
 		if (tP == null)
 			return fSolultions;
 
+		// Some bots like DrussGT use fire shield against simple guns
+		// this should help byllets to sneak through the shield
+		// for now I disable it, it probably should be used for all
+		// headOn like solutions, linear and circlular included if
+		// enemy velocity is zero
+		// tP = shiftFromDirectLine( fP, tP);
+
 		firingSolution fS = new firingSolution( this, fP, tP, time, bulletEnergy );
 
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
