@@ -159,6 +159,10 @@ public class gameInfo implements botListener {
 		}
 	}
 
+	// our bullet hit one of theirs
+	public void onBulletHitBullet(BulletHitBulletEvent e) {
+	}
+
 	// someone bullet hit us
 	public void onHitByBullet(HitByBulletEvent e) {
 		HashMap<String,fighterBot> allBots = getAllFighterBots(); 
