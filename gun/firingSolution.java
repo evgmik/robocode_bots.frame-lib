@@ -55,6 +55,12 @@ public class firingSolution {
 		setColor( gun.getColor() );
 	}
 
+	public firingSolution(baseGun gun, Point2D.Double fP, double angle, long time, double bulletEnergy) {
+		this( fP, angle, time, bulletEnergy );
+		setGunName( gun.getName() );
+		setColor( gun.getColor() );
+	}
+
 	public void setFiringBotName( String name ) {
 		firingBotName = name;
 	}
