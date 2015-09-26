@@ -16,15 +16,15 @@ available at the fire request time, so one had to extrapolate to this time.
 
 TODO: guess factor gun
 
-TODO: random  gun
-
 TODO: take in account wave fired by other bots to calculate my guns stats
 
 TODO: ramming attack if guns fail
 
 TODO: chose best firing angle gun, the one which hits most targets
 
-## v1.4 - pre
+TODO: add random angle offset if bullet shielders like DrussGT are detected
+
+## v1.4
 Attempt to reduce gun calculations:
 Enemy wave directed at us only if master bot is the closest or number of
 enemies >=3. Consequently enemy waves with no dangerous bullet are
@@ -32,6 +32,8 @@ disregarded.
 
 Exact path is calculated for longer time period and is not updated evey tick
 any more (unless there is a fire detected or minimal path length is reached).
+
+Added Random gun, to the guns array.
 
 ## v1.3
 Fixed circularGun bug which was triggered in melee, when no consequent points
