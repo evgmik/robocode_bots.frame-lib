@@ -28,10 +28,13 @@ TODO: calculate new variants of the path on every tick, instead of numerous
 trial on a single tick, which leads to skipped turns.
 
 ## v1.5-pre
+
+Added bullet shielders detection, and fire with offset to circumvent it.
+
 All very, strange. Melee score went up, but 1on1 down.
 Apparently, increasing maximalPathLength to 50 from 32. makes 1on1 motion more
-predictable. Will reduce it to see the difference. Or maybe it because path
-was recalculated every tick.
+predictable. Will reduce it to see the difference. Checked, looks like it does not
+change anything. Maybe it because path was recalculated every tick.
 Maybe it should be different for different game type melee or 1on1.
 
 
