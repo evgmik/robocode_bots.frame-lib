@@ -27,9 +27,16 @@ TODO: add random angle offset if bullet shielders like DrussGT are detected
 TODO: calculate new variants of the path on every tick, instead of numerous
 trial on a single tick, which leads to skipped turns.
 
+TODO: do not spend cycles on gun when gun is too hot to fire.
+
 ## v1.5-pre
 
 Added bullet shielders detection, and fire with offset to circumvent it.
+If bot hit enemy bullet, then enemy wave which carries this bullet is removed,
+since it has no danger.
+
+Exaxt path is attempting to find a better path every turn, but with smaller
+number of trials than full search.
 
 All very, strange. Melee score went up, but 1on1 down.
 Apparently, increasing maximalPathLength to 50 from 32. makes 1on1 motion more
