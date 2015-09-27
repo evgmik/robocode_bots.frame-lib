@@ -61,6 +61,12 @@ public class firingSolution {
 		setColor( gun.getColor() );
 	}
 
+	public void offsetFiringAngle( double offset ) {
+		// apply small shift to known firing angle
+		// intended to use for penetration through an enemy bullet shield
+		firingAngle += offset;
+	}
+
 	public void setFiringBotName( String name ) {
 		firingBotName = name;
 	}
