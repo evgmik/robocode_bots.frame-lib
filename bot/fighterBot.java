@@ -305,8 +305,11 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	// our bullet hit a bullet from another bot
-	public void onBulletHitBullet(fighterBot eBot) {
+	public void onBulletHitBullet(fighterBot eBot, BulletHitBulletEvent e) {
 		_gunManager.onBulletHitBullet( eBot );
+		// removing enemy's intercepted wave
+
+		// keep my wave assuming it was random hit and not a bullet shield
 	}
 
 	// someone hit the master bot

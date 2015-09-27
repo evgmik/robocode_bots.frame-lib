@@ -178,9 +178,9 @@ public class gameInfo implements botListener {
 		// valid bot
 		// we increase call both: our master bot and enemy bot
 		// 1st master bot
-		getFighterBot( getMasterBot().getName() ).onBulletHitBullet( bot );
+		getFighterBot( getMasterBot().getName() ).onBulletHitBullet( bot, e );
 		// 2nd enemy bot
-		bot.onBulletHitBullet( getFighterBot( getMasterBot().getName() ) );
+		bot.onBulletHitBullet( getFighterBot( getMasterBot().getName() ), e );
 	}
 
 	// someone bullet hit us
