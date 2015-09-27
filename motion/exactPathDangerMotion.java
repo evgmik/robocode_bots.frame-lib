@@ -34,6 +34,7 @@ public class exactPathDangerMotion extends basicMotion {
 	// tune below to avoid skipped turns
 	long maximalPathLength = 50;
 	long nTrials = 20;
+	long nTrialsToImprove = 2;
 	
 	long wrongPathPredictionCount = 0;
 	
@@ -69,8 +70,11 @@ public class exactPathDangerMotion extends basicMotion {
 			needToRecalculate = true;
 		}
 		if (needToRecalculate) {
-			choseNewPath( Math.max( predictionEndTime - myBot.getTime(), maximalPathLength ) );
+			choseNewPath( Math.max( predictionEndTime - myBot.getTime(), maximalPathLength ), nTrials );
 			needToRecalculate = false;
+		} else {
+			// routine update with smaller number of trials
+			choseNewPath( Math.max( predictionEndTime - myBot.getTime(), maximalPathLength ), nTrialsToImprove );
 		}
 
 	}
@@ -94,17 +98,20 @@ public class exactPathDangerMotion extends basicMotion {
 	}
 
 	public void choseNewPath() {
-		choseNewPath( maximalPathLength );
+		choseNewPath( maximalPathLength, nTrials );
 	}
 
-	public void choseNewPath( long pathLength ) {
+	public void choseNewPath( long pathLength, long nTrials ) {
 		profiler.start( "choseNewPath" );
 
 		dangerPath pathTrial;
 		pathLength = (long) math.putWithinRange( pathLength, minimalPathLength, maximalPathLength );
 		Point2D.Double myPos = (Point2D.Double) myBot.getPosition().clone();
-		Point2D.Double pp;
-		path.setDanger(superDanger); // crazy dangerous for initial sorting
+		// first we try to reuse old destination point
+		Point2D.Double pp = (Point2D.Double) destPoint.getPosition().clone();
+		path = new dangerPath( pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength ) );
+		path.calculateDanger( myBot );
+		//path.setDanger(superDanger); // crazy dangerous for initial sorting
 
 		for ( long i = 0; i < nTrials; i++ ) {
 			pp = new Point2D.Double(0,0);
