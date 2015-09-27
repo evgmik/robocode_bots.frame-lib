@@ -45,6 +45,15 @@ public class gameInfo implements botListener {
 		return myBot;
 	}
 
+	public fighterBot getFighterBot(String name) {
+		fighterBot b = null;
+		b = liveBots.get(name);
+		if (b != null)
+			return b;
+		b = deadBots.get(name);
+		return b; // it is either null for unknown name or one of the dead ones
+	}
+
 	public void initBattle( CoreBot b) {
 		setMasterBot( b );
 	}
@@ -161,6 +170,17 @@ public class gameInfo implements botListener {
 
 	// our bullet hit one of theirs
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
+		Bullet b = e.getHitBullet();
+		String name = b.getName();
+		fighterBot bot = getFighterBot( name );
+		if ( bot == null )
+			return;
+		// valid bot
+		// we increase call both: our master bot and enemy bot
+		// 1st master bot
+		getFighterBot( getMasterBot().getName() ).onBulletHitBullet( bot );
+		// 2nd enemy bot
+		bot.onBulletHitBullet( getFighterBot( getMasterBot().getName() ) );
 	}
 
 	// someone bullet hit us

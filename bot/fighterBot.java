@@ -304,6 +304,11 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		enemyBots.remove( b.getName() ) ;
 	}
 
+	// our bullet hit a bullet from another bot
+	public void onBulletHitBullet(fighterBot eBot) {
+		_gunManager.onBulletHitBullet( eBot );
+	}
+
 	// someone hit the master bot
 	public void onHitByBullet(HitByBulletEvent e) {
 		_gunManager.onHitByBullet(e);
