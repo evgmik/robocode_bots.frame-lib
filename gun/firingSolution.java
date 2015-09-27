@@ -18,11 +18,11 @@ public class firingSolution {
 	public String gunName = "";
 	public Color color = new Color(0x00, 0x00, 0x00, 0xff); // default color
 	// Guns algorithm should set qualityOfSolution.
-	// The idea bihind that some guns need sertain number of info points in a raw
+	// The idea behind that some guns need certain number of info points in a raw
 	// (pattern matcher would be an example)
 	// others would produce outdated solutions if they fire based on outdated info
 	// (for example if linear gun use old info 
-	// the targer bot might change the direction by that time).
+	// the target bot might change the direction by that time).
 	// qualityOfSolution = 1 is the best
 	// qualityOfSolution = 0 is the worst
 	public double qualityOfSolution = 0; 
