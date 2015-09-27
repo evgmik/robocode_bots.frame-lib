@@ -304,10 +304,36 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		enemyBots.remove( b.getName() ) ;
 	}
 
+	public void removeEnemyWaveWithBullet( fighterBot eBot, Bullet eBullet ){
+		Point2D.Double interceptP = new Point2D.Double( eBullet.getX(), eBullet.getY() );
+		for ( waveWithBullets eW: enemyWaves ) {
+			if ( eW.getFiredBot().getName().equals(  eBullet.getName() ) ) {
+				// this bullet from this bot which fired this wave
+				double interceptTime = eW.getTimeToReach( interceptP );
+				long travelTime = getTime() - eW.getFiredTime();
+				if ( Math.abs( travelTime - interceptTime ) <=1.01 ) {
+					// 0.01 added to bypass rounding errors
+					// this is the wave which has eBullet
+					// and it carries no danger, so we remove it
+					enemyWaves.remove(eW);
+					break;
+				}
+
+			}
+		}
+	}
+
 	// our bullet hit a bullet from another bot
 	public void onBulletHitBullet(fighterBot eBot, BulletHitBulletEvent e) {
 		_gunManager.onBulletHitBullet( eBot );
+		Bullet eBullet = null;
+		if ( isItMasterBotDriver() ) {
+			eBullet = e.getHitBullet();
+		} else {
+			eBullet = e.getBullet();
+		}
 		// removing enemy's intercepted wave
+		removeEnemyWaveWithBullet( eBot, eBullet );
 
 		// keep my wave assuming it was random hit and not a bullet shield
 	}
