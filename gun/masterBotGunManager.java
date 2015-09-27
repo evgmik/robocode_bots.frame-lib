@@ -69,6 +69,14 @@ public class masterBotGunManager extends gunManager {
 				logger.noise("time " + myBot.getTime() + " Veto on fire: no firing solution");
 				return; // no solution
 			}
+			if ( isBulletShieldDetected( targetBot.getName() ) ) {
+				//logger.dbg( "time " + myBot.getTime() +" bullet shield detected for " + targetBot.getName() );
+				// apply small angle shift of couple degrees
+				// to prevent bullet shield to work
+				double offsetAngleAmp = 1; // ~ 180*pi*atan(18/1000)
+				double offsetAngle = offsetAngleAmp* math.signNoZero(Math.random()-0.5);
+				fS.offsetFiringAngle( offsetAngle );
+			}
 			aimAndSetGun( fS );
 			// if getNumEnemyAlive is too large we have a lot of skipped turns
 			if ( myBot.getGameInfo().getNumEnemyAlive() <= 4 ) {

@@ -32,6 +32,7 @@ public class gunManager implements gunManagerInterface {
 	public HashCounter<String> hitByMe = new HashCounter<String>();
 	public HashCounter<String> firedAt = new HashCounter<String>();
 	public HashCounter<String> firedByEnemy = new HashCounter<String>();
+	public HashCounter<String> hitBullet = new HashCounter<String>();
 
 	// my gun stats
 	public HashCounter<String2D> hitByMyGun = new HashCounter<String2D>();
@@ -80,6 +81,23 @@ public class gunManager implements gunManagerInterface {
 		incrHitCounts( trgtBotName, fireBotName );
 	}
 	
+	// our bullet hit a bullet from another bot
+	public void onBulletHitBullet(fighterBot eBot) {
+		hitBullet.incrHashCounter( eBot.getName() );
+	}
+
+	// checks if enemy employs bullet shield
+	public boolean isBulletShieldDetected( String eName ) {
+		int fC = firedByEnemy.getHashCounter( eName );
+		double erate = math.eventRate( hitBullet.getHashCounter( eName ), fC );
+		int confedenceNum = 10;
+		double detectionTshreshold = 0.2;
+		if ( (fC >= confedenceNum) && ( erate >= detectionTshreshold ) ) {
+			return true;
+		}
+		return false;
+	}
+
 	public void incrHitCounts( String trgtBotName, String fireBotName ) {
 		if ( myBot.getName().equals( trgtBotName ) ) {
 			// this bot is hit by other
@@ -187,6 +205,12 @@ public class gunManager implements gunManagerInterface {
 		}
 	}
 
+	public void reportBulletHitBullet() {
+		for( String key: hitBullet.keySet() ) {
+			logger.routine( "bot " + key + " intercepted my bullet " + logger.hitRateFormat( hitBullet.getHashCounter( key ), firedByEnemy.getHashCounter( key ) ) );
+		}
+	}
+
 	public void reportStats() {
 		if ( myBot.isItMasterBotDriver() ) {
 			reportHitByOther();
@@ -194,6 +218,7 @@ public class gunManager implements gunManagerInterface {
 		}
 		reportHitByMe();
 		if ( myBot.isItMasterBotDriver() ) {
+			reportBulletHitBullet();
 			reportMyGunStats();
 		}
 	}
