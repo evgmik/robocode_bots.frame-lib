@@ -42,7 +42,11 @@ All very, strange. Melee score went up, but 1on1 down.
 Apparently, increasing maximalPathLength to 50 from 32. makes 1on1 motion more
 predictable. Will reduce it to see the difference. Checked, looks like it does not
 change anything. Maybe it because path was recalculated every tick.
-Maybe it should be different for different game type melee or 1on1.
+
+Looking closely at some battles for the v1.3, I conclude that there were a
+glitch in the rumble. When run locally with gui, I do not get stellar 100%
+survival against bots which rumble reported as such. For example against
+zyx.micro.Ant 1.1. The scores also not so awful for the v1.4 as in the rumble.
 
 
 ## v1.4
