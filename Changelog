@@ -33,6 +33,8 @@ TODO: when looking for the best path, do not check full path, if it is worse
 than the best candidate available. May be with some threshold to avoid local
 minimum.
 
+TODO: radar lock before firing
+
 ## v1.5
 
 Added bullet shielders detection, and fire with offset to circumvent it.
