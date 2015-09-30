@@ -29,6 +29,10 @@ trial on a single tick, which leads to skipped turns.
 
 TODO: do not spend cycles on gun when gun is too hot to fire.
 
+TODO: when looking for the best path, do not check full path, if it is worse
+than the best candidate available. May be with some threshold to avoid local
+minimum.
+
 ## v1.5
 
 Added bullet shielders detection, and fire with offset to circumvent it.
