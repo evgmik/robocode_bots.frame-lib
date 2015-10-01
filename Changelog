@@ -22,8 +22,6 @@ TODO: ramming attack if guns fail
 
 TODO: chose best firing angle gun, the one which hits most targets
 
-TODO: add random angle offset if bullet shielders like DrussGT are detected
-
 TODO: calculate new variants of the path on every tick, instead of numerous
 trial on a single tick, which leads to skipped turns.
 
