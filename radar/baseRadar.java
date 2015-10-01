@@ -19,6 +19,7 @@ import robocode.Rules.*;
 
 public class baseRadar {
 	protected fighterBot myBot;
+	protected boolean needToTrackTarget = false;
 
 	public baseRadar(fighterBot bot) {
 		initBattle(bot);
@@ -34,6 +35,9 @@ public class baseRadar {
 	public void manage() {
 	}
 
+	public void setNeedToTrackTarget(boolean flag) {
+		needToTrackTarget = flag;
+	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
 	}

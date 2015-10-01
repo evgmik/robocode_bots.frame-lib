@@ -22,7 +22,6 @@ public class universalRadar extends baseRadar{
 	protected static double radarMaxRotationAngle;
 	protected LinkedList<String> scannedBots = new LinkedList<String>();
 	protected String botToSearchFor = "";
-	boolean needToTrackTarget = false;
 
 	public universalRadar(fighterBot bot) {
 		super(bot);
