@@ -64,10 +64,9 @@ public class universalRadar extends baseRadar{
 		}
 
 		if ( needToTrackTarget ) {
-			//if ( myBot._trgt.haveTarget ) {
-			if ( false ) { //FIXME disabled logic for now, implement above _trgt.haveTarget
-				//String bName = myBot._trgt.getName();
-				//moveRadarToBot( bName );
+			if ( myBot.getGunManager().getTarget() != null ) {
+				String bName = myBot.getGunManager().getTarget().getName();
+				moveRadarToBot( bName );
 			} else {
 				refreshBotsPositions();
 			}
