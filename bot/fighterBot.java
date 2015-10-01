@@ -168,6 +168,10 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		return _gunManager;
 	}
 
+	public baseRadar getRadar() {
+		return _radar;
+	}
+
 	public LinkedList<firingSolution> getFiringSolutions( InfoBot tBot, long time, double bulletEnergy ) {
 		// this method is called when a master bot detects enemy fire
 		// since our concern is the master bot survival we do some checks
