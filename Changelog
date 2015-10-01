@@ -33,7 +33,8 @@ aim for higher bullet damage than survival bonus.
 
 ## v1.6-pre
 
-Radar locks on target when gun is cold enough (heat < .5).
+Radar locks on target when gun is cold enough.
+Gun aiming is not executed when gun is too hot.
 
 Optimization:do not claculate path danger if it is already greater than a
 known path. This should reduce CPU usage.
