@@ -29,9 +29,9 @@ trial on a single tick, which leads to skipped turns.
 
 TODO: do not spend cycles on gun when gun is too hot to fire.
 
-TODO: radar lock before firing
-
 ## v1.6-pre
+
+Radar locks on target when gun is cold enough (heat < .5).
 
 Optimization:do not claculate path danger if it is already greater than a
 known path. This should reduce CPU usage.

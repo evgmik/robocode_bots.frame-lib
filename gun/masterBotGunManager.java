@@ -32,6 +32,11 @@ public class masterBotGunManager extends gunManager {
 
 	public void manage() {
 		if ( myBot.getTime() == fireAtTime &&  myBot.proxy.getGunTurnRemaining() == 0) {
+			if ( myBot.proxy.getGunHeat() < .5 ) {
+				myBot.getRadar().setNeedToTrackTarget( true );
+			} else {
+				myBot.getRadar().setNeedToTrackTarget( false );
+			}
 			// see firing pitfalls
 			// http://robowiki.net/wiki/Robocode/Game_Physics#Firing_Pitfall
 			// essentially we need to set firing solution at previous tick
