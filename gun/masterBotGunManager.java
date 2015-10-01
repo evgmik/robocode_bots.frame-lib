@@ -31,6 +31,7 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public void manage() {
+		profiler.start( "gunManagerManage" );
 		if ( myBot.proxy.getGunHeat() < .5 ) {
 			myBot.getRadar().setNeedToTrackTarget( true );
 		} else {
@@ -96,6 +97,7 @@ public class masterBotGunManager extends gunManager {
 				}
 			}
 		}
+		profiler.stop( "gunManagerManage" );
 	}
 
 	protected double bulletEnergyVsDistance( fighterBot targetBot ) {
