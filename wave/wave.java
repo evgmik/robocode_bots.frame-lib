@@ -103,7 +103,7 @@ public class wave {
 		Point2D.Double tgtPosNow =        bot.getPositionClosestToTime( time );
 		double headOnAngle = math.angle2pt( firedPosition, tgtPosAtFiredTime);
 		double hitAngle    = math.angle2pt( firedPosition, tgtPosNow);
-		return (hitAngle - headOnAngle);
+		return math.shortest_arc(hitAngle - headOnAngle);
 	}
 
 	public double getFiringGuessFactor( InfoBot bot, long time ) {
