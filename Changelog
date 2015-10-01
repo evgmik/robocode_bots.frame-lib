@@ -27,6 +27,10 @@ trial on a single tick, which leads to skipped turns.
 
 TODO: do not spend cycles on gun when gun is too hot to fire.
 
+TODO: increase bullet power in 1on1 to something like 1500/dist. Survival
+bonus is small but bullet bonus is increases with bullet energy. So it better
+aim for higher bullet damage than survival bonus.
+
 ## v1.6-pre
 
 Radar locks on target when gun is cold enough (heat < .5).
