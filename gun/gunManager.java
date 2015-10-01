@@ -60,6 +60,10 @@ public class gunManager implements gunManagerInterface {
 		incrHitCounts( trgtBotName, fireBotName );
 	}
 
+	public fighterBot getTarget() {
+		return targetBot;
+	}
+
 	public fighterBot getClosestTarget() {
 		double dist2closestBot = 1e6; // something very large
 		long infoDelayTimeThreshold = (long) (360/robocode.Rules.RADAR_TURN_RATE + 1);
