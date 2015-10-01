@@ -41,10 +41,6 @@ public class universalRadar extends baseRadar{
 		myBot.proxy.setAdjustRadarForGunTurn(true); // decouple gun and radar
 	}
 
-	public void setNeedToTrackTarget( boolean flag ) {
-		needToTrackTarget = flag;
-	}
-
 	public void manage() {
 		double angle = 0;
 		if ( myBot.getNumEnemyAlive() == 0) {
