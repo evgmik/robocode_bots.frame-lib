@@ -98,6 +98,18 @@ public class wave {
 		return distToTravel/bulletSpeed;
 	}
 
+	public double getFiringAngleOffset( InfoBot bot, long time ) {
+		Point2D.Double tgtPosAtFiredTime = bot.getPositionClosestToTime( firedTime );
+		Point2D.Double tgtPosNow =        bot.getPositionClosestToTime( time );
+		double headOnAngle = math.angle2pt( firedPosition, tgtPosAtFiredTime);
+		double hitAngle    = math.angle2pt( firedPosition, tgtPosNow);
+		return (hitAngle - headOnAngle);
+	}
+
+	public double getFiringGuessFactor( InfoBot bot, long time ) {
+		return getFiringAngleOffset(bot, time)/physics.calculateMEA( bulletSpeed );
+	}
+
 	public boolean equals( wave w ) {
 		boolean ret = true;
 		if ( !this.getFiredBot().getName().equals( w.getFiredBot().getName() ) )
