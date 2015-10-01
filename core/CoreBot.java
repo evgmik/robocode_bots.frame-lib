@@ -82,7 +82,7 @@ public class CoreBot extends AdvancedRobot
 
 		physics.init(this);
 		math.init(this);
-		setColors(Color.red,Color.blue,Color.green); //colors of by bot
+		setColors(Color.red,Color.blue,Color.white); //colors of by bot
 		botVer = new botVersion();
 
 		totalNumOfEnemiesAtStart = getOthers();
