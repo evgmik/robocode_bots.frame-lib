@@ -221,5 +221,9 @@ public class math {
 		return 2.0*gfBin/(numBins-1.0) - 1.0;
 	}
 
-
+	public static long gf2bin( double gf, double numBins) {
+		// convert gf to its bin location
+		// assumes that gf spans from -1 to 1
+                return Math.round( (gf+1)/2*(numBins-1) );
+        }
 }
