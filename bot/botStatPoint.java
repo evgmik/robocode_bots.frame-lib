@@ -140,6 +140,14 @@ public class botStatPoint {
 		return velocity;
 	}
 
+	public double getLateralSpeed( Point2D.Double p) {
+		// lateral speed with respect to point p
+		double absoluteBearing = math.angle2pt( p, pos );
+		double lateralSpeed = speed * Math.sin( Math.toRadians(headingDegrees - absoluteBearing) );
+		// positive means: enemy is circling clockwise
+		return lateralSpeed;
+	}
+
 	public Point2D.Double getPosition() {
 		return (Point2D.Double) pos.clone();
 	}
