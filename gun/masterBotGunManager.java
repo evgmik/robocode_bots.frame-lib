@@ -30,13 +30,15 @@ public class masterBotGunManager extends gunManager {
 		myBot = bot;
 	}
 
-	public void manage() {
-		profiler.start( "gunManagerManage" );
+	public void askRadarToTrack() {
 		if ( myBot.proxy.getGunHeat() < .5 ) {
 			myBot.getRadar().setNeedToTrackTarget( true );
 		} else {
 			myBot.getRadar().setNeedToTrackTarget( false );
 		}
+	}
+
+	public void fireTheGunIfShould() {
 		if ( myBot.getTime() == fireAtTime &&  myBot.proxy.getGunTurnRemaining() == 0) {
 			// see firing pitfalls
 			// http://robowiki.net/wiki/Robocode/Game_Physics#Firing_Pitfall
@@ -54,9 +56,11 @@ public class masterBotGunManager extends gunManager {
 				myBot.myWaves.add(wB);
 			}
 		}
+	}
+
+	public void aimTheGun() {
 		firingSolutions = new LinkedList<firingSolution>(); //clear the list
 		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
-		targetBot = findTheBestTarget();
 		double bulletEnergy = -1000; // intentionally bad
 		if ( targetBot != null ) {
 			bulletEnergy = bulletEnergyVsDistance( targetBot );
@@ -97,6 +101,14 @@ public class masterBotGunManager extends gunManager {
 				}
 			}
 		}
+	}
+
+	public void manage() {
+		profiler.start( "gunManagerManage" );
+		askRadarToTrack();
+		fireTheGunIfShould();
+		targetBot = findTheBestTarget();
+		aimTheGun();
 		profiler.stop( "gunManagerManage" );
 	}
 
