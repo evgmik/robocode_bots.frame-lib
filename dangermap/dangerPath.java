@@ -84,15 +84,21 @@ public class dangerPath implements Comparable<dangerPath> {
 		return compare( this, p2);
 	}
 
-	public double calculateDanger(fighterBot myBot) {
+	public double calculateDanger(fighterBot myBot, double DoNotExceedDanger) {
+		// this method stops if intermideate agregated danger exeeds DoNotExceedDanger
+		// this intended to not waste CPU if we already have a better path
+		profiler.start( "calculateDanger" );
 		dangerPathPoint  dP;
 		double dL = 0;
 		ListIterator<dangerPathPoint> iter = path.listIterator();
 		while (iter.hasNext()) {
 			dP = iter.next();
 			dL += dP.calculateDanger( myBot );
+			if ( dL > DoNotExceedDanger)
+				break; // no point to calculate further
 		}
 		setDanger(dL);
+		profiler.stop( "calculateDanger" );
 		return dL;
 	}
 

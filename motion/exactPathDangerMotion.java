@@ -110,7 +110,7 @@ public class exactPathDangerMotion extends basicMotion {
 		// first we try to reuse old destination point
 		Point2D.Double pp = (Point2D.Double) destPoint.getPosition().clone();
 		path = new dangerPath( pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength ) );
-		path.calculateDanger( myBot );
+		path.calculateDanger( myBot, superDanger );
 		//path.setDanger(superDanger); // crazy dangerous for initial sorting
 
 		for ( long i = 0; i < nTrials; i++ ) {
@@ -120,7 +120,7 @@ public class exactPathDangerMotion extends basicMotion {
 			pp.x = myPos.x + R*Math.cos( a ); 
 			pp.y = myPos.y + R*Math.sin( a ); 
 			pathTrial = new dangerPath( pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength ) );
-			pathTrial.calculateDanger( myBot );
+			pathTrial.calculateDanger( myBot, path.getDanger() );
 			if ( path.getDanger() > pathTrial.getDanger() ) {
 				//logger.dbg("Choosing new path with danger = " + pathTrial.getDanger()); 
 				path = pathTrial;
