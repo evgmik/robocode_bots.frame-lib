@@ -39,6 +39,9 @@ public class gunManager implements gunManagerInterface {
 	public HashCounter<String2D> hitByEnemyGun = new HashCounter<String2D>();
 	public HashCounter<String2D> firedAtEnemyByGun = new HashCounter<String2D>();
 
+	protected int numGuessFactorBins = 31;
+	protected HashMap<String, int[]> guessFactorsMap = new HashMap<String, int[]>();
+
 	public	gunManager() {
 		gunList = new LinkedList<baseGun>();
 		gunList.add( new linearGun() );
@@ -143,8 +146,23 @@ public class gunManager implements gunManagerInterface {
 						// FIXME: count somehow unintentional hits
 					}
 				}
+				// now I calculate GF for this bot
+				updateHitGuessFactor( bot, w.getFiringGuessFactor(bot, time) );
 			}
 		}
+	}
+
+	public void updateHitGuessFactor( InfoBot bot, double gf ) {
+		int i = (int)math.gf2bin( gf, numGuessFactorBins );
+		i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
+                String key = bot.getName();
+                if ( !guessFactorsMap.containsKey( key ) ) {
+			int[] guessFactorBins = new int[numGuessFactorBins];
+			guessFactorsMap.put( key, guessFactorBins );
+                }
+                int[] gfBins = guessFactorsMap.get( key );
+		gfBins[i]++;
+		logger.dbg( " gf bins: " + Arrays.toString(gfBins) );
 	}
 
 	public void onWavePassingOverMe( wave w ) {
