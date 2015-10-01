@@ -87,12 +87,11 @@ public class physics {
 		return bPower;
 	}
 
-	public static double calculateMEA( double bulletSpeed ) {
-			// Max escape angle in degree for a given bullet speed
-			double maxBotSpeed = Rules.MAX_VELOCITY;
-			double MEA = 180/Math.PI*Math.asin( maxBotSpeed/bulletSpeed );
-			return MEA;
-	}
+        public static double calculateMEA( double bulletSpeed ) {
+                        // Max escape angle in degree for a given bullet speed
+                        double MEA = Math.toDegrees( Math.asin( robocode.Rules.MAX_VELOCITY/bulletSpeed ) );
+                        return MEA;
+        }
 
 	public static boolean isBotOutOfBorders( Point2D.Double pnt ) {
 		if ( ( pnt.x < robotHalfSize ) || ( pnt.x > (BattleField.x - robotHalfSize) ) )
