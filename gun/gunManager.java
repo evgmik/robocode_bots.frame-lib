@@ -170,7 +170,7 @@ public class gunManager implements gunManagerInterface {
 		i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
 		int[] gfBins = getGuessFactors( bot.getName() );
 		gfBins[i]++;
-		logger.dbg( " gf bins: " + Arrays.toString(gfBins) );
+		//logger.dbg( " gf bins: " + Arrays.toString(gfBins) );
 	}
 
 	public void onWavePassingOverMe( wave w ) {
@@ -241,12 +241,19 @@ public class gunManager implements gunManagerInterface {
 		}
 	}
 
+	public void reportGFStats() {
+		for( String key: guessFactorsMap.keySet() ) {
+			logger.routine( "bot " + key + " seen at GF: " + Arrays.toString(guessFactorsMap.get(key)) );
+		}
+	}
+
 	public void reportStats() {
 		if ( myBot.isItMasterBotDriver() ) {
 			reportHitByOther();
 			reportEnemyGunStats();
 		}
 		reportHitByMe();
+		reportGFStats();
 		if ( myBot.isItMasterBotDriver() ) {
 			reportBulletHitBullet();
 			reportMyGunStats();
