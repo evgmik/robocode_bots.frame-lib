@@ -14,7 +14,7 @@ seen. The smaller the better, since I see all bots with less radar sweeps.
 TODO: check linear and circular guns for the check when last points is not
 available at the fire request time, so one had to extrapolate to this time.
 
-TODO: guess factor gun
+TODO: make enemy bots fire guess factor gun at the master bot
 
 TODO: take in account wave fired by other bots to calculate my guns stats
 
@@ -35,6 +35,7 @@ aim for higher bullet damage than survival bonus.
 
 Radar locks on target when gun is cold enough.
 Gun aiming is not executed when gun is too hot.
+Added guess factor gun for the master bot gun array.
 
 Optimization:do not claculate path danger if it is already greater than a
 known path. This should reduce CPU usage.
