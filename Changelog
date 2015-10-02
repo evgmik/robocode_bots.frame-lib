@@ -31,6 +31,9 @@ TODO: increase bullet power in 1on1 to something like 1500/dist. Survival
 bonus is small but bullet bonus is increases with bullet energy. So it better
 aim for higher bullet damage than survival bonus.
 
+TODO: see why in melee, the bot likes to sit still near the wall or conner, it
+start to happen near v1.5
+
 ## v1.6-pre
 
 Radar locks on target when gun is cold enough.
