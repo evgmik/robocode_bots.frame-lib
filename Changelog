@@ -32,9 +32,12 @@ bonus is small but bullet bonus is increases with bullet energy. So it better
 aim for higher bullet damage than survival bonus.
 
 TODO: see why in melee, the bot likes to sit still near the wall or conner, it
-start to happen near v1.5
+start to happen near v1.5. Looks it due to changes introduced in v1.4
+May be add maximum staying time in a given point.
 
-## v1.6-pre
+## v1.7-pre
+
+## v1.6
 
 Radar locks on target when gun is cold enough.
 Gun aiming is not executed when gun is too hot.
