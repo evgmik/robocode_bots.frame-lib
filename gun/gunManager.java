@@ -161,6 +161,10 @@ public class gunManager implements gunManagerInterface {
 		return gfBins;
 	}
 
+	public int getGuessFactosrBinNum() {
+		return numGuessFactorBins;
+	}
+
 	public void updateHitGuessFactor( InfoBot bot, double gf ) {
 		int i = (int)math.gf2bin( gf, numGuessFactorBins );
 		i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
