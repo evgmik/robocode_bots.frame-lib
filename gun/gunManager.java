@@ -152,15 +152,19 @@ public class gunManager implements gunManagerInterface {
 		}
 	}
 
+	public int[] getGuessFactors( String  botName ) {
+                if ( !guessFactorsMap.containsKey( botName ) ) {
+			int[] guessFactorBins = new int[numGuessFactorBins];
+			guessFactorsMap.put( botName, guessFactorBins );
+                }
+                int[] gfBins = guessFactorsMap.get( botName );
+		return gfBins;
+	}
+
 	public void updateHitGuessFactor( InfoBot bot, double gf ) {
 		int i = (int)math.gf2bin( gf, numGuessFactorBins );
 		i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
-                String key = bot.getName();
-                if ( !guessFactorsMap.containsKey( key ) ) {
-			int[] guessFactorBins = new int[numGuessFactorBins];
-			guessFactorsMap.put( key, guessFactorBins );
-                }
-                int[] gfBins = guessFactorsMap.get( key );
+		int[] gfBins = getGuessFactors( bot.getName() );
 		gfBins[i]++;
 		logger.dbg( " gf bins: " + Arrays.toString(gfBins) );
 	}
