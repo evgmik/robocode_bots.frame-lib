@@ -35,9 +35,11 @@ aim for higher bullet damage than survival bonus.
 
 Radar locks on target when gun is cold enough.
 Gun aiming is not executed when gun is too hot.
-Added guess factor gun for the master bot gun array.
+Added guess factor gun for the master bot gun array. Apparently, in the old
+EbBot the guess factor gun did not take in account the lateral velocity
+direction. So this realization should outperform it.
 
-Optimization:do not claculate path danger if it is already greater than a
+Optimization:do not calculate path danger if it is already greater than a
 known path. This should reduce CPU usage.
 
 ## v1.5
