@@ -77,7 +77,8 @@ public class masterBotGunManager extends gunManager {
 			if ( bulletEnergy <= 0 ) {
 				return; // bad bullet
 			}
-			fSols =  getFiringSolutions( targetBot, bulletEnergy );
+			// note getTime()+1, the fire command is executed at next tic
+			fSols =  getFiringSolutions( targetBot, myBot.getTime()+1, bulletEnergy );
 			firingSolutions.addAll( fSols ); // virtual solutions
 			firingSolution fS = getTheBestFiringSolution( fSols ); // real one
 			if ( fS == null) {
@@ -100,7 +101,8 @@ public class masterBotGunManager extends gunManager {
 					// skip targetBot we already have its firing solutions
 					if ( !eBot.getName().equals( targetBot.getName() ) ) {
 						// FIXME: be smart about game stage, bot distance ...
-						fSols =  getFiringSolutions( eBot, bulletEnergy );
+						// note getTime()+1, the fire command is executed at next tic
+						fSols =  getFiringSolutions( eBot, myBot.getTime()+1,  bulletEnergy );
 						firingSolutions.addAll( fSols ); // virtual solutions
 					}
 				}
@@ -283,24 +285,6 @@ public class masterBotGunManager extends gunManager {
 		return targetBot;
 	}
 	
-	public LinkedList<firingSolution> getFiringSolutions( fighterBot targetBot, double bulletEnergy ) {
-		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
-		// generate solutions for each gun
-		for ( baseGun g : gunList ) {
-			// note getTime()+1, the fire command is executed at next tic
-			LinkedList<firingSolution> gunfSols =  g.getFiringSolutions( myBot, targetBot.getInfoBot(), myBot.getTime()+1, bulletEnergy );
-			String2D key = new String2D( g.getName(), targetBot.getName() );
-			double gunPerfRate = math.perfRate( hitByMyGun.getHashCounter(key) , firedAtEnemyByGun.getHashCounter(key) );
-			for ( firingSolution fS: gunfSols ) {
-				double solQ = fS.getQualityOfSolution();
-				fS.setQualityOfSolution( solQ * gunPerfRate );
-				
-			}
-			fSols.addAll( gunfSols );
-		}
-		return fSols;
-	}
-
 	public firingSolution getTheBestFiringSolution( LinkedList<firingSolution> fSols ) {
 		firingSolution fS = null;
 		double bestQSol = -1000;
