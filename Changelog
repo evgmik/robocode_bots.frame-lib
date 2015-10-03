@@ -39,6 +39,12 @@ is a bit worse for v1.4 than for v1.3
 TODO: see why bot does not fire when energy drops below 1. Usually, it does
 not fire when remaining energy is 0.6
 
+TODO: take in account guess factor stats collected by other bots
+
+TODO: enemy bot fire guess factor at me
+
+TODO: move enemy firing logic to enemy gunManager
+
 ## v1.7-pre
 
 ## v1.6
