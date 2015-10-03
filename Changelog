@@ -36,6 +36,9 @@ start to happen near v1.5. Looks it due to changes introduced in v1.4
 May be add maximum staying time in a given point. Looks like survival in melee
 is a bit worse for v1.4 than for v1.3
 
+TODO: see why bot does not fire when energy drops below 1. Usually, it does
+not fire when remaining energy is 0.6
+
 ## v1.7-pre
 
 ## v1.6
