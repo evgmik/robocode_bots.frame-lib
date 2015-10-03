@@ -188,7 +188,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		LinkedList<firingSolution> gunFSs = null;
 		// FIXME: here should be loop over all available guns
 		baseGun g = new headOnGun();
-		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
+		gunFSs =  g.getFiringSolutions( this, tBot, time, bulletEnergy ) ;
 		fSolutions.addAll( gunFSs );
 
 		if ( getGameInfo().getNumEnemyAlive() >= 7 ) {
@@ -196,7 +196,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		}
 
 		g = new linearGun();
-		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
+		gunFSs =  g.getFiringSolutions( this, tBot, time, bulletEnergy ) ;
 		fSolutions.addAll( gunFSs );
 		if ( getGameInfo().getNumEnemyAlive() >= 5 ) {
 			return fSolutions;
@@ -205,7 +205,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 
 		// now we have small enough enemy number to take all the guns
 		g = new circularGun();
-		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
+		gunFSs =  g.getFiringSolutions( this, tBot, time, bulletEnergy ) ;
 		fSolutions.addAll( gunFSs );
 		
 		g = new guessFactorGun();
