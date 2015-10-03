@@ -33,7 +33,8 @@ aim for higher bullet damage than survival bonus.
 
 TODO: see why in melee, the bot likes to sit still near the wall or conner, it
 start to happen near v1.5. Looks it due to changes introduced in v1.4
-May be add maximum staying time in a given point.
+May be add maximum staying time in a given point. Looks like survival in melee
+is a bit worse for v1.4 than for v1.3
 
 ## v1.7-pre
 
