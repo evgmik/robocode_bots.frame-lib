@@ -132,6 +132,16 @@ public class gunManager implements gunManagerInterface {
 		String  enemyName = bot.getName();
 		Point2D.Double botPos = bot.getPositionClosestToTime( time );
 
+		// FIXME: improve design
+		// I should really put anymy waves under enemy fighterBot control
+		// for now simple wave can be emitted by enemy and I need them to
+		// calculate at which guess factors master bot  is hit
+		// so the following for loop should be handled with waveWithBullets
+		if ( !myBot.isItMasterBotDriver() ) {
+			updateHitGuessFactor( bot, w.getFiringGuessFactor(bot, time) );
+		}
+
+		// count the wave with bullets
 		for ( waveWithBullets wB: myBot.myWaves ) {
 			if ( w.equals( wB) ) {
 				LinkedList<firingSolution> hitSolutions = wB.getFiringSolutionsWhichHitBotAt( botPos,  time );
@@ -170,7 +180,6 @@ public class gunManager implements gunManagerInterface {
 		i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
 		int[] gfBins = getGuessFactors( bot.getName() );
 		gfBins[i]++;
-		//logger.dbg( " gf bins: " + Arrays.toString(gfBins) );
 	}
 
 	public void onWavePassingOverMe( wave w ) {
