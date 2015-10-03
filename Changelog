@@ -41,11 +41,11 @@ not fire when remaining energy is 0.6
 
 TODO: take in account guess factor stats collected by other bots
 
-TODO: enemy bot fire guess factor at me
-
 TODO: move enemy firing logic to enemy gunManager
 
 ## v1.7-pre
+
+Enemy bots fire guess factor gun too.
 
 ## v1.6
 
