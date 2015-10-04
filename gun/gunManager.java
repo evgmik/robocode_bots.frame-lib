@@ -155,13 +155,18 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public int[] getGuessFactors( String  botName ) {
-                if ( !guessFactorsMap.containsKey( botName ) ) {
+		return getGuessFromHashMap( guessFactorsMap, botName) ;
+	}
+
+	public int[] getGuessFromHashMap( HashMap<String, int[]> map, String  botName ) {
+                if ( !map.containsKey( botName ) ) {
 			int[] guessFactorBins = new int[numGuessFactorBins];
-			guessFactorsMap.put( botName, guessFactorBins );
+			map.put( botName, guessFactorBins );
                 }
-                int[] gfBins = guessFactorsMap.get( botName );
+                int[] gfBins = map.get( botName );
 		return gfBins;
 	}
+
 
 	public int getGuessFactosrBinNum() {
 		return numGuessFactorBins;
