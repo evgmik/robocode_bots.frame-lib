@@ -50,7 +50,7 @@ public class guessFactorGun extends baseGun {
 		return fSols;
 	}
 
-	private double[] getRelevantGF( fighterBot fBot, InfoBot tBot ) {
+	protected double[] getRelevantGF( fighterBot fBot, InfoBot tBot ) {
 		return  fBot.getGunManager().getGuessFactors( tBot.getName() );
 	}
 
