@@ -47,6 +47,9 @@ TODO: move enemy firing logic to enemy gunManager
 
 Enemy bots fire guess factor gun too.
 
+Master bot has new decaying gueess factor gun.
+Enemy bots also fire decayingGuessFactorGun gun at master bot
+
 ## v1.6
 
 Radar locks on target when gun is cold enough.
