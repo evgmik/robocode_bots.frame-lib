@@ -26,7 +26,7 @@ public class guessFactorGun extends baseGun {
 			return fSols;
 
 		double latteralSpeed = tBStat.getLateralSpeed( fPos );
-		double[] gfBins = fBot.getGunManager().getGuessFactors( tBot.getName() );
+		double[] gfBins = getRelevantGF( fBot, tBot );
 		double gf = getMostProbableGF( gfBins ) * math.signNoZero( latteralSpeed );
 		double firingAngle = math.angle2pt( fPos, tBStat.getPosition() ); // head on
 		firingAngle += gf*physics.calculateMEA( physics.bulletSpeed(bulletEnergy) );
@@ -48,6 +48,10 @@ public class guessFactorGun extends baseGun {
 		fSols = setFiringBotName( fBot.getName(), fSols );
 		fSols = setTargetBotName( tBot.getName(), fSols );
 		return fSols;
+	}
+
+	private double[] getRelevantGF( fighterBot fBot, InfoBot tBot ) {
+		return  fBot.getGunManager().getGuessFactors( tBot.getName() );
 	}
 
 	private double getMostProbableGF(double[] guessFactorBins ) {
