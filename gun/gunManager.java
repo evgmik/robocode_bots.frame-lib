@@ -41,7 +41,7 @@ public class gunManager implements gunManagerInterface {
 
 	protected int numGuessFactorBins = 31;
 	protected HashMap<String, double[]> guessFactorsMap = new HashMap<String, double[]>();
-	protected double decayRate = .9;
+	protected double decayRate = .8;
 	protected HashMap<String, double[]> decayingGuessFactorMap = new HashMap<String, double[]>();
 
 	public	gunManager() {
