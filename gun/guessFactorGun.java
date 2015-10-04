@@ -26,7 +26,7 @@ public class guessFactorGun extends baseGun {
 			return fSols;
 
 		double latteralSpeed = tBStat.getLateralSpeed( fPos );
-		int[] gfBins = fBot.getGunManager().getGuessFactors( tBot.getName() );
+		double[] gfBins = fBot.getGunManager().getGuessFactors( tBot.getName() );
 		double gf = getMostProbableGF( gfBins ) * math.signNoZero( latteralSpeed );
 		double firingAngle = math.angle2pt( fPos, tBStat.getPosition() ); // head on
 		firingAngle += gf*physics.calculateMEA( physics.bulletSpeed(bulletEnergy) );
@@ -50,12 +50,12 @@ public class guessFactorGun extends baseGun {
 		return fSols;
 	}
 
-	private double getMostProbableGF(int[] guessFactorBins ) {
+	private double getMostProbableGF(double[] guessFactorBins ) {
 		int numBins = guessFactorBins.length;
 		double[] guessFactorWeighted = new double[ numBins ];
 		double binsSum = 0;
 		int indMax = 0;
-		int maxCnt =0;
+		double maxCnt =0;
 		for (int i=0; i < numBins; i++ ) {
 			binsSum += guessFactorBins[i]; // calculates total count
 			if ( guessFactorBins[i] > maxCnt ) {

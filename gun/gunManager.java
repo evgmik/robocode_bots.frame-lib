@@ -40,7 +40,9 @@ public class gunManager implements gunManagerInterface {
 	public HashCounter<String2D> firedAtEnemyByGun = new HashCounter<String2D>();
 
 	protected int numGuessFactorBins = 31;
-	protected HashMap<String, int[]> guessFactorsMap = new HashMap<String, int[]>();
+	protected HashMap<String, double[]> guessFactorsMap = new HashMap<String, double[]>();
+	protected double decayRate = .9;
+	protected HashMap<String, double[]> decayingGuessFactorMap = new HashMap<String, double[]>();
 
 	public	gunManager() {
 		gunList = new LinkedList<baseGun>();
@@ -154,16 +156,20 @@ public class gunManager implements gunManagerInterface {
 		}
 	}
 
-	public int[] getGuessFactors( String  botName ) {
+	public double[] getGuessFactors( String  botName ) {
 		return getGuessFromHashMap( guessFactorsMap, botName) ;
 	}
 
-	public int[] getGuessFromHashMap( HashMap<String, int[]> map, String  botName ) {
+	public double[] getDecayingGuessFactors( String  botName ) {
+		return getGuessFromHashMap( decayingGuessFactorMap, botName) ;
+	}
+
+	public double[] getGuessFromHashMap( HashMap<String, double[]> map, String  botName ) {
                 if ( !map.containsKey( botName ) ) {
-			int[] guessFactorBins = new int[numGuessFactorBins];
+			double[] guessFactorBins = new double[numGuessFactorBins];
 			map.put( botName, guessFactorBins );
                 }
-                int[] gfBins = map.get( botName );
+                double[] gfBins = map.get( botName );
 		return gfBins;
 	}
 
@@ -175,8 +181,16 @@ public class gunManager implements gunManagerInterface {
 	public void updateHitGuessFactor( InfoBot bot, double gf ) {
 		int i = (int)math.gf2bin( gf, numGuessFactorBins );
 		i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
-		int[] gfBins = getGuessFactors( bot.getName() );
+		// update accumulating map
+		double[] gfBins = getGuessFactors( bot.getName() );
 		gfBins[i]++;
+
+		// updtate decaying map
+		gfBins = getDecayingGuessFactors( bot.getName() );
+		for ( int k=0; k< numGuessFactorBins; k++) {
+			gfBins[k] *= decayRate;	
+		}
+		gfBins[i] += (1-decayRate); // update bin where hit detected
 	}
 
 	public void onWavePassingOverMe( wave w ) {
@@ -249,7 +263,8 @@ public class gunManager implements gunManagerInterface {
 
 	public void reportGFStats() {
 		for( String key: guessFactorsMap.keySet() ) {
-			logger.routine( "bot " + key + " seen at GF: " + Arrays.toString(guessFactorsMap.get(key)) );
+			logger.routine( "bot " + key + " seen at          GF: " + Arrays.toString(guessFactorsMap.get(key)) );
+			logger.routine( "bot " + key + " seen at decaying GF: " + Arrays.toString(decayingGuessFactorMap.get(key)) );
 		}
 	}
 
