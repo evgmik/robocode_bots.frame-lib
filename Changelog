@@ -44,7 +44,10 @@ TODO: move enemy firing logic to enemy gunManager
 Enemy bots fire guess factor gun too.
 
 Master bot has new decaying gueess factor gun.
-Enemy bots also fire decayingGuessFactorGun gun at master bot
+Enemy bots also fire decayingGuessFactorGun gun at master bot.
+
+New exact path choice in 1on1 type, try to chose points orthogonal to line to
+the enemy.
 
 ## v1.6
 
