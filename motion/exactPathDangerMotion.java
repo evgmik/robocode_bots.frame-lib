@@ -113,9 +113,26 @@ public class exactPathDangerMotion extends basicMotion {
 		path.calculateDanger( myBot, superDanger );
 		//path.setDanger(superDanger); // crazy dangerous for initial sorting
 
+		double a = 0; // angle to new target candidate
 		for ( long i = 0; i < nTrials; i++ ) {
 			pp = new Point2D.Double(0,0);
-			double a= 2*Math.PI * Math.random();
+			if ( ( myBot.getGameInfo().fightType().equals("1on1") || myBot.getGameInfo().fightType().equals("melee1on1") ) && (myBot.getGunManager().getTarget() != null ) ) {
+				// 1on1 game type and I have target
+				// let's try to move mostly orthogonal to the path to target
+				
+				// angle orthogonal to the line to enemy
+				a = Math.toRadians( 90 + math.game_angles2cortesian(math.angle2pt( myPos, myBot.getGunManager().getTarget().getPosition() ) ) );
+				// random spread to it
+				double angleSpread = Math.PI/4;
+				a += angleSpread*(Math.random() - 0.5);
+				if ( Math.random() > 0.5 ) {
+					// shift angle 180 degree to flip direction
+					a += Math.PI;
+				}
+			} else {
+				// searching at any angle around us
+				a= 2*Math.PI * Math.random();
+			}
 			double R = pathLength*robocode.Rules.MAX_VELOCITY * Math.random();
 			pp.x = myPos.x + R*Math.cos( a ); 
 			pp.y = myPos.y + R*Math.sin( a ); 
