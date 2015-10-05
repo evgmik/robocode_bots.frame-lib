@@ -70,7 +70,7 @@ public class linearGun extends baseGun {
 		}
 		// check if the future target point is within botReacheable space
 		if ( !physics.botReacheableBattleField.contains( tFPos ) ) {
-			logger.noise("time " + time + " unphysical future target positkon");
+			logger.noise("time " + time + " unphysical future target position");
 			fS.setQualityOfSolution( 0 ); // bad solution
 		}
 
