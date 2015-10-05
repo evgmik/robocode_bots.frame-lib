@@ -119,6 +119,10 @@ public class exactPathDangerMotion extends basicMotion {
 			double R = pathLength*robocode.Rules.MAX_VELOCITY * Math.random();
 			pp.x = myPos.x + R*Math.cos( a ); 
 			pp.y = myPos.y + R*Math.sin( a ); 
+			if ( !physics.botReacheableBattleField.contains( pp ) ) {
+				//logger.noise("unphysical future position");
+				continue;
+			}
 			pathTrial = new dangerPath( pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength ) );
 			pathTrial.calculateDanger( myBot, path.getDanger() );
 			if ( path.getDanger() > pathTrial.getDanger() ) {
