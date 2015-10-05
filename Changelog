@@ -39,7 +39,11 @@ TODO: take in account guess factor stats collected by other bots
 
 TODO: move enemy firing logic to enemy gunManager
 
-## v1.7-pre
+TODO: make guess factor flattener
+
+## v1.8-pre
+
+## v1.7
 
 Enemy bots fire guess factor gun too.
 
