@@ -264,7 +264,7 @@ public class gunManager implements gunManagerInterface {
 	public void reportGFStats() {
 		for( String key: guessFactorsMap.keySet() ) {
 			logger.routine( "bot " + key + " seen at          GF: " + Arrays.toString(guessFactorsMap.get(key)) );
-			logger.routine( "bot " + key + " seen at decaying GF: " + Arrays.toString(decayingGuessFactorMap.get(key)) );
+			//logger.routine( "bot " + key + " seen at decaying GF: " + Arrays.toString(decayingGuessFactorMap.get(key)) );
 		}
 	}
 
