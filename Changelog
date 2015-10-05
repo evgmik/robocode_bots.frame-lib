@@ -14,18 +14,14 @@ seen. The smaller the better, since I see all bots with less radar sweeps.
 TODO: check linear and circular guns for the check when last points is not
 available at the fire request time, so one had to extrapolate to this time.
 
-TODO: make enemy bots fire guess factor gun at the master bot
-
 TODO: take in account wave fired by other bots to calculate my guns stats
 
 TODO: ramming attack if guns fail
 
 TODO: chose best firing angle gun, the one which hits most targets
 
-TODO: calculate new variants of the path on every tick, instead of numerous
-trial on a single tick, which leads to skipped turns.
-
-TODO: do not spend cycles on gun when gun is too hot to fire.
+TODO: find optimal number of new variants of the path on every tick, while
+yet avoid skipped turns.
 
 TODO: increase bullet power in 1on1 to something like 1500/dist. Survival
 bonus is small but bullet bonus is increases with bullet energy. So it better
