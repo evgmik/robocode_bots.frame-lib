@@ -123,7 +123,7 @@ public class exactPathDangerMotion extends basicMotion {
 				// angle orthogonal to the line to enemy
 				a = Math.toRadians( 90 + math.game_angles2cortesian(math.angle2pt( myPos, myBot.getGunManager().getTarget().getPosition() ) ) );
 				// random spread to it
-				double angleSpread = Math.PI/4;
+				double angleSpread = Math.PI/2;
 				a += angleSpread*(Math.random() - 0.5);
 				if ( Math.random() > 0.5 ) {
 					// shift angle 180 degree to flip direction

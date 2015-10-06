@@ -34,6 +34,7 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 	public double calculateDanger( fighterBot myBot ) {
 		double dL = 0;
 		long time = botStat.getTime();
+		dL += dangerCalc.calculateDangerFromCorners(time, botStat.getPosition(), myBot);
 		dL += dangerCalc.calculateDangerFromWall(time, botStat.getPosition(), myBot);
 		dL += dangerCalc.calculateDangerFromEnemyBots(time, botStat.getPosition(), myBot);
 		// FIXME: we do not need precursors from waves

@@ -44,5 +44,36 @@ public class dangerCalc {
 		//dL += dLWall*Math.exp( -(dist-physics.robotHalfSize)/wallDangerRadius );
 		return dL;
 	}
+
+	public static double calculateDangerFromCorners(long time, Point2D.Double dP, fighterBot myBot) {
+		Point2D.Double corner;
+		double cornerDanger = 1;
+		double cornerDangerRadius = 10;
+		double dL = 0;
+		double dist = 0;
+
+		if ( !( myBot.getGameInfo().fightType().equals("1on1") || myBot.getGameInfo().fightType().equals("melee1on1") ) ) {
+			// in many bot situation being in a corner is fine
+			return 0;
+		}
+
+		// bottom left
+		dist = dP.distance( new Point2D.Double( physics.botReacheableBattleField.getMinX(), physics.botReacheableBattleField.getMinY() ) );
+		dL += cornerDanger*Math.exp(-dist/cornerDangerRadius);
+
+		// top left
+		dist = dP.distance( new Point2D.Double( physics.botReacheableBattleField.getMinX(), physics.botReacheableBattleField.getMaxY() ) );
+		dL += cornerDanger*Math.exp(-dist/cornerDangerRadius);
+		
+		// top right
+		dist = dP.distance( new Point2D.Double( physics.botReacheableBattleField.getMaxX(), physics.botReacheableBattleField.getMaxY() ) );
+		dL += cornerDanger*Math.exp(-dist/cornerDangerRadius);
+
+		// bottom right
+		dist = dP.distance( new Point2D.Double( physics.botReacheableBattleField.getMaxX(), physics.botReacheableBattleField.getMinY() ) );
+		dL += cornerDanger*Math.exp(-dist/cornerDangerRadius);
+
+		return dL;
+	}
 }
 
