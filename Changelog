@@ -41,6 +41,9 @@ TODO: move enemy firing logic to enemy gunManager
 
 TODO: make guess factor flattener
 
+TODO: make antiAntiGrav gun: which tries to predict enemy motion based on
+anti-grav physics
+
 ## v1.9
 Disabling mostly orthogonal to the enemy direction path search. Looks like 
 it drops rating IWillFireNoBullet by about 2%.
