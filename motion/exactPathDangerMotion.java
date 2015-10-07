@@ -116,7 +116,14 @@ public class exactPathDangerMotion extends basicMotion {
 		double a = 0; // angle to new target candidate
 		for ( long i = 0; i < nTrials; i++ ) {
 			pp = new Point2D.Double(0,0);
-			if ( ( myBot.getGameInfo().fightType().equals("1on1") || myBot.getGameInfo().fightType().equals("melee1on1") ) && (myBot.getGunManager().getTarget() != null ) ) {
+			// FIXME make final decision
+			// for now I disable the orthogonal to the enemy motion
+			// IWillFireNowBullet has smaller APS with this enabled
+			// see difference between v1.6 and v1.8
+			// so we are back to search for good destination
+			// within a circle surrounding the  bot
+			//if ( ( myBot.getGameInfo().fightType().equals("1on1") || myBot.getGameInfo().fightType().equals("melee1on1") ) && (myBot.getGunManager().getTarget() != null ) ) {
+			if ( false ) {
 				// 1on1 game type and I have target
 				// let's try to move mostly orthogonal to the path to target
 				
