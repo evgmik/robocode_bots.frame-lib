@@ -50,7 +50,8 @@ public class  wavesManager {
 	public void add( wave w )  {
 		Waves.add( w );
 		waveCount.incrHashCounter( w.firedBot.getName() );
-		//logger.dbg( "bot " + w.firedBot.getName() + " fired wave " + waveCount.getHashCounter(w.firedBot.getName() ) );
+		w.setCount( waveCount.getHashCounter(w.firedBot.getName() ) );
+		//logger.dbg( "bot " + w.firedBot.getName() + " fired wave " + w.getCount() );
 		for ( waveListener l : waveListeners ) {
 			l.waveAdded(w);
 		}
