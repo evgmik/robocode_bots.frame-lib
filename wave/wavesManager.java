@@ -18,6 +18,7 @@ import java.util.*;
 public class  wavesManager {
 	public CoreBot myBot;
 	public LinkedList<wave> Waves = new LinkedList<wave>();
+	public HashCounter<String> waveCount = new HashCounter<String>();
 
 	public LinkedList<waveListener> waveListeners = new LinkedList<waveListener>();
 
@@ -48,7 +49,8 @@ public class  wavesManager {
 
 	public void add( wave w )  {
 		Waves.add( w );
-		logger.noise( "bot " + w.firedBot.getName() + " fired wave" );
+		waveCount.incrHashCounter( w.firedBot.getName() );
+		//logger.dbg( "bot " + w.firedBot.getName() + " fired wave " + waveCount.getHashCounter(w.firedBot.getName() ) );
 		for ( waveListener l : waveListeners ) {
 			l.waveAdded(w);
 		}
