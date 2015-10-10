@@ -59,14 +59,10 @@ correlations.
 
 ## v2.1-pre
 
-Remove guess factor based guns from the enemy guns array
+Remove guess factor based guns from the enemy guns array.
 These guns were introduced since v1.6 but apparently make the master bot motion more
 predictive.  It hearts IWillFireNoBullets roborumble stats,
 up to version 2.0 the APS is lower.
-
-## v2.1
-
-Disable enemy guess factor guns.
 
 Added enemy wave count, to implement lagging guess factor gun.
 
