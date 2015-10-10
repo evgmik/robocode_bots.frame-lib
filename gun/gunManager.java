@@ -179,6 +179,7 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public void updateHitGuessFactor( InfoBot bot, double gf ) {
+		//logger.dbg("time " + myBot.getTime() + " " + bot.getName() + " " + gf );
 		int i = (int)math.gf2bin( gf, numGuessFactorBins );
 		i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
 		// update accumulating map
