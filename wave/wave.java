@@ -22,6 +22,7 @@ public class wave {
 	protected long timeUncertaintyLower = 0; // how sure we are about firing time
 	protected Color waveColor = new Color(0xff, 0x00, 0x00, 0x80);
 	protected Color waveUncertaintyColorLower = new Color(0x00, 0x00, 0xff, 0x80);
+	protected int count=0; // wave count for a particular bot
 
 
 	public wave(InfoBot firedBot, long firedTime, double bulletEnergy) {
@@ -51,6 +52,14 @@ public class wave {
 
 	public long getFiredTime() {
 		return firedTime;
+	}
+
+	public void setCount(int c) {
+		count = c;
+	}
+
+	public int getCount() {
+		return count;
 	}
 
 	public double getBulletEnergy() {
