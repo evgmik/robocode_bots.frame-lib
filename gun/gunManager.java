@@ -186,7 +186,7 @@ public class gunManager implements gunManagerInterface {
 		double[] gfBins = getGuessFactors( bot.getName() );
 		gfBins[i]++;
 
-		// updtate decaying map
+		// update decaying map
 		gfBins = getDecayingGuessFactors( bot.getName() );
 		for ( int k=0; k< numGuessFactorBins; k++) {
 			gfBins[k] *= decayRate;	
