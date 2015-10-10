@@ -44,6 +44,17 @@ TODO: make guess factor flattener
 TODO: make antiAntiGrav gun: which tries to predict enemy motion based on
 anti-grav physics
 
+TODO: improve flipLastGuessFactorGun, or make new one with cross correlation
+analysis. Looks like there is anti correlation between odd/even waves.
+
+## v2.0
+
+bug fix: guess factor use the lateral velocity from wrong time
+
+New gun: flipLastGuessFactorGun. I note that many bots including my own
+have next wave guess factor close to opposit of the previous wave. This gun
+tryes to exploit it.
+
 ## v1.9
 Disabling mostly orthogonal to the enemy direction path search. Looks like 
 it drops rating IWillFireNoBullet by about 2%.
