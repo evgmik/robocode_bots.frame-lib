@@ -57,7 +57,7 @@ for the top bots  and than it is lost. So we should make a map
 oldLaggingGF->firingGF, which is 2D distribution map and look for
 correlations.
 
-## v2.1-pre
+## v2.1
 
 Remove guess factor based guns from the enemy guns array.
 These guns were introduced since v1.6 but apparently make the master bot motion more
