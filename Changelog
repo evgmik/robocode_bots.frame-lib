@@ -46,6 +46,16 @@ anti-grav physics
 
 TODO: improve flipLastGuessFactorGun, or make new one with cross correlation
 analysis. Looks like there is anti correlation between odd/even waves.
+Looks like it was quite crazy idea, though it did help to boost APS in
+roborumbles.
+
+TODO: work on guess factor lagging gun. There are typically 3-4 wave of my
+bots in the air, so when we fire, we do not know last 3-4 guess factors, so we
+should look for correlation between 3-4 shots in the past. Quick octave plot
+reveals that there is a correlation for the lags up to 4 (sometimes 5) even
+for the top bots  and than it is lost. So we should make a map
+oldLaggingGF->firingGF, which is 2D distribution map and look for
+correlations.
 
 ## v2.1-pre
 
