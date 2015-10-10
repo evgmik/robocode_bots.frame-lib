@@ -107,7 +107,7 @@ public class wave {
 	}
 
 	public double getFiringGuessFactor( InfoBot bot, long time ) {
-		double lateralSpeed = bot.getStatClosestToTime(time).getLateralSpeed( firedPosition );
+		double lateralSpeed = bot.getStatClosestToTime(firedTime).getLateralSpeed( firedPosition );
 		//logger.dbg("lat speed = " + lateralSpeed );
 		return math.signNoZero(lateralSpeed)*getFiringAngleOffset(bot, time)/physics.calculateMEA( bulletSpeed );
 	}
