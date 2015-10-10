@@ -47,6 +47,13 @@ anti-grav physics
 TODO: improve flipLastGuessFactorGun, or make new one with cross correlation
 analysis. Looks like there is anti correlation between odd/even waves.
 
+## v2.1-pre
+
+Remove guess factor based guns from the enemy guns array
+These guns were introduced since v1.6 but apparently make the master bot motion more
+predictive.  It hearts IWillFireNoBullets roborumble stats,
+up to version 2.0 the APS is lower.
+
 ## v2.0
 
 bug fix: guess factor use the lateral velocity from wrong time
