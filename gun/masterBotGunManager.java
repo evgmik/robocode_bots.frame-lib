@@ -25,6 +25,7 @@ public class masterBotGunManager extends gunManager {
 		gunList.add( new randomGun() );
 		gunList.add( new guessFactorGun() );
 		gunList.add( new decayingGuessFactorGun() );
+		gunList.add( new flipLastGuessFactorGun() );
 	}
 
 	public	masterBotGunManager(fighterBot bot) {
