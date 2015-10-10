@@ -47,6 +47,12 @@ anti-grav physics
 TODO: improve flipLastGuessFactorGun, or make new one with cross correlation
 analysis. Looks like there is anti correlation between odd/even waves.
 
+## v2.1
+
+Disable enemy guess factor guns.
+
+Added enemy wave count, to implement lagging guess factor gun.
+
 ## v2.0
 
 bug fix: guess factor use the lateral velocity from wrong time
