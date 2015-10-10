@@ -135,7 +135,7 @@ public class gunManager implements gunManagerInterface {
 		Point2D.Double botPos = bot.getPositionClosestToTime( time );
 
 		// calculate myBot targeting GF
-		updateHitGuessFactor( bot, w.getFiringGuessFactor(bot, time) );
+		updateHitGuessFactor( bot, w.getFiringGuessFactor(bot, time), w.getCount() );
 
 		// count the wave with bullets
 		for ( waveWithBullets wB: myBot.myWaves ) {
@@ -178,8 +178,8 @@ public class gunManager implements gunManagerInterface {
 		return numGuessFactorBins;
 	}
 
-	public void updateHitGuessFactor( InfoBot bot, double gf ) {
-		//logger.dbg("time " + myBot.getTime() + " " + bot.getName() + " " + gf );
+	public void updateHitGuessFactor( InfoBot bot, double gf, int wave_count ) {
+		//logger.dbg("time " + myBot.getTime() + " " + wave_count + " " + bot.getName() + " " + gf );
 		int i = (int)math.gf2bin( gf, numGuessFactorBins );
 		i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
 		// update accumulating map
