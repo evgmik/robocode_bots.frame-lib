@@ -34,7 +34,7 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public void askRadarToTrack() {
-		if ( (myBot.proxy.getGunHeat()/physics.gunCoolingRate + 1) < (180/robocode.Rules.RADAR_TURN_RATE) ) {
+		if ( (myBot.proxy.getGunHeat()/physics.gunCoolingRate - 1 ) < (180/robocode.Rules.RADAR_TURN_RATE) ) {
 			myBot.getRadar().setNeedToTrackTarget( true );
 		} else {
 			myBot.getRadar().setNeedToTrackTarget( false );
