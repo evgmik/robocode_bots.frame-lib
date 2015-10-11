@@ -57,6 +57,11 @@ for the top bots  and than it is lost. So we should make a map
 oldLaggingGF->firingGF, which is 2D distribution map and look for
 correlations.
 
+## v2.2-pre
+
+In melee radar lock now 2 clicks earlier, than before. Seems to boost score
+with my test set.
+
 ## v2.1
 
 Remove guess factor based guns from the enemy guns array.
