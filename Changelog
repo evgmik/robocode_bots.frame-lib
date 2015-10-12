@@ -62,6 +62,12 @@ correlations.
 In melee radar lock now 2 clicks earlier, than before. Seems to boost score
 with my test set.
 
+Circular gun falls back to linear gun scenario, if not enough history available
+
+Master bot does not fire linear gun anymore, circular one does its function
+
+fighterBot danger radius changed 100 -> 200, seems to keep master bot from crossfire situations
+
 ## v2.1
 
 Remove guess factor based guns from the enemy guns array.
