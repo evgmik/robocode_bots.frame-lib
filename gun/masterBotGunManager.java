@@ -20,7 +20,7 @@ public class masterBotGunManager extends gunManager {
 	public	masterBotGunManager() {
 		gunList = new LinkedList<baseGun>();
 		gunList.add( new circularGun() );
-		gunList.add( new linearGun() );
+		//gunList.add( new linearGun() );
 		gunList.add( new headOnGun() );
 		gunList.add( new randomGun() );
 		gunList.add( new guessFactorGun() );
