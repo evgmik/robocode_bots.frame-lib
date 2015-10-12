@@ -49,6 +49,11 @@ analysis. Looks like there is anti correlation between odd/even waves.
 Looks like it was quite crazy idea, though it did help to boost APS in
 roborumbles.
 
+TODO: play with fighterBot danger radius. When I  changed 100 -> 200, I saw
+drastic drop of APS in melee for my test set. But is seems to keep master bot
+from crossfire situations, so may be I need it to depend on number of
+opponents.
+
 TODO: work on guess factor lagging gun. There are typically 3-4 wave of my
 bots in the air, so when we fire, we do not know last 3-4 guess factors, so we
 should look for correlation between 3-4 shots in the past. Quick octave plot
@@ -57,16 +62,16 @@ for the top bots  and than it is lost. So we should make a map
 oldLaggingGF->firingGF, which is 2D distribution map and look for
 correlations.
 
-## v2.2-pre
+## v2.2
 
 In melee radar lock now 2 clicks earlier, than before. Seems to boost score
 with my test set.
 
-Circular gun falls back to linear gun scenario, if not enough history available
+Circular gun falls back to linear gun scenario, if not enough history
+available.
 
-Master bot does not fire linear gun anymore, circular one does its function
+Master bot does not fire linear gun anymore, circular one does its function.
 
-fighterBot danger radius changed 100 -> 200, seems to keep master bot from crossfire situations
 
 ## v2.1
 
