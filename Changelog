@@ -62,6 +62,11 @@ for the top bots  and than it is lost. So we should make a map
 oldLaggingGF->firingGF, which is 2D distribution map and look for
 correlations.
 
+## v2.3-pre
+
+circular gun use a more general method to find intercept, 
+it also tries to project target motion if stats are delayed
+
 ## v2.2
 
 In melee radar lock now 2 clicks earlier, than before. Seems to boost score
