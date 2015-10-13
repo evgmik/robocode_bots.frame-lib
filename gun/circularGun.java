@@ -88,6 +88,8 @@ public class circularGun extends baseGun {
 		posFut.x = tBStat.getX();
 		posFut.y = tBStat.getY();
 
+		// fixme: tBStat.getTime() can be != (time -1) so this assumes that bot fired
+		// from the last known position which is probably not true
 		int tMaxCnt = 100; // maximum calculation depth
 		for ( int t = 1; t < tMaxCnt ; t++) {
 			vxNew =  vx * cosPhi - vy * sinPhi;
