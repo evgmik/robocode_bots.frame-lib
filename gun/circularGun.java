@@ -57,11 +57,13 @@ public class circularGun extends baseGun {
 		botStatPoint bStatPrev = tBot.getStatClosestToTime( time - 2 );
 
 		double phi = 0;
+		double accel = 0;
 		Point2D.Double posFut  = new Point2D.Double(0,0);
 		Point2D.Double vTvecLast, vTvecPrev;
 
 		if ( bStatPrev == null ) {
 			phi = 0; // falling back to linear gun
+			accel = 0;
 			//return fSolultions; // circular gun is not applicable
 		} else {
 			vTvecPrev = bStatPrev.getVelocity();
@@ -71,44 +73,15 @@ public class circularGun extends baseGun {
 			if ( dt == 0 ) {
 				// previous point is the same as current
 				phi = 0; // falling back to linear gun
+				accel = 0; // no way to know acceleration
 				//return fSolultions; // circular gun is not applicable
 			} else {
 				phi = (phiLast - phiPrev)/dt;
+				accel = 0; // fixme: not using accleration
 			}
 		}
 
-		double vx = vTvec.x;
-		double vy = vTvec.y;
-
-		// rotation coefficients
-		double cosPhi = Math.cos(phi);
-		double sinPhi = Math.sin(phi);
-
-		double vxNew, vyNew;
-		posFut.x = tBStat.getX();
-		posFut.y = tBStat.getY();
-
-		// fixme: tBStat.getTime() can be != (time -1) so this assumes that bot fired
-		// from the last known position which is probably not true
-		int tMaxCnt = 100; // maximum calculation depth
-		for ( int t = 1; t < tMaxCnt ; t++) {
-			vxNew =  vx * cosPhi - vy * sinPhi;
-			vyNew =  vx * sinPhi + vy * cosPhi;
-			vx = vxNew;
-			vy = vyNew;
-			posFut.x = posFut.x + vx;
-			posFut.y = posFut.y + vy;
-			if ( !physics.botReacheableBattleField.contains( posFut ) ) {
-				// count one step back when we were on battlefield
-				posFut.x = posFut.x - vx;
-				posFut.y = posFut.y - vy;			
-				break;
-			}
-			if ( fPos.distance( posFut) <= t*bSpeed ) {
-				// bullet reached the target
-				break;
-			}
-		}
+		posFut = getProjectedMotionMeetsBulletPosition( tBStat, phi, accel, fPos, time, bSpeed );
 		firingSolution fS = new firingSolution( this, fPos, posFut, time, bulletEnergy );
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
 		if ( infoLagTime <= 0  ) {
@@ -123,6 +96,50 @@ public class circularGun extends baseGun {
 		fSolultions.add(fS);
 		fSolultions = setTargetBotName( tBot.getName(), fSolultions );
 		return fSolultions;
+	}
+
+	// wave interception predictor for circular motion with acceleration
+	public Point2D.Double getProjectedMotionMeetsBulletPosition( botStatPoint lastSeenStatPoint, double botBodyRotationSpeed, double botAcceleration, Point2D.Double firingPosition, long timeAtFiring , double bSpeed ) {
+
+		Point2D.Double posFut = (Point2D.Double) lastSeenStatPoint.getPosition().clone();
+		Point2D.Double vTvec = (Point2D.Double) lastSeenStatPoint.getVelocity().clone();
+		double vx = vTvec.x;
+		double vy = vTvec.y;
+
+		// rotation coefficients
+		double cosPhi = Math.cos(botBodyRotationSpeed);
+		double sinPhi = Math.sin(botBodyRotationSpeed);
+
+		double vxNew, vyNew;
+
+		// note, that by gun logic at best strtTime = timeAtFiring-1 or less
+		long strtTime = lastSeenStatPoint.getTime();
+
+		long tMaxCnt = 100; // maximum calculation depth
+		for ( long t = strtTime + 1; t < strtTime+tMaxCnt ; t++) {
+			vxNew =  vx * cosPhi - vy * sinPhi;
+			vyNew =  vx * sinPhi + vy * cosPhi;
+			vx = vxNew;
+			vy = vyNew;
+			posFut.x = posFut.x + vx;
+			posFut.y = posFut.y + vy;
+			// now we now bot position at time t
+			if ( !physics.botReacheableBattleField.contains( posFut ) ) {
+				// count one step back when we were on battlefield
+				posFut.x = posFut.x - vx;
+				posFut.y = posFut.y - vy;
+				break;
+			}
+			if ( (t - timeAtFiring) >= 0 ) {
+				// finally we now bot position at timeAtFiring+1
+				// at firing time bullet already moved
+				if ( firingPosition.distance( posFut) <= (t-timeAtFiring+1)*bSpeed ) {
+					// bullet reached the target
+					break;
+				}
+			}
+		}
+		return posFut;
 	}
 }
 
