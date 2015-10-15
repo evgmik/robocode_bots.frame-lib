@@ -161,6 +161,8 @@ public class CoreBot extends AdvancedRobot
 	public String fightType() {
 		double survRatio = 1.0*numEnemyBotsAlive/totalNumOfEnemiesAtStart;
 		String fType = "";
+		if (numEnemyBotsAlive == 0)
+			return "MasterBotAlreadyWon";
 		if ( (numEnemyBotsAlive == 1) && (totalNumOfEnemiesAtStart == 1) )
 			return "1on1";
 		if ( (numEnemyBotsAlive == 1) && (totalNumOfEnemiesAtStart != 1) )
