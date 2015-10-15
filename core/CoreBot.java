@@ -160,13 +160,21 @@ public class CoreBot extends AdvancedRobot
 
 	public String fightType() {
 		double survRatio = 1.0*numEnemyBotsAlive/totalNumOfEnemiesAtStart;
+		String fType = "";
 		if ( (numEnemyBotsAlive == 1) && (totalNumOfEnemiesAtStart == 1) )
 			return "1on1";
 		if ( (numEnemyBotsAlive == 1) && (totalNumOfEnemiesAtStart != 1) )
 			return "melee1on1";
-		if ( survRatio > 2./3. )
-			return "melee";
-		return "meleeMidle";
+		if ( (numEnemyBotsAlive > 1) && (totalNumOfEnemiesAtStart != 1) )
+			fType = "meleeVeterans";
+		if ( (numEnemyBotsAlive > 4) && (totalNumOfEnemiesAtStart != 1) )
+			fType = "meleeSeasoned";
+		if ( (numEnemyBotsAlive > 7) && (totalNumOfEnemiesAtStart != 1) )
+			fType = "melee";
+		//if ( survRatio > 7./10. )
+			//return "melee";
+
+		return fType;
 	}
 
 	public double distTo(double x, double y) {
