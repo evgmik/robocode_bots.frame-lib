@@ -188,11 +188,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		}
 
 		LinkedList<firingSolution> gunFSs = null;
-		for ( baseGun g: gunList ) {
-			gunFSs =  g.getFiringSolutions( this, tBot, time, bulletEnergy ) ;
-			fSolutions.addAll( gunFSs );
-		}
-		
+		fSolutions = _gunManager.getFiringSolutions( _gameinfo.getFighterBot(tBot.getName()), time, bulletEnergy);
+
 		return fSolutions;
 	}
 
