@@ -122,7 +122,7 @@ public class firingSolution {
 		// distance from bullet path to the point of interest
 		double dL = 0;
 		double dangerRadius = physics.robotHalfSize;
-		double bulletDanger = 1;
+		double bulletDanger = 1 * qualityOfSolution;
 
 		double dist;
 
