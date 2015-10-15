@@ -66,6 +66,7 @@ public class gunManager implements gunManagerInterface {
 		gunList = gunListForGameType.get( fightType );
 		if ( gunList == null ) {
 			logger.dbg("no gun list for the fight type: " + fightType  + ", choosing default");
+			gunList = gunListForGameType.get( "default" );
 		}
 		if ( gunList == null ) {
 			logger.error("ERROR: no gun list for the default fight type. Assigning empty list");
