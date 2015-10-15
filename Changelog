@@ -64,8 +64,11 @@ correlations.
 
 ## v2.3-pre
 
-circular gun use a more general method to find intercept, 
-it also tries to project target motion if stats are delayed
+Circular gun use a more general method to find intercept, 
+it also tries to project target motion if stats are delayed.
+
+Master bot guns are set in config which can hadle different game types.
+Enemy bot guns are set in config, as well.
 
 ## v2.2
 
