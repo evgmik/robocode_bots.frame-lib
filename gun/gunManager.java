@@ -57,9 +57,20 @@ public class gunManager implements gunManagerInterface {
 		gunListForGameType = gMap;
 	}
 
+	public LinkedList<baseGun> getGunList() {
+		return gunList;
+	}
+
 	public void initTic() {
 		String fightType = myBot.getGameInfo().fightType();
 		gunList = gunListForGameType.get( fightType );
+		if ( gunList == null ) {
+			logger.dbg("no gun list for the fight type: " + fightType  + ", choosing default");
+		}
+		if ( gunList == null ) {
+			logger.error("ERROR: no gun list for the default fight type. Assigning empty list");
+			gunList = new LinkedList<baseGun>();
+		}
 	}
 
 	public void manage() {
