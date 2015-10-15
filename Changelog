@@ -70,6 +70,10 @@ it also tries to project target motion if stats are delayed.
 Master bot guns are set in config which can hadle different game types.
 Enemy bot guns are set in config, as well.
 
+Enemy gunManager is used to provide virtual bullets against master bot
+
+firingSolution plots bullet quality of solution
+
 ## v2.2
 
 In melee radar lock now 2 clicks earlier, than before. Seems to boost score
