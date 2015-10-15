@@ -190,6 +190,20 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		LinkedList<firingSolution> gunFSs = null;
 		fSolutions = _gunManager.getFiringSolutions( _gameinfo.getFighterBot(tBot.getName()), time, bulletEnergy);
 
+		// renormalizing the danger of solutions
+		//double maxQ = -1e6; 
+		//double q;
+		//for ( firingSolution f: fSolutions) {
+			//q = f.getQualityOfSolution();
+			//if ( q > maxQ ) {
+				//maxQ = q;
+			//}
+		//}
+		//for ( firingSolution f: fSolutions) {
+			//q = f.getQualityOfSolution()/maxQ;
+			//f.setQualityOfSolution(q);
+		//}
+
 		return fSolutions;
 	}
 
