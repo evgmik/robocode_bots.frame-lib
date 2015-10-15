@@ -133,6 +133,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public void initTic() {
+		_gunManager.initTic();
 		processScheduledEnergyDrop();
 		_motion.initTic();
 	}

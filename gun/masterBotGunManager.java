@@ -18,14 +18,6 @@ import java.awt.Color;
 public class masterBotGunManager extends gunManager {
 
 	public	masterBotGunManager() {
-		gunList = new LinkedList<baseGun>();
-		gunList.add( new circularGun() );
-		//gunList.add( new linearGun() );
-		gunList.add( new headOnGun() );
-		gunList.add( new randomGun() );
-		gunList.add( new guessFactorGun() );
-		gunList.add( new decayingGuessFactorGun() );
-		gunList.add( new flipLastGuessFactorGun() );
 	}
 
 	public	masterBotGunManager(fighterBot bot) {

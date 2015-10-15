@@ -19,7 +19,8 @@ import robocode.Rules.*;
 
 
 public class gunManager implements gunManagerInterface {
-	public LinkedList<baseGun> gunList = new LinkedList<baseGun>();
+	public HashMap<String, LinkedList<baseGun>> gunListForGameType = new HashMap<String, LinkedList<baseGun>>();
+	public LinkedList<baseGun> gunList = new LinkedList<baseGun>(); // this one assigned from above
 	public fighterBot myBot;
 	fighterBot targetBot = null;
 	protected int  firedCount = 0;
@@ -45,13 +46,20 @@ public class gunManager implements gunManagerInterface {
 	protected HashMap<String, double[]> decayingGuessFactorMap = new HashMap<String, double[]>();
 
 	public	gunManager() {
-		gunList = new LinkedList<baseGun>();
-		gunList.add( new linearGun() );
 	}
 
 	public	gunManager(fighterBot bot) {
 		this();
 		myBot = bot;
+	}
+
+	public	void setGunsMap(HashMap<String, LinkedList<baseGun>> gMap) {
+		gunListForGameType = gMap;
+	}
+
+	public void initTic() {
+		String fightType = myBot.getGameInfo().fightType();
+		gunList = gunListForGameType.get( fightType );
 	}
 
 	public void manage() {
