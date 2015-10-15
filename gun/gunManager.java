@@ -83,6 +83,7 @@ public class gunManager implements gunManagerInterface {
 		String fireBotName = e.getName();
 
 		incrHitCounts( trgtBotName, fireBotName );
+		// fixme: find which virtual bullet it is and update counters for enemy bots
 	}
 
 	public fighterBot getTarget() {
