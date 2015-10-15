@@ -218,11 +218,40 @@ public class firingSolution {
 		}
 	}
 
+	public void drawBulletDanger( Graphics2D g, long time ) {
+		if ( firingAngle == Double.NaN ) {
+			logger.error( "This should not happen: the firing solution does not have firingAngle" );
+		} else {
+			g.setColor( color );
+			double a = math.game_angles2cortesian( firingAngle );
+			double dx;
+			double dy;
+			double dist;
+			double R = 5;
+
+			dist = R;
+			dx = dist*Math.cos( Math.toRadians(a) );
+			dy = dist*Math.sin( Math.toRadians(a) );
+
+			Point2D.Double strtP = getLocationAt( time );
+			strtP.x = strtP.x + dx;
+			strtP.y = strtP.y + dy;
+
+			dist = 20*qualityOfSolution;
+			dx = dist*Math.cos( Math.toRadians(a) );
+			dy = dist*Math.sin( Math.toRadians(a) );
+
+			Point2D.Double endP = new Point2D.Double( strtP.x + dx, strtP.y + dy );
+			graphics.drawLine( g, strtP,  endP );
+		}
+	}
+
 	public void onPaint(Graphics2D g, long time) {
 		//drawFiringPositon( g, time );
 		//drawTargetPositon( g, time );
 		//drawBulletPath( g, time );
 		drawBulletLocation( g, time );
+		drawBulletDanger( g, time );
 	}
 
 	public void onPaint(Graphics2D g ) {
