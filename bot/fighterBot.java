@@ -179,6 +179,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		
 		// how this bot fires to the target bot
 		LinkedList<firingSolution> fSolutions = new LinkedList<firingSolution>();
+		LinkedList<baseGun> gunList = _gunManager.getGunList();
 
 		if ( !tBot.getName().equals( this.getGunManager().getClosestTarget().getName() ) && getGameInfo().getNumEnemyAlive() >=4 ) {
 			// target bot bot is not the closest
@@ -187,39 +188,10 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		}
 
 		LinkedList<firingSolution> gunFSs = null;
-		// FIXME: here should be loop over all available guns
-		baseGun g = new headOnGun();
-		gunFSs =  g.getFiringSolutions( this, tBot, time, bulletEnergy ) ;
-		fSolutions.addAll( gunFSs );
-
-		if ( getGameInfo().getNumEnemyAlive() >= 7 ) {
-			return fSolutions;
+		for ( baseGun g: gunList ) {
+			gunFSs =  g.getFiringSolutions( this, tBot, time, bulletEnergy ) ;
+			fSolutions.addAll( gunFSs );
 		}
-
-		g = new linearGun();
-		gunFSs =  g.getFiringSolutions( this, tBot, time, bulletEnergy ) ;
-		fSolutions.addAll( gunFSs );
-		if ( getGameInfo().getNumEnemyAlive() >= 5 ) {
-			return fSolutions;
-		}
-
-
-		// now we have small enough enemy number to take all the guns
-		g = new circularGun();
-		gunFSs =  g.getFiringSolutions( this, tBot, time, bulletEnergy ) ;
-		fSolutions.addAll( gunFSs );
-		
-		//g = new guessFactorGun();
-		//gunFSs =  g.getFiringSolutions( this, tBot, time, bulletEnergy ) ;
-		//fSolutions.addAll( gunFSs );
-		//
-		//g = new decayingGuessFactorGun();
-		//gunFSs =  g.getFiringSolutions( this, tBot, time, bulletEnergy ) ;
-		//fSolutions.addAll( gunFSs );
-		//
-		//g = new flipLastGuessFactorGun();
-		//gunFSs =  g.getFiringSolutions( this, tBot, time, bulletEnergy ) ;
-		//fSolutions.addAll( gunFSs );
 		
 		return fSolutions;
 	}
