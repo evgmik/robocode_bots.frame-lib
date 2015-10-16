@@ -222,6 +222,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			LinkedList<firingSolution> fSolutions = eBot.getFiringSolutions( fBot, w.getFiredTime(), w.getBulletEnergy() );
 			for ( firingSolution fS: fSolutions ) {
 				wB.addFiringSolution(fS);
+				eBot.getGunManager().incrFiredAtEnemyByGun(fS);
 			}
 			if ( fSolutions.size() == 0 ) {
 				// this wave has no threat
