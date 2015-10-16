@@ -110,7 +110,6 @@ public class  wavesManager {
 			if ( firedBotName.equals( w.firedBot.getName() ) ) {
 				// the wave belong to the event firedBot
 				// now we need to see if it the wave which hit
-				// note time+1, robocode passed the extra tic
 				double distTraveled = w.getDistanceTraveledAtTime( timeNow );
 				double distToHitPos = distTraveled - posHit.distance( w.getFiredPosition() );
 				if ( distToHitPos  <= physics.robotHalfDiagonal ) {
