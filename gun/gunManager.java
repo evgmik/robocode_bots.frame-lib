@@ -79,21 +79,49 @@ public class gunManager implements gunManagerInterface {
 
 	// someone hit the master bot
 	public void onHitByBullet(HitByBulletEvent e) {
+		// target is actually master bot
 		String trgtBotName = myBot.getGameInfo().getMasterBot().getName();
 		String fireBotName = e.getName();
 
 		incrHitCounts( trgtBotName, fireBotName );
-		// fixme: find which virtual bullet it is and update counters for enemy bots
 		if ( fireBotName.equals( myBot.getName() ) ) {
 			// this is the bot which send the bullet to hit the masterBot
-			Bullet b = e.getBullet();
 			wave w = myBot.getGameInfo().getWavesManager().getWaveMatching( e );
 			if ( w == null) {
 				logger.dbg( "cannot locate the wave matching HitByBulletEvent");
 				return;
 			} else {
 				logger.dbg( "find the wave matching HitByBulletEvent");
+				// this bot waves are in the list of the master bot enemy waves
+				// FIXME: enemy bot must have its own list of fired waves
+				// otherwise selection is not efficient since we selecting
+				// other bots waves too
+				LinkedList<waveWithBullets> myWaves = myBot.getGameInfo().getFighterBot( trgtBotName ).getEnemyWaves();
+				// which of my waves with bullet it is
+				for (waveWithBullets wB : myWaves ) {
+					if ( wB.equals( w ) ) {
+						Bullet b = e.getBullet();
+						Point2D.Double posHit = new Point2D.Double( b.getX(), b.getY() );
+						LinkedList<firingSolution> fSwhichHit =  wB.getFiringSolutionsWhichHitBotAt( posHit, myBot.getTime() );
+						String gunName;
+						String2D key;
+						if ( fSwhichHit.size() == 0 ) {
+							gunName = "unknownGun";
+							logger.dbg("we are hit by gun " + gunName );
+							key = new String2D( gunName, trgtBotName );
+							hitByMyGun.incrHashCounter( key );
+						} else {
+							for( firingSolution fS : fSwhichHit ) {
+								gunName = fS.getGunName();
+								logger.dbg("we are hit by gun " + gunName );
+								key = new String2D( gunName, trgtBotName );
+								hitByMyGun.incrHashCounter( key );
+							}
+						}
 
+						break;
+					}
+				}
 			}
 		}
 	}
