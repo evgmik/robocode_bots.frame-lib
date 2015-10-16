@@ -84,6 +84,18 @@ public class gunManager implements gunManagerInterface {
 
 		incrHitCounts( trgtBotName, fireBotName );
 		// fixme: find which virtual bullet it is and update counters for enemy bots
+		if ( fireBotName.equals( myBot.getName() ) ) {
+			// this is the bot which send the bullet to hit the masterBot
+			Bullet b = e.getBullet();
+			wave w = myBot.getGameInfo().getWavesManager().getWaveMatching( e );
+			if ( w == null) {
+				logger.dbg( "cannot locate the wave matching HitByBulletEvent");
+				return;
+			} else {
+				logger.dbg( "find the wave matching HitByBulletEvent");
+
+			}
+		}
 	}
 
 	public fighterBot getTarget() {
