@@ -64,6 +64,8 @@ correlations.
 
 ## v2.3-pre
 
+TODO: add proper counting stats for enemy firing solutions
+
 Circular gun use a more general method to find intercept, 
 it also tries to project target motion if stats are delayed.
 
@@ -75,6 +77,7 @@ Enemy gunManager is used to provide virtual bullets against master bot
 firingSolution plots bullet quality of solution
 
 ## v2.2
+
 
 In melee radar lock now 2 clicks earlier, than before. Seems to boost score
 with my test set.
