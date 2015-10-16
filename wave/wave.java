@@ -50,6 +50,10 @@ public class wave {
 		return firedBot;
 	}
 
+	public Point2D.Double getFiredPosition() {
+		return (Point2D.Double) firedPosition.clone();
+	}
+
 	public long getFiredTime() {
 		return firedTime;
 	}

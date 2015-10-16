@@ -158,6 +158,10 @@ public class CoreBot extends AdvancedRobot
 		//return ( super.getTime() + 100000*(getRoundNum()+1) ); 
 	}
 
+	public gameInfo getGameInfo() {
+		return _gameinfo;
+	}
+
 	public String fightType() {
 		double survRatio = 1.0*numEnemyBotsAlive/totalNumOfEnemiesAtStart;
 		String fType = "";

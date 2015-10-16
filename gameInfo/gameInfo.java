@@ -79,6 +79,10 @@ public class gameInfo implements botListener {
 		return myBot.numEnemyBotsAlive;
 	}
 
+	public wavesManager getWavesManager() {
+		return _wavesManager;
+	}
+
 	public void run() {
 		for (fighterBot b : liveBots.values()) {
 			b.manage();
