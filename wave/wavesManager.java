@@ -8,6 +8,7 @@ import eem.frame.bot.*;
 import eem.frame.misc.*;
 
 import robocode.Bullet;
+import robocode.*;
 
 import java.util.Random;
 import java.awt.Color;
@@ -94,6 +95,34 @@ public class  wavesManager {
 
 	public void addWaveListener(waveListener l) {
 		waveListeners.add(l);
+	}
+
+	public wave getWaveMatching( HitByBulletEvent e ) {
+		wave wRet = null;
+		Bullet b = e.getBullet();
+		Point2D.Double posHit = new Point2D.Double( b.getX(), b.getY() );
+		String firedBotName = e.getName();
+		String trgtBotName = myBot.getName();
+		InfoBot trgtBot = myBot.getGameInfo().getFighterBot( trgtBotName ).getInfoBot();
+		long timeNow = myBot.getTime();
+		double minDist = 1e6; // crazy large
+		for( wave w: Waves ) {
+			if ( firedBotName.equals( w.firedBot.getName() ) ) {
+				// the wave belong to the event firedBot
+				// now we need to see if it the wave which hit
+				// note time+1, robocode passed the extra tic
+				double distTraveled = w.getDistanceTraveledAtTime( timeNow );
+				double distToHitPos = distTraveled - posHit.distance( w.getFiredPosition() );
+				if ( distToHitPos  <= physics.robotHalfDiagonal ) {
+					if ( distToHitPos < minDist ) {
+						// this is the wave which is over and thus hit the bot
+						wRet = w;
+						minDist = distToHitPos;
+					}
+				}
+			}
+		}
+		return wRet;
 	}
 
 	public void onPaint(Graphics2D g) {
