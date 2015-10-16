@@ -337,9 +337,9 @@ public class gunManager implements gunManagerInterface {
 		}
 		reportHitByMe();
 		reportGFStats();
+		reportMyGunStats();
 		if ( myBot.isItMasterBotDriver() ) {
 			reportBulletHitBullet();
-			reportMyGunStats();
 		}
 	}
 
