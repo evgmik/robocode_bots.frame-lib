@@ -111,7 +111,7 @@ public class  wavesManager {
 				// the wave belong to the event firedBot
 				// now we need to see if it the wave which hit
 				double distTraveled = w.getDistanceTraveledAtTime( timeNow );
-				double distToHitPos = distTraveled - posHit.distance( w.getFiredPosition() );
+				double distToHitPos = Math.abs( distTraveled - posHit.distance( w.getFiredPosition() ) );
 				if ( distToHitPos  <= physics.robotHalfDiagonal ) {
 					if ( distToHitPos < minDist ) {
 						// this is the wave which is over and thus hit the bot
