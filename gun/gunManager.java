@@ -207,8 +207,11 @@ public class gunManager implements gunManagerInterface {
 						// this bullet is intended for this bot
 						String gunName = fS.getGunName();
 						String2D key = new String2D( gunName, enemyName );
-						hitByMyGun.incrHashCounter( key );
-						wB.removeFiringSolution( fS );
+						if ( fS.isActive() ) {
+							hitByMyGun.incrHashCounter( key );
+							//wB.removeFiringSolution( fS );
+							fS.setActiveFlag( false );
+						}
 					} else {
 						// FIXME: count somehow unintentional hits
 					}
@@ -264,8 +267,11 @@ public class gunManager implements gunManagerInterface {
 				for ( firingSolution fS : hitSolutions ) {
 					String gunName = fS.getGunName();
 					String2D key = new String2D( gunName, wB.getFiredBot().getName() );
-					hitByEnemyGun.incrHashCounter( key );
-					wB.removeFiringSolution( fS );
+					if ( fS.isActive() ) {
+						hitByEnemyGun.incrHashCounter( key );
+						//wB.removeFiringSolution( fS );
+						fS.setActiveFlag( false );
+					}
 				}
 			}
 		}
