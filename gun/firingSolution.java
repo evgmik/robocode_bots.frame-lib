@@ -16,6 +16,7 @@ public class firingSolution {
 	public Point2D.Double firingPosition;
 	public Point2D.Double targetPosition;
 	public String gunName = "";
+	public boolean activeFlag = true;
 	public Color color = new Color(0x00, 0x00, 0x00, 0xff); // default color
 	// Guns algorithm should set qualityOfSolution.
 	// The idea behind that some guns need certain number of info points in a raw
@@ -83,6 +84,13 @@ public class firingSolution {
 		return targetBotName;
 	}
 
+	public boolean isActive() {
+		return activeFlag;
+	}
+
+	public void setActiveFlag( boolean status ) {
+		activeFlag = status;
+	}
 
 	public void setColor( Color c ) {
 		color = c;
