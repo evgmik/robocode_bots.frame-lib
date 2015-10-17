@@ -224,6 +224,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				wB.addFiringSolution(fS);
 				eBot.getGunManager().incrFiredAtEnemyByGun(fS);
 			}
+			// unknown gun does not make solutions so it had to be forced in
+			eBot.getGunManager().incrFiredAtEnemyByGun(new unknownGun(), fBot);
 			if ( fSolutions.size() == 0 ) {
 				// this wave has no threat
 				// ignoring it
