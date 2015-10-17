@@ -64,7 +64,9 @@ correlations.
 
 ## v2.3-pre
 
-TODO: add proper counting stats for enemy firing solutions
+Proper counting stats for real enemy hits.
+
+Take in account enemy hit stats, when calculate firing solution danger.
 
 Circular gun use a more general method to find intercept, 
 it also tries to project target motion if stats are delayed.
