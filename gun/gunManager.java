@@ -91,7 +91,6 @@ public class gunManager implements gunManagerInterface {
 				logger.dbg( "cannot locate the wave matching HitByBulletEvent");
 				return;
 			} else {
-				logger.dbg( "find the wave matching HitByBulletEvent");
 				// this bot waves are in the list of the master bot enemy waves
 				// FIXME: enemy bot must have its own list of fired waves
 				// otherwise selection is not efficient since we selecting
@@ -107,13 +106,13 @@ public class gunManager implements gunManagerInterface {
 						String2D key;
 						if ( fSwhichHit.size() == 0 ) {
 							gunName = "unknownGun";
-							logger.dbg("we are hit by gun " + gunName );
+							//logger.dbg("we are hit by gun " + gunName );
 							key = new String2D( gunName, trgtBotName );
 							hitByMyGun.incrHashCounter( key );
 						} else {
 							for( firingSolution fS : fSwhichHit ) {
 								gunName = fS.getGunName();
-								logger.dbg("we are hit by gun " + gunName );
+								//logger.dbg("we are hit by gun " + gunName );
 								key = new String2D( gunName, trgtBotName );
 								hitByMyGun.incrHashCounter( key );
 							}
