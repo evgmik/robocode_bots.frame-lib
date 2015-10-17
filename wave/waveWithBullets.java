@@ -53,6 +53,10 @@ public class waveWithBullets extends wave {
 		return hitSolutions;
 	}
 
+	public int getNumOfBullets() {
+		return firingSolutions.size();
+	}
+
 	public void onPaint(Graphics2D g, long time) {
 		super.onPaint( g, time );
 		g.setColor(waveColor);
