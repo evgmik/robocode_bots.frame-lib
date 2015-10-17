@@ -358,6 +358,11 @@ public class gunManager implements gunManagerInterface {
 		firedAtEnemyByGun.incrHashCounter( key );
 	}
 
+	public void incrFiredAtEnemyByGun(baseGun g, InfoBot eBot) {
+		String2D key = new String2D( g.getName(), eBot.getName() );
+		firedAtEnemyByGun.incrHashCounter( key );
+	}
+
 	public void incrFiredByEnemy(String enemyName) {
 		firedByEnemy.incrHashCounter( enemyName );
 	}
