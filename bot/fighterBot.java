@@ -194,7 +194,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		double maxQ = -1e6; 
 		double q;
 		for ( firingSolution f: fSolutions) {
-			q = f.getQualityOfSolution();
+			q = Math.abs( f.getQualityOfSolution() );
 			if ( q > maxQ ) {
 				maxQ = q;
 			}
