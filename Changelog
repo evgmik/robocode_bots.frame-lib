@@ -78,6 +78,8 @@ Enemy gunManager is used to provide virtual bullets against master bot
 
 firingSolution plots bullet quality of solution
 
+Added safetyCorridorGun gun to push my bot to safety or random location
+
 ## v2.2
 
 
