@@ -218,6 +218,11 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			fighterBot eBot = enemyBots.get( enemyName );
 			logger.noise("bot " + fBot.getName() + " added enemy wave from " + enemyName );
 			_gunManager.incrFiredByEnemy( enemyName ); 
+			if ( eBot.isItMasterBotDriver() ) {
+				// we do  not mess with master bot waves
+				// enemy bot do not count or use them
+				return;
+			}
 			waveWithBullets wB = new waveWithBullets( w );
 			LinkedList<firingSolution> fSolutions = eBot.getFiringSolutions( fBot, w.getFiredTime(), w.getBulletEnergy() );
 			for ( firingSolution fS: fSolutions ) {
