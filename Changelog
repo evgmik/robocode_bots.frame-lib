@@ -62,7 +62,14 @@ for the top bots  and than it is lost. So we should make a map
 oldLaggingGF->firingGF, which is 2D distribution map and look for
 correlations.
 
-## v2.3-pre
+TODO: analyze missed bullets to see which gun the enemy was using
+
+## v2.4
+
+Fixed bug, with double counting of the master bot gun shots, which was
+introduced in v2.3
+
+## v2.3
 
 Proper counting stats for real enemy hits.
 
