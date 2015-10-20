@@ -62,7 +62,8 @@ for the top bots  and than it is lost. So we should make a map
 oldLaggingGF->firingGF, which is 2D distribution map and look for
 correlations.
 
-TODO: analyze missed bullets to see which gun the enemy was using
+DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
+done, this event is not provided for enemy bullets
 
 ## v2.4
 
