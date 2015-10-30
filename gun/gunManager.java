@@ -106,13 +106,13 @@ public class gunManager implements gunManagerInterface {
 						String2D key;
 						if ( fSwhichHit.size() == 0 ) {
 							gunName = "unknownGun";
-							//logger.dbg("we are hit by gun " + gunName );
+							//logger.dbg("masterBot is hit by " + gunName + " from bot " + fireBotName );
 							key = new String2D( gunName, trgtBotName );
 							hitByMyGun.incrHashCounter( key );
 						} else {
 							for( firingSolution fS : fSwhichHit ) {
 								gunName = fS.getGunName();
-								//logger.dbg("we are hit by gun " + gunName );
+								//logger.dbg("masterBot is hit by " + gunName + " from bot " + fireBotName );
 								key = new String2D( gunName, trgtBotName );
 								hitByMyGun.incrHashCounter( key );
 							}
@@ -267,6 +267,7 @@ public class gunManager implements gunManagerInterface {
 					String gunName = fS.getGunName();
 					String2D key = new String2D( gunName, wB.getFiredBot().getName() );
 					if ( fS.isActive() ) {
+						//logger.dbg(myBot.getName() + " was hit by " + gunName +" from " + wB.getFiredBot().getName() );
 						hitByEnemyGun.incrHashCounter( key );
 						//wB.removeFiringSolution( fS );
 						fS.setActiveFlag( false );
