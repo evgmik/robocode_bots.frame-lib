@@ -205,8 +205,6 @@ public class gunManager implements gunManagerInterface {
 				for ( firingSolution fS : hitSolutions ) {
 					if ( fS.getTargetBotName().equals(enemyName) ) {
 						// this bullet is intended for this bot
-						String gunName = fS.getGunName();
-						String2D key = new String2D( gunName, enemyName );
 						if ( fS.isActive() ) {
 							fS.setActiveFlag( false );
 						}
