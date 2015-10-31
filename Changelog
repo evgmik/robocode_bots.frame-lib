@@ -65,6 +65,14 @@ correlations.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v2.5-pre
+
+When counting hits and missed fire, do it only for waves which passed over a
+bot. This avoid counting as missed the waves which are still in the air when
+enemy dies, also for the case of virtual bullets, it does not count as a miss
+the case when radar was looking away during the wave pass over the bot.
+
+
 ## v2.4
 
 Fixed bug, with double counting of the master bot gun shots, which was
