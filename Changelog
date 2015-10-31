@@ -69,6 +69,10 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v2.6
+
+Revert back number largest number of bots when I fire a wave to everyone: 10->4
+
 ## v2.5
 
 When counting hits and missed fire, do it only for waves which passed over a
