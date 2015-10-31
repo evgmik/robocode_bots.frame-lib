@@ -69,7 +69,7 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
-## v2.5-pre
+## v2.5
 
 When counting hits and missed fire, do it only for waves which passed over a
 bot. This avoid counting as missed the waves which are still in the air when
