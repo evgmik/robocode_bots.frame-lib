@@ -76,6 +76,7 @@ bot. This avoid counting as missed the waves which are still in the air when
 enemy dies, also for the case of virtual bullets, it does not count as a miss
 the case when radar was looking away during the wave pass over the bot.
 
+Increase number of bots to which I fire virtual waves at melee: 4 -> 10
 
 ## v2.4
 
