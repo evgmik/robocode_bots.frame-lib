@@ -62,6 +62,10 @@ for the top bots  and than it is lost. So we should make a map
 oldLaggingGF->firingGF, which is 2D distribution map and look for
 correlations.
 
+TODO: if radar looks other way, onHitByBullet -> scheduledEdrop wrongly force  enemy to emmit 
+non existing bullet. Need to check the last scan time and scheduledEdrop time
+to avoid this.
+
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
