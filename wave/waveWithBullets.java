@@ -19,6 +19,10 @@ public class waveWithBullets extends wave {
 		super( w.getFiredBot(), w.getFiredTime(), w.getBulletEnergy() );
 	}
 
+	public LinkedList<firingSolution> getFiringSolutions() {
+		return firingSolutions;
+	}
+
 	public void addFiringSolution( firingSolution fS ) {
 		firingSolutions.add(fS);
 	}
