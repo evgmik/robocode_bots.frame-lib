@@ -200,6 +200,7 @@ public class gunManager implements gunManagerInterface {
 		// count the wave with bullets
 		for ( waveWithBullets wB: myBot.myWaves ) {
 			if ( w.equals( wB) ) {
+				wB.setMyWavePassedOverTargetFlag( enemyName, true );
 				LinkedList<firingSolution> hitSolutions = wB.getFiringSolutionsWhichHitBotAt( botPos,  time );
 				for ( firingSolution fS : hitSolutions ) {
 					if ( fS.getTargetBotName().equals(enemyName) ) {
@@ -207,8 +208,6 @@ public class gunManager implements gunManagerInterface {
 						String gunName = fS.getGunName();
 						String2D key = new String2D( gunName, enemyName );
 						if ( fS.isActive() ) {
-							hitByMyGun.incrHashCounter( key );
-							//wB.removeFiringSolution( fS );
 							fS.setActiveFlag( false );
 						}
 					} else {
