@@ -294,6 +294,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			// going over my waves
 			for ( waveWithBullets mW: myWaves ) {
 				if ( mW.equals( w ) ) {
+					checkMyWaveForHits( mW );
 					myWaves.remove(mW);
 					logger.noise(fBot.getName() + ": my wave is removed");
 					break;
