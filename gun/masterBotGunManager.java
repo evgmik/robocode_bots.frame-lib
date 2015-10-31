@@ -239,7 +239,7 @@ public class masterBotGunManager extends gunManager {
 		double travelTime = dist/slowestBulletSpeed;
 		double fullEscapeArc = 2*robocode.Rules.MAX_VELOCITY * travelTime;
 		
-		w=(2*physics.robotHalfSize)/fullEscapeArc; // ratio of targer size to arc
+		w=(2*physics.robotHalfSize)/fullEscapeArc; // ratio of target size to arc
 		return w;
 	}
 
