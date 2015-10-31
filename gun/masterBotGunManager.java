@@ -88,7 +88,7 @@ public class masterBotGunManager extends gunManager {
 			}
 			aimAndSetGun( fS );
 			// if getNumEnemyAlive is too large we have a lot of skipped turns
-			if ( myBot.getGameInfo().getNumEnemyAlive() <= 4 ) {
+			if ( myBot.getGameInfo().getNumEnemyAlive() <= 10 ) {
 				// now we add virtual solutions for other bots
 				for ( fighterBot eBot: myBot.getEnemyBots() ) {
 					// skip targetBot we already have its firing solutions
