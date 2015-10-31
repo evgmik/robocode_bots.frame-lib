@@ -148,6 +148,17 @@ public class gunManager implements gunManagerInterface {
 		String trgtBotName = e.getName();
 		String fireBotName = myBot.getGameInfo().getMasterBot().getName();
 		incrHitCounts( trgtBotName, fireBotName );
+		Bullet b = e.getBullet();
+		long time = myBot.getTime();
+		Point2D.Double posHit = new Point2D.Double( b.getX(), b.getY() );
+
+		wave w = myBot.getGameInfo().getWavesManager().getWaveMatching( fireBotName, trgtBotName, posHit, time );
+		for ( waveWithBullets wB: myBot.myWaves ) {
+			if ( w.equals( wB) ) {
+				wB.setMyWavePassedOverTargetFlag( trgtBotName, true );
+				wB.markFiringSolutionWhichHitBotAt( posHit, trgtBotName, time);
+			}
+		}
 	}
 	
 	// our bullet hit a bullet from another bot
