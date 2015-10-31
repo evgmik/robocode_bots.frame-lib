@@ -98,13 +98,17 @@ public class  wavesManager {
 	}
 
 	public wave getWaveMatching( HitByBulletEvent e ) {
-		wave wRet = null;
 		Bullet b = e.getBullet();
 		Point2D.Double posHit = new Point2D.Double( b.getX(), b.getY() );
 		String firedBotName = e.getName();
 		String trgtBotName = myBot.getName();
 		InfoBot trgtBot = myBot.getGameInfo().getFighterBot( trgtBotName ).getInfoBot();
 		long timeNow = myBot.getTime();
+		return  getWaveMatching( firedBotName, trgtBotName, posHit, timeNow );
+	}
+
+	public wave getWaveMatching( String firedBotName, String trgtBotName, Point2D.Double posHit, long timeNow ) {
+		wave wRet = null;
 		double minDist = 1e6; // crazy large
 		for( wave w: Waves ) {
 			if ( firedBotName.equals( w.firedBot.getName() ) ) {
