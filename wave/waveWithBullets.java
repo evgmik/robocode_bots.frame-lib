@@ -53,6 +53,14 @@ public class waveWithBullets extends wave {
 		return hitSolutions;
 	}
 
+	public void setMyWavePassedOverTargetFlag( String enemyName, boolean status) {
+		for ( firingSolution fS : firingSolutions ) {
+			if ( fS.getTargetBotName().equals( enemyName ) ) {
+				fS.setMyWavePassedOverTargetFlag( status );
+			}
+		}
+	}
+
 	public int getNumOfBullets() {
 		return firingSolutions.size();
 	}

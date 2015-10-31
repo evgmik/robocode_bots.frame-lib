@@ -16,7 +16,8 @@ public class firingSolution {
 	public Point2D.Double firingPosition;
 	public Point2D.Double targetPosition;
 	public String gunName = "";
-	public boolean activeFlag = true;
+	public boolean activeFlag = true; // if this firing solution hit targer set to false
+	public boolean myWavePassedOverTargetFlag = false;
 	public Color color = new Color(0x00, 0x00, 0x00, 0xff); // default color
 	// Guns algorithm should set qualityOfSolution.
 	// The idea behind that some guns need certain number of info points in a raw
@@ -90,6 +91,14 @@ public class firingSolution {
 
 	public void setActiveFlag( boolean status ) {
 		activeFlag = status;
+	}
+
+	public boolean isMyWavePassedOverTargetFlag() {
+		return myWavePassedOverTargetFlag;
+	}
+
+	public void setMyWavePassedOverTargetFlag( boolean status ) {
+		myWavePassedOverTargetFlag = status;
 	}
 
 	public void setColor( Color c ) {
