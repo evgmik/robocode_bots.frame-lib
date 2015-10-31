@@ -212,17 +212,7 @@ public class gunManager implements gunManagerInterface {
 		for ( waveWithBullets wB: myBot.myWaves ) {
 			if ( w.equals( wB) ) {
 				wB.setMyWavePassedOverTargetFlag( enemyName, true );
-				LinkedList<firingSolution> hitSolutions = wB.getFiringSolutionsWhichHitBotAt( botPos,  time );
-				for ( firingSolution fS : hitSolutions ) {
-					if ( fS.getTargetBotName().equals(enemyName) ) {
-						// this bullet is intended for this bot
-						if ( fS.isActive() ) {
-							fS.setActiveFlag( false );
-						}
-					} else {
-						// FIXME: count somehow unintentional hits
-					}
-				}
+				wB.markFiringSolutionWhichHitBotAt( botPos, enemyName, time);
 			}
 		}
 	}
