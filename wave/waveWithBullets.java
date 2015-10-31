@@ -45,6 +45,20 @@ public class waveWithBullets extends wave {
 		return dL;
 	}
 
+	public void markFiringSolutionWhichHitBotAt( Point2D.Double botPos, String enemyName, long time ) {
+		LinkedList<firingSolution> hitSolutions = this.getFiringSolutionsWhichHitBotAt( botPos,  time );
+		for ( firingSolution fS : hitSolutions ) {
+			if ( fS.getTargetBotName().equals(enemyName) ) {
+				// this bullet is intended for this bot
+				if ( fS.isActive() ) {
+					fS.setActiveFlag( false );
+				}
+			} else {
+				// FIXME: count somehow unintentional hits
+			}
+		}
+	}
+
 	public LinkedList<firingSolution> getFiringSolutionsWhichHitBotAt( Point2D.Double p, long time ) {
 		LinkedList<firingSolution> hitSolutions = new LinkedList<firingSolution>();
 
