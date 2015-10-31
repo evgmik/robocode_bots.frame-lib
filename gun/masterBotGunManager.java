@@ -46,7 +46,6 @@ public class masterBotGunManager extends gunManager {
 				waveWithBullets wB = new waveWithBullets( nW );
 				for ( firingSolution fS: firingSolutions ) {
 					wB.addFiringSolution(fS);
-					incrFiredAtEnemyByGun( fS );
 				}
 				myBot.myWaves.add(wB);
 			}
