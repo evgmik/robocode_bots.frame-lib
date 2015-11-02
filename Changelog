@@ -69,6 +69,15 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v2.8
+
+Reverted target selection logic to v2.6
+
+Even not the closest enemy fires at master bot sometimes, this helps with no
+motion freeze when all other bots are the closest to somenone else. But some
+no so advance bot fire at any target in a view (walls, crazy, etc ).
+
+
 ## v2.7
 
 Redone target selection logic
