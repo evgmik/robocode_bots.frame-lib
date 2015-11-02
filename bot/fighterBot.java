@@ -87,6 +87,19 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		return dL;
 	}
 
+	public boolean isThisPointCloserThanAnyEnemy( long time, Point2D.Double dP ) {
+		double dist2point = dP.distance( getPositionClosestToTime( time ) ) ;
+		Point2D.Double thisBP = this.getPositionClosestToTime(time);
+		for ( fighterBot eBot: this.getEnemyBots() ) {
+			double distNew = thisBP.distance( eBot.getPosition() );
+			if ( ( distNew < dist2point) ) {
+				return false;
+			}
+		}
+		return true;
+
+	}
+
 	public Point2D.Double getPosition() {
 		return fBot.getPosition();
 	}
