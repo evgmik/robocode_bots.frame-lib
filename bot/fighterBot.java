@@ -181,10 +181,14 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		LinkedList<firingSolution> fSolutions = new LinkedList<firingSolution>();
 		LinkedList<baseGun> gunList = _gunManager.getGunList();
 
-		if ( !tBot.getName().equals( this.getGunManager().getClosestTarget().getName() ) && getGameInfo().getNumEnemyAlive() >=4 ) {
-			// target bot bot is not the closest
-			// it is unlikely firing bot would use it as a target.
-			return fSolutions;
+		if ( Math.random() < .25 ) {
+			// sometimes we expect any bot to fire
+		} else {
+			if ( !tBot.getName().equals( this.getGunManager().getClosestTarget().getName() ) && getGameInfo().getNumEnemyAlive() >=4 ) {
+				// target bot bot is not the closest
+				// it is unlikely firing bot would use it as a target.
+				return fSolutions;
+			}
 		}
 
 		LinkedList<firingSolution> gunFSs = null;
