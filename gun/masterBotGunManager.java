@@ -293,7 +293,8 @@ public class masterBotGunManager extends gunManager {
 		int gunStatsReliableRound = 4; // recall that we count from 0
 		if ( myBot.getGameInfo().getRoundNum() > gunStatsReliableRound ) {
 			//gun stats become reliable only after some time
-			w = Math.max( w, botTargetingWeightByHitRate(bot) );
+			double hRate = math.eventRate( hitByMe.getHashCounter( bot.getName() ), firedAt.getHashCounter( bot.getName() ) );
+			w = Math.max( w, hRate );
 		}
 		return w;
 	}
