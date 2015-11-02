@@ -73,6 +73,10 @@ done, this event is not provided for enemy bullets
 
 Reverted target selection logic to v2.6
 
+If a point is the closest to enemy, this enemy danger raius increased, to push
+away my bot from being the closest to the enemy. Should increase
+survivability.
+
 Even not the closest enemy fires at master bot sometimes, this helps with no
 motion freeze when all other bots are the closest to somenone else. But some
 no so advance bot fire at any target in a view (walls, crazy, etc ).
