@@ -83,6 +83,9 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		double dist = 0;
 		dLbot = 1.0 * getEnergy()/100; // weaker bots are less dangerous
 		dist = dP.distance( getPositionClosestToTime( time ) ) ;
+		if ( isThisPointCloserThanAnyEnemy( time, dP ) ) {
+			dRadius *= 2;
+		}
 		dL += dLbot * Math.exp( - dist/dRadius );
 		return dL;
 	}
