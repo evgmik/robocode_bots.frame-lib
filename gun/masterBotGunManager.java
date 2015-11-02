@@ -168,6 +168,8 @@ public class masterBotGunManager extends gunManager {
 				bestTargetBot = eBot;
 				break;
 			}
+
+			//w *= botTargetingWeightByFireAngleSpread(eBot);
 			w *= botTargetingWeightByEnemyEnergy(eBot);
 
 			int gunStatsReliableRound = 4; // recall that we count from 0
@@ -198,6 +200,61 @@ public class masterBotGunManager extends gunManager {
 				logger.routine( "" + myBot.getTime() + " best target " + bestTargetBot.getName() );
 			}
 		}
+	}
+
+	public double botTargetingWeightByFireAngleSpread(fighterBot bot) {
+		// try to locate a bot which is in the middle of the crowd
+		// and crowd within small fire angle spread
+		double w=1;
+		long time = myBot.getTime() + 1;
+		String tName = bot.getName();
+		Point2D.Double fP = myBot.getMotion().getPositionAtTime( time );
+		Point2D.Double tP =   bot.getMotion().getPositionAtTime( time );
+		double angle2target = math.angle2pt(fP, tP); // degrees
+		LinkedList<Double> aList  = new LinkedList<Double>();
+
+		int cnt = 0;
+		// calculate firing angle relative to the given bot
+		for ( fighterBot eBot: myBot.getEnemyBots() ) {
+			if ( eBot.getName().equals(  tName ) ) {
+				continue;
+			}
+			cnt++;
+			tP =   eBot.getMotion().getPositionAtTime( time );
+			double a = math.angle2pt(fP, tP) - angle2target;
+			a = math.shortest_arc(a);
+			aList.add(a);
+		}
+		if ( cnt <= 2 ) {
+			// no point to do spread weight
+			return 1;
+		}
+
+		// calculate mean
+		double aMean = 0;
+		for ( double a : aList ) {
+			aMean += a;
+		}
+		aMean = aMean/cnt;
+
+		// calculate variance
+		double aVar = 0;
+		for ( double a : aList ) {
+			aVar += a*a;
+		}
+		aVar = aVar/cnt;
+
+		double aStd = Math.sqrt( aVar ); // standard deviation
+
+		double aThreshold = 60; 
+		double overallWeight = 0.2;
+		
+		w = Math.exp( - aStd/aThreshold );
+		w = ( (1-overallWeight) + overallWeight*w ); // not so large contribution
+
+		//logger.dbg( "bot " + tName + " has neighbors spread = " + aStd + " its weight = " + w );
+
+		return w;
 	}
 
 	public double botTargetingWeightByHitRate(fighterBot bot) {
