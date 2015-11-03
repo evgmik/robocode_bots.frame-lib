@@ -71,6 +71,16 @@ public class  wavesManager {
 		}
 	}
 
+	public LinkedList<wave> getWavesOfBot( fighterBot bot ) {
+		LinkedList<wave> botWaves = new LinkedList<wave>();
+		for (wave w: Waves ) {
+			if ( w.firedBot.getName().equals( bot.getName() ) ) {
+				botWaves.add(w);
+			}
+		}
+		return botWaves;
+	}
+
 	public LinkedList<wave> getListOfPassedWaves(LinkedList<InfoBot> listOfAliveBots, long timeNow) {
 		LinkedList<wave> passedWaves = new LinkedList<wave>();
 		ListIterator<wave> wLIter;
