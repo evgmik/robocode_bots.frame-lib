@@ -69,6 +69,10 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v2.9
+
+CoreBot caches time, for getTime() calls.
+
 ## v2.8
 
 Reverted target selection logic to v2.6
