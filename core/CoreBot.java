@@ -41,7 +41,7 @@ public class CoreBot extends AdvancedRobot
 
 
 
-	public long ticTime;
+	public static long ticTime;
 	public int roundCnt = 0;
 	int nonexisting_coord = -10000;
 	public int totalNumOfEnemiesAtStart = 0;
@@ -69,6 +69,7 @@ public class CoreBot extends AdvancedRobot
 
 	public void initBattle() {
 		roundCnt = getRoundNum() + 1;
+		setTicTime();
 		// this part should be done only once and for all rounds
 		if ( fileWriter == null ) {
 			try {
