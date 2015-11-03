@@ -81,12 +81,38 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		double dRadius = 100; // effective dangerous radius of enemy Bot
 		double dL = 0;
 		double dist = 0;
-		dLbot = 1.0 * getEnergy()/100; // weaker bots are less dangerous
+		double botEnergy = getEnergy();
+		dLbot = 1.0 * botEnergy/100; // weaker bots are less dangerous
 		dist = dP.distance( getPositionClosestToTime( time ) ) ;
-		if ( isThisPointCloserThanAnyEnemy( time, dP ) ) {
+		if ( (botEnergy > robocode.Rules.MIN_BULLET_POWER) && (enemyBots.size() > 1) && isThisPointCloserThanAnyEnemy(time, dP) ) {
 			dRadius *= 2;
 		}
-		dL += dLbot * Math.exp( - dist/dRadius );
+		long ticsSinceRoundStart = getTime() - physics.getRoundStartTime( getTime() );
+		int numOfmyWaves =  _gameinfo._wavesManager.getWavesOfBot(this).size();
+		if ( numOfmyWaves > 0 || ticsSinceRoundStart < 100 ) {
+			// bot is actively firing
+			dL += dLbot * Math.exp( - dist/dRadius );
+		} else {
+			// this bot does not fire no danger in it
+			if ( botEnergy > robocode.Rules.MIN_BULLET_POWER ) {
+				// the bot still might fire
+				// so some safety distance is still required
+				dL += dLbot * (
+						// bot itself still repels
+						Math.exp( - 5*dist/dRadius ) +
+						// but it is no good to be far
+						Math.exp ( - 4*Math.abs(dist - physics.MaxSeparationOnBattleField)/physics.MaxSeparationOnBattleField )
+						);
+
+			} else {
+				// this bot has no energy for bullets
+				// approach as close as you want
+				dL += dLbot * (
+						// the bot is harmless attack at will
+						Math.exp ( - 4*Math.abs(dist - physics.MaxSeparationOnBattleField)/physics.MaxSeparationOnBattleField )
+						);
+			}
+		}
 		return dL;
 	}
 
