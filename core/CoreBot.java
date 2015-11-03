@@ -146,16 +146,15 @@ public class CoreBot extends AdvancedRobot
 	}
 
 	private void setTicTime() {
-		ticTime = this.getTime();
-	}
-
-	public long getTime() {
 		// Robocode start every round with zero
 		// to keep our own time increasing along the battle
 		// we add to this time 100000*round_number
 		// this big enough to separate rounds 
-		return physics.ticTimeFromTurnAndRound( super.getTime(), getRoundNum() );
-		//return ( super.getTime() + 100000*(getRoundNum()+1) ); 
+		ticTime = physics.ticTimeFromTurnAndRound( super.getTime(), getRoundNum() );
+	}
+
+	public long getTime() {
+		return ticTime;
 	}
 
 	public gameInfo getGameInfo() {
@@ -220,41 +219,49 @@ public class CoreBot extends AdvancedRobot
 
 	// someone bullet hit us
 	public void onHitByBullet(HitByBulletEvent e) {
+		setTicTime();
 		_gameinfo.onHitByBullet(e);
 		hitByBulletStats[getRoundNum()]++;
 	}
 
 	// our bullet hit someone
 	public void  onBulletHit(BulletHitEvent e) {
+		setTicTime();
 		_gameinfo.onBulletHit(e);
 		bulletHitEnemyCnt++;
 	}
 
 	// our bullet missed and hit the wall
 	public void  onBulletMissed(BulletMissedEvent e) {
+		setTicTime();
 	}
 
 	// our bullet hit one of theirs
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
+		setTicTime();
 		_gameinfo.onBulletHitBullet(e);
 		bulletHitEnemyBulletCnt++;
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
+		setTicTime();
 		_gameinfo.onRobotDeath(e);
 	}
 
 	public void onHitWall(HitWallEvent e) {
+		setTicTime();
 		hitWallStats[getRoundNum()]++;
 		logger.dbg( "tic " + getTime() + ": shame I hit wall" );
 	}
 		
 	public void onSkippedTurn(SkippedTurnEvent e) {
+		setTicTime();
 		skippedTurnStats[getRoundNum()]++;
 		logger.routine("Skipped turn " + e.getSkippedTurn() + " reported at " + getTime() );
 	}
 	
 	public void onPaint(Graphics2D g) {
+		setTicTime();
 		// If you run above you notice that time
 		// is one tic ahead of the known bots stats.
 		// This is quite a problem since even my own bot stats are not updated yet
@@ -273,6 +280,7 @@ public class CoreBot extends AdvancedRobot
 	}
 
 	public void onDeath(DeathEvent e) {
+		setTicTime();
 		roundsLost++;
 		updateFinishingPlacesStats();
 		_gameinfo.onDeath(e);
@@ -283,6 +291,7 @@ public class CoreBot extends AdvancedRobot
 		// this methods is called before onDeath or onWin
 		// so we should not output any valuable stats here
 		// if I want to see it at the end
+		setTicTime();
 		//logger.dbg("onRoundEnded");
 		//winOrLoseRoundEnd();
 	}
