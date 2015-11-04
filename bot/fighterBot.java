@@ -104,7 +104,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				// so some safety distance is still required
 				dL += dLbot * (
 						// bot itself still repels
-						Math.exp( - 5*dist/dRadius )
+						Math.exp( - dist/dRadius ) //same as regular bot
+						//Math.exp( - 5*dist/dRadius )
 						// but it is no good to be far so there is an
 						// attractive potential.
 						// TODO: the attraction seems to be a bad idea
