@@ -99,9 +99,20 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				// so some safety distance is still required
 				dL += dLbot * (
 						// bot itself still repels
-						Math.exp( - 5*dist/dRadius ) +
-						// but it is no good to be far
-						Math.exp ( - 4*Math.abs(dist - physics.MaxSeparationOnBattleField)/physics.MaxSeparationOnBattleField )
+						Math.exp( - 5*dist/dRadius )
+						// but it is no good to be far so there is an
+						// attractive potential.
+						// TODO: the attraction seems to be a bad idea
+						// see score drop between v2.8 -> v2.9
+						// so I comment it out. May be I should enable
+						// it when a bot energy below something small
+						// like 10 or 20.
+						// Also there is the bot nammyung.ModelT 0.23
+						// which fires only when enemy is close.
+						// My score against this bot drops
+						// when the attraction is on.
+						// Attraction is disabled for now.
+						//+ Math.exp ( - 4*Math.abs(dist - physics.MaxSeparationOnBattleField)/physics.MaxSeparationOnBattleField )
 						);
 
 			} else {
