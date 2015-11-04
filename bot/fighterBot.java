@@ -84,8 +84,13 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		double botEnergy = getEnergy();
 		dLbot = 1.0 * botEnergy/100; // weaker bots are less dangerous
 		dist = dP.distance( getPositionClosestToTime( time ) ) ;
-		if ( (botEnergy > robocode.Rules.MIN_BULLET_POWER) && (enemyBots.size() > 1) && isThisPointCloserThanAnyEnemy(time, dP) ) {
-			dRadius *= 2;
+		if ( (botEnergy > robocode.Rules.MIN_BULLET_POWER) && (enemyBots.size() > 1) ) {
+			// The following call is CPU intensive, so we ask for it only
+			// when we sure that above condition is satisfied.
+			// Am I doing the compiler optimization job?
+			if ( isThisPointCloserThanAnyEnemy(time, dP) ) {
+				dRadius *= 2;
+			}
 		}
 		long ticsSinceRoundStart = getTime() - physics.getRoundStartTime( getTime() );
 		int numOfmyWaves =  _gameinfo._wavesManager.getWavesOfBot(this).size();
