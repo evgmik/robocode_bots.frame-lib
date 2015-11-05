@@ -69,7 +69,7 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
-## v3.1-pre
+## v3.1
 
 Put a safety net around a potential problem spot. When a ficticios wave is
 asked to be added from a bit which rams with me before a radar had a chance to
