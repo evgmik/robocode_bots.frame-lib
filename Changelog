@@ -69,6 +69,10 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v3.2 - pre
+
+Added the circular gun which handles an accelerating bot.
+
 ## v3.1
 
 Put a safety net around a potential problem spot. When a ficticios wave is
