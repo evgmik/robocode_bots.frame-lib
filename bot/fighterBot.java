@@ -78,7 +78,9 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 
 	public double getDanger( long time, Point2D.Double dP ){
 		double dLbot = 1.0; // enemy bot normalization
-		double dRadius = 200; // effective dangerous radius of enemy Bot
+		// TODO: dRadius = 200; helps with melee survival but it drops APS
+		// TODO: may be I need to make it dynamic
+		double dRadius = 100; // effective dangerous radius of enemy Bot
 		double dL = 0;
 		double dist = 0;
 		double botEnergy = getEnergy();
