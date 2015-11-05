@@ -69,6 +69,14 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v3.1-pre
+
+Put a safety net around a potential problem spot. When a ficticios wave is
+asked to be added from a bit which rams with me before a radar had a chance to
+see it. This use to throw the "null pointer exception" which propagates for
+the rest of the match.
+
+
 ## v3.0
 
 Remove attractive potential from energentic but non firing bot.
