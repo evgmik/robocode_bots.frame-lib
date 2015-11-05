@@ -281,6 +281,12 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			// make with bullets from enemy Bot
 			String enemyName =  w.firedBot.getName() ;
 			fighterBot eBot = enemyBots.get( enemyName );
+			if ( eBot == null ) {
+				// FIXME: looks like this happens at the beginning of a game
+				// if I hit yet invisible to a radar bot.
+				logger.error("this should not happen: I was asked to add a wave for yet unknown bot " + enemyName );
+				return;
+			}
 			logger.noise("bot " + fBot.getName() + " added enemy wave from " + enemyName );
 			_gunManager.incrFiredByEnemy( enemyName ); 
 			if ( eBot.isItMasterBotDriver() ) {
