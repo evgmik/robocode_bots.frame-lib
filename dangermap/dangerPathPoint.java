@@ -36,6 +36,11 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 		long time = botStat.getTime();
 		dL += dangerCalc.calculateDangerFromCorners(time, botStat.getPosition(), myBot);
 		dL += dangerCalc.calculateDangerFromWall(time, botStat.getPosition(), myBot);
+		if ( myBot.getEnemyBots().size() == 4 ) {
+			// It is very bad to be in the center of crossfire of 4 enemies,
+			// where the master bot is the closest to all of them.
+			dL += dangerCalc.calculateDangerFromCenter(time, botStat.getPosition(), myBot);
+		}
 		dL += dangerCalc.calculateDangerFromEnemyBots(time, botStat.getPosition(), myBot);
 		// FIXME: we do not need precursors from waves
 		dL += dangerCalc.calculateDangerFromEnemyWaves(time, botStat.getPosition(), myBot);
