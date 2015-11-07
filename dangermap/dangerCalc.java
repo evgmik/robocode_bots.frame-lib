@@ -45,6 +45,15 @@ public class dangerCalc {
 		return dL;
 	}
 
+	public static double calculateDangerFromCenter(long time, Point2D.Double dP, fighterBot myBot) {
+		double dLCenter = 1;
+		double centerDangerRadius = 500;
+		double dL = 0;
+		double dist = dP.distance( physics.BattleField.x/2, physics.BattleField.y/2);
+		dL += dLCenter*Math.exp( -dist/centerDangerRadius );
+		return dL;
+	}
+
 	public static double calculateDangerFromCorners(long time, Point2D.Double dP, fighterBot myBot) {
 		Point2D.Double corner;
 		double cornerDanger = 1;
