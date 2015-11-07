@@ -69,7 +69,7 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
-## v3.2 - pre
+## v3.2
 
 Added the circular gun which handles an accelerating bot.
 
