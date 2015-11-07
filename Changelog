@@ -69,6 +69,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v3.3
+
+It is bad idea to be in multiple crossfires, but this is what happens in 1 vs
+4 if my bot is in the middle, it become the closest to all, thus everyone fires
+at us.  So, In melee when number of enemies = 4, the center of the battlefield has danger.
+
+
 ## v3.2
 
 Added the circular gun which handles an accelerating bot.
