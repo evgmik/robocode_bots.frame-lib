@@ -2,6 +2,8 @@
 
 package eem.frame.gun;
 import eem.frame.misc.*;
+import eem.frame.bot.*;
+import eem.frame.gameInfo.*;
 
 import java.awt.geom.Point2D;
 import java.awt.Graphics2D;
@@ -16,6 +18,7 @@ public class firingSolution {
 	public Point2D.Double firingPosition;
 	public Point2D.Double targetPosition;
 	public String gunName = "";
+	public double distanceAtLastAim = 0;
 	public boolean activeFlag = true; // if this firing solution hit targer set to false
 	public boolean myWavePassedOverTargetFlag = false;
 	public Color color = new Color(0x00, 0x00, 0x00, 0xff); // default color
@@ -75,6 +78,14 @@ public class firingSolution {
 
 	public String getFiringBotName() {
 		return firingBotName;
+	}
+
+	public void setDistanceAtLastAim( double d ) {
+		distanceAtLastAim = d;
+	}
+
+	public double getDistanceAtLastAim() {
+		return distanceAtLastAim;
 	}
 
 	public void setTargetBotName( String name ) {
@@ -189,6 +200,8 @@ public class firingSolution {
 	public String toString() {
 		String str = "";
 		str += "Firing solultion at time: " + firedTime + "\n";
+		str += "target " + targetBotName + "\n";
+		str += "gun " + gunName + "\n";
 		str += "qualityOfSolution " + qualityOfSolution + "\n";
 		str += "firingPosition " + firingPosition + ":\n";
 		str += "firingAngle " + firingAngle + ":\n";
