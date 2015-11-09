@@ -61,9 +61,10 @@ public class waveWithBullets extends wave {
 	}
 
 	public void updateStatsForHitBy( firingSolution fS) {
-		String str = "";
+		String str = "hitFS";
 		String separator = " ";
 
+		str += separator;
 		str += "target:" + fS.getTargetBotName();
 
 		str += separator;
