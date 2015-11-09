@@ -105,10 +105,8 @@ public class circularGun extends baseGun {
 		Point2D.Double vTvec = (Point2D.Double) lastSeenStatPoint.getVelocity().clone();
 		double vx = vTvec.x;
 		double vy = vTvec.y;
-
-		// rotation coefficients
-		double cosPhi = Math.cos(botBodyRotationSpeed);
-		double sinPhi = Math.sin(botBodyRotationSpeed);
+		double speed = vTvec.distance(0,0);
+		double phi = Math.atan2( vTvec.y, vTvec.x);
 
 		double vxNew, vyNew;
 
@@ -117,8 +115,20 @@ public class circularGun extends baseGun {
 
 		long tMaxCnt = 100; // maximum calculation depth
 		for ( long t = strtTime + 1; t < strtTime+tMaxCnt ; t++) {
-			vxNew =  vx * cosPhi - vy * sinPhi;
-			vyNew =  vx * sinPhi + vy * cosPhi;
+			speed = speed + botAcceleration;
+			if ( speed >= robocode.Rules.MAX_VELOCITY ) {
+				// we reached maximum allowed speed
+				speed = robocode.Rules.MAX_VELOCITY;
+				botAcceleration = 0;
+			}
+			if ( speed < 0  ) {
+				// we were slowing down and just crossed flip point
+				speed = -speed;
+				botAcceleration =  robocode.Rules.ACCELERATION;
+			}
+			phi = phi + botBodyRotationSpeed;
+			vxNew = speed * Math.cos(phi);
+			vyNew = speed * Math.sin(phi);
 			vx = vxNew;
 			vy = vyNew;
 			posFut.x = posFut.x + vx;
@@ -142,4 +152,3 @@ public class circularGun extends baseGun {
 		return posFut;
 	}
 }
-

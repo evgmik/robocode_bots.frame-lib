@@ -82,59 +82,5 @@ public class circularAccelGun extends circularGun {
 		fSolultions = setTargetBotName( tBot.getName(), fSolultions );
 		return fSolultions;
 	}
-
-	// wave interception predictor for circular motion with acceleration
-	public Point2D.Double getProjectedMotionMeetsBulletPosition( botStatPoint lastSeenStatPoint, double botBodyRotationSpeed, double botAcceleration, Point2D.Double firingPosition, long timeAtFiring , double bSpeed ) {
-
-		Point2D.Double posFut = (Point2D.Double) lastSeenStatPoint.getPosition().clone();
-		Point2D.Double vTvec = (Point2D.Double) lastSeenStatPoint.getVelocity().clone();
-		double vx = vTvec.x;
-		double vy = vTvec.y;
-		double speed = vTvec.distance(0,0);
-		double phi = Math.atan2( vTvec.y, vTvec.x);
-
-		double vxNew, vyNew;
-
-		// note, that by gun logic at best strtTime = timeAtFiring-1 or less
-		long strtTime = lastSeenStatPoint.getTime();
-
-		long tMaxCnt = 100; // maximum calculation depth
-		for ( long t = strtTime + 1; t < strtTime+tMaxCnt ; t++) {
-			speed = speed + botAcceleration;
-			if ( speed >= robocode.Rules.MAX_VELOCITY ) {
-				// we reached maximum allowed speed
-				speed = robocode.Rules.MAX_VELOCITY;
-				botAcceleration = 0;
-			}
-			if ( speed < 0  ) {
-				// we were slowing down and just crossed flip point
-				speed = -speed;
-				botAcceleration =  robocode.Rules.ACCELERATION;
-			}
-			phi = phi + botBodyRotationSpeed;
-			vxNew = speed * Math.cos(phi);
-			vyNew = speed * Math.sin(phi);
-			vx = vxNew;
-			vy = vyNew;
-			posFut.x = posFut.x + vx;
-			posFut.y = posFut.y + vy;
-			// now we now bot position at time t
-			if ( !physics.botReacheableBattleField.contains( posFut ) ) {
-				// count one step back when we were on battlefield
-				posFut.x = posFut.x - vx;
-				posFut.y = posFut.y - vy;
-				break;
-			}
-			if ( (t - timeAtFiring) >= 0 ) {
-				// finally we now bot position at timeAtFiring+1
-				// at firing time bullet already moved
-				if ( firingPosition.distance( posFut) <= (t-timeAtFiring+1)*bSpeed ) {
-					// bullet reached the target
-					break;
-				}
-			}
-		}
-		return posFut;
-	}
 }
 
