@@ -125,6 +125,12 @@ public class wave {
 		return math.signNoZero(lateralSpeed)*getFiringAngleOffset(bot, time)/physics.calculateMEA( bulletSpeed );
 	}
 
+	public double getDistanceAtLastAimTime( InfoBot bot ) {
+		Point2D.Double tPos = bot.getStatClosestToTime(firedTime - 1).getPosition();
+		return firedPosition.distance( tPos );
+	}
+
+
 	public boolean equals( wave w ) {
 		boolean ret = true;
 		if ( !this.getFiredBot().getName().equals( w.getFiredBot().getName() ) )
