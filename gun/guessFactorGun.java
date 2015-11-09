@@ -31,6 +31,7 @@ public class guessFactorGun extends baseGun {
 		double firingAngle = math.angle2pt( fPos, tBStat.getPosition() ); // head on
 		firingAngle += gf*physics.calculateMEA( physics.bulletSpeed(bulletEnergy) );
 		firingSolution fS = new firingSolution( this, fPos, firingAngle, time, bulletEnergy );
+		setDistanceAtLastAimFor( fS, fPos, tBStat.getPosition() );
 		if (fS == null)
 			return fSols;
 

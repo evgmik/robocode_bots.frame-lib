@@ -68,6 +68,7 @@ public class circularAccelGun extends circularGun {
 
 		posFut = getProjectedMotionMeetsBulletPosition( tBStat, phi, accel, fPos, time, bSpeed );
 		firingSolution fS = new firingSolution( this, fPos, posFut, time, bulletEnergy );
+		setDistanceAtLastAimFor( fS, fPos, tPos );
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
 		if ( infoLagTime <= 0  ) {
 			// time point from the future

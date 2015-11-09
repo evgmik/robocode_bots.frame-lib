@@ -49,6 +49,7 @@ public class headOnGun extends baseGun {
 		firingSolution fS = new firingSolution( this, fP, tP, time, bulletEnergy );
 
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
+		setDistanceAtLastAimFor( fS, fP, tP );
 		fS.setQualityOfSolution( getLagTimePenalty( infoLagTime ) );
 
 		fSolultions.add(fS);

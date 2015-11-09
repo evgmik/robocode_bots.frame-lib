@@ -51,6 +51,7 @@ public class randomGun extends baseGun {
 
 		// random gun does not work with future target position but with angle
 		firingSolution fS = new firingSolution( this, fP, angle, time, bulletEnergy );
+		setDistanceAtLastAimFor( fS, fP, tP );
 
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
 		fS.setQualityOfSolution( getLagTimePenalty( infoLagTime ) );
