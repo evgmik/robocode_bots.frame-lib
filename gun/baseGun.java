@@ -26,6 +26,10 @@ public class baseGun {
 		return new LinkedList<firingSolution>();
 	}
 
+	public void setDistanceAtLastAimFor( firingSolution fS, Point2D.Double fPos, Point2D.Double tPos ) {
+		fS.setDistanceAtLastAim( fPos.distance( tPos ) );
+	}
+
 	public LinkedList<firingSolution> getFiringSolutions( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		return new LinkedList<firingSolution>();
 	}
