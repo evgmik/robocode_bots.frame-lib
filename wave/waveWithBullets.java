@@ -51,12 +51,28 @@ public class waveWithBullets extends wave {
 			if ( fS.getTargetBotName().equals(enemyName) ) {
 				// this bullet is intended for this bot
 				if ( fS.isActive() ) {
+					updateStatsForHitBy(fS);
 					fS.setActiveFlag( false );
 				}
 			} else {
 				// FIXME: count somehow unintentional hits
 			}
 		}
+	}
+
+	public void updateStatsForHitBy( firingSolution fS) {
+		String str = "";
+		String separator = " ";
+
+		str += "target:" + fS.getTargetBotName();
+
+		str += separator;
+		str += "gun:" + fS.getGunName();
+
+		str += separator;
+		str += "distance:" + fS.getDistanceAtLastAim();
+
+		logger.routine( str );
 	}
 
 	public LinkedList<firingSolution> getFiringSolutionsWhichHitBotAt( Point2D.Double p, long time ) {
