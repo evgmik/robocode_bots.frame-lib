@@ -232,7 +232,7 @@ public class firingSolution {
 	}
 
 	public void drawBulletPath( Graphics2D g, long time) {
-		if ( firingAngle == Double.NaN ) {
+		if ( Double.isNaN( firingAngle ) ) {
 			logger.error( "This should not happen: the firing solution does not have firingAngle" );
 		} else {
 			g.setColor( color );
@@ -242,7 +242,7 @@ public class firingSolution {
 	}
 
 	public void drawBulletLocation( Graphics2D g, long time) {
-		if ( firingAngle == Double.NaN ) {
+		if ( Double.isNaN( firingAngle ) ) {
 			logger.error( "This should not happen: the firing solution does not have firingAngle" );
 		} else {
 			g.setColor( color );
@@ -253,7 +253,7 @@ public class firingSolution {
 	}
 
 	public void drawBulletDanger( Graphics2D g, long time ) {
-		if ( firingAngle == Double.NaN ) {
+		if ( Double.isNaN( firingAngle ) ) {
 			logger.error( "This should not happen: the firing solution does not have firingAngle" );
 		} else {
 			g.setColor( color );
@@ -302,7 +302,7 @@ public class firingSolution {
 			graphics.drawRect( g, targetPosition, 20, 20 );
 		}
 
-		if ( firingAngle == Double.NaN ) {
+		if ( Double.isNaN( firingAngle ) ) {
 			logger.error( "This should not happen: the firing solution does not have firingAngle" );
 		} else {
 			
