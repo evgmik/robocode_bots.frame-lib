@@ -112,17 +112,29 @@ public class wave {
 	}
 
 	public double getFiringAngleOffset( InfoBot bot, long time ) {
-		Point2D.Double tgtPosAtFiredTime = bot.getPositionClosestToTime( firedTime );
 		Point2D.Double tgtPosNow =        bot.getPositionClosestToTime( time );
-		double headOnAngle = math.angle2pt( firedPosition, tgtPosAtFiredTime);
 		double hitAngle    = math.angle2pt( firedPosition, tgtPosNow);
+		double headOnAngle = getHeadOnAngle( bot );
 		return math.shortest_arc(hitAngle - headOnAngle);
+	}
+
+	public double getHeadOnAngle( InfoBot bot ) {
+		Point2D.Double tgtPosAtFiredTime = bot.getPositionClosestToTime( firedTime );
+		double headOnAngle = math.angle2pt( firedPosition, tgtPosAtFiredTime);
+		return headOnAngle; // degrees
 	}
 
 	public double getFiringGuessFactor( InfoBot bot, long time ) {
 		double lateralSpeed = bot.getStatClosestToTime(firedTime).getLateralSpeed( firedPosition );
 		//logger.dbg("lat speed = " + lateralSpeed );
 		return math.signNoZero(lateralSpeed)*getFiringAngleOffset(bot, time)/physics.calculateMEA( bulletSpeed );
+	}
+
+	public double getFiringGuessFactor( InfoBot bot, double absFiringAngle ) {
+		double lateralSpeed = bot.getStatClosestToTime(firedTime).getLateralSpeed( firedPosition );
+		double firingAngleOffset = math.shortest_arc( absFiringAngle - getHeadOnAngle( bot ) );
+
+		return math.signNoZero(lateralSpeed)*firingAngleOffset/physics.calculateMEA( bulletSpeed );
 	}
 
 	public double getDistanceAtLastAimTime( InfoBot bot ) {
