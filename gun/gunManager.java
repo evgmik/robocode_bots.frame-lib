@@ -44,6 +44,7 @@ public class gunManager implements gunManagerInterface {
 	protected HashMap<String, double[]> guessFactorsMap = new HashMap<String, double[]>();
 	protected double decayRate = .8;
 	protected HashMap<String, double[]> decayingGuessFactorMap = new HashMap<String, double[]>();
+	protected HashMap<String, double[][]> assistedGFactorsMap = new HashMap<String, double[][]>();
 
 	public	gunManager() {
 	}
@@ -244,6 +245,19 @@ public class gunManager implements gunManagerInterface {
 		return gfBins;
 	}
 
+	public double[][] getAssistedGuess( String  botName ) {
+		return getAssistedGuessFromHashMap( assistedGFactorsMap, botName);
+	}
+
+	public double[][] getAssistedGuessFromHashMap( HashMap<String, double[][]> map, String  botName ) {
+                if ( !map.containsKey( botName ) ) {
+			double[][] guessFactorBins = new double[numGuessFactorBins][numGuessFactorBins];
+			map.put( botName, guessFactorBins );
+                }
+                double[][] gfBins = map.get( botName );
+		return gfBins;
+	}
+
 
 	public int getGuessFactosrBinNum() {
 		return numGuessFactorBins;
@@ -263,6 +277,12 @@ public class gunManager implements gunManagerInterface {
 			gfBins[k] *= decayRate;	
 		}
 		gfBins[i] += (1-decayRate); // update bin where hit detected
+
+		// update assisted GF map
+		int j = (int)math.gf2bin( circularGF, numGuessFactorBins );
+		j = (int)math.putWithinRange( j, 0, (numGuessFactorBins-1) );
+		double[][] assistedGFBins = getAssistedGuessFromHashMap( assistedGFactorsMap, bot.getName() );
+		assistedGFBins[j][i]++;
 	}
 
 	public void onWavePassingOverMe( wave w ) {
