@@ -62,19 +62,31 @@ public class guessFactorGun extends baseGun {
 	protected double getMostProbableGF(double[] guessFactorBins ) {
 		int numBins = guessFactorBins.length;
 		double[] guessFactorWeighted = new double[ numBins ];
+		double b = 0;
 		double binsSum = 0;
+		double binsSqSum = 0;
 		int indMax = 0;
-		double maxCnt =0;
+		int indMin = 0;
+		double maxCnt =  Double.NEGATIVE_INFINITY;
+		double minCnt =  Double.POSITIVE_INFINITY;
 		for (int i=0; i < numBins; i++ ) {
-			binsSum += guessFactorBins[i]; // calculates total count
-			if ( guessFactorBins[i] > maxCnt ) {
-				maxCnt = guessFactorBins[i];
+			b = guessFactorBins[i];
+			binsSum += b; // calculates total count
+			binsSqSum += b*b;
+			if ( b > maxCnt ) {
+				maxCnt = b;
 				indMax = i;
 			}
+			if ( b < minCnt ) {
+				minCnt = b;
+				indMin = i;
+			}
 		}
+		double mean = binsSum/numBins;
+		double std  = Math.sqrt( (binsSqSum - mean*mean)/ numBins );
 		double gf;
-		if ( binsSum == 0 ) {
-			// empty statistics
+		if ( (binsSum == 0) || ((maxCnt - minCnt) < 2*std) ) {
+			// empty statistics or not strong enough stats
 			gf =  0; // head on guess factor
 			gf = Double.NaN;
 		} else {
