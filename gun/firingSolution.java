@@ -80,6 +80,10 @@ public class firingSolution {
 		return firingBotName;
 	}
 
+	public double getFiringAngle() {
+		return firingAngle;
+	}
+
 	public void setDistanceAtLastAim( double d ) {
 		distanceAtLastAim = d;
 	}
