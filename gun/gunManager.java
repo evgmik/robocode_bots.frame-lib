@@ -208,7 +208,15 @@ public class gunManager implements gunManagerInterface {
 		// calculate myBot targeting GF
 		double gf = w.getFiringGuessFactor(bot, time);
 		double distAtLastAim = w.getDistanceAtLastAimTime( bot );
-		updateHitGuessFactor( bot, gf, distAtLastAim, w.getCount() );
+		// get circular gun guess factor
+		double circGF = Double.NaN;
+		circularGun circGun = new circularAccelGun();
+		LinkedList<firingSolution> fSs = circGun.getFiringSolutions( w.getFiredPosition(), bot, w.getFiredTime(), w.getBulletEnergy() );
+		if ( fSs.size() >= 1 ) {
+			double cAngle = fSs.getFirst().getFiringAngle();
+			circGF = w.getFiringGuessFactor( bot, cAngle );
+		}
+		updateHitGuessFactor( bot, gf, circGF, distAtLastAim, w.getCount() );
 
 		// count the wave with bullets
 		for ( waveWithBullets wB: myBot.myWaves ) {
@@ -241,8 +249,8 @@ public class gunManager implements gunManagerInterface {
 		return numGuessFactorBins;
 	}
 
-	public void updateHitGuessFactor( InfoBot bot, double gf, double distAtLastAim, int wave_count ) {
-		logger.routine("hitGF" +  " target:" + bot.getName() + " gf:" + gf + " distance:" + distAtLastAim );
+	public void updateHitGuessFactor( InfoBot bot, double gf, double circularGF, double distAtLastAim, int wave_count ) {
+		logger.routine("hitGF" +  " target:" + bot.getName() + " gf:" + gf + " cgf:" +circularGF + " distance:" + distAtLastAim );
 		int i = (int)math.gf2bin( gf, numGuessFactorBins );
 		i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
 		// update accumulating map
