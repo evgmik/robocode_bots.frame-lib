@@ -55,7 +55,7 @@ public class guessFactorGun extends baseGun {
 		return  fBot.getGunManager().getGuessFactors( tBot.getName() );
 	}
 
-	private double getMostProbableGF(double[] guessFactorBins ) {
+	protected double getMostProbableGF(double[] guessFactorBins ) {
 		int numBins = guessFactorBins.length;
 		double[] guessFactorWeighted = new double[ numBins ];
 		double binsSum = 0;
