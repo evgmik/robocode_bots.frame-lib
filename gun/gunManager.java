@@ -279,10 +279,12 @@ public class gunManager implements gunManagerInterface {
 		gfBins[i] += (1-decayRate); // update bin where hit detected
 
 		// update assisted GF map
-		int j = (int)math.gf2bin( circularGF, numGuessFactorBins );
-		j = (int)math.putWithinRange( j, 0, (numGuessFactorBins-1) );
-		double[][] assistedGFBins = getAssistedGuessFromHashMap( assistedGFactorsMap, bot.getName() );
-		assistedGFBins[j][i]++;
+		if ( !Double.isNaN( circularGF ) ) {
+			int j = (int)math.gf2bin( circularGF, numGuessFactorBins );
+			j = (int)math.putWithinRange( j, 0, (numGuessFactorBins-1) );
+			double[][] assistedGFBins = getAssistedGuessFromHashMap( assistedGFactorsMap, bot.getName() );
+			assistedGFBins[j][i]++;
+		}
 	}
 
 	public void onWavePassingOverMe( wave w ) {
