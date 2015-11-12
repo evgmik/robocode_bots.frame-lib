@@ -69,6 +69,16 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v3.4
+
+New gun: assistedGFGun. This is the guess factor gun with segmentation on
+guess factor suggested by the accelerating circular gun at the time of fire.
+The idea that there is some correlations, and for some bots I see it. Mine is
+certainly have some correlation on such segmentation.
+
+Prepared to collect more statistics at the time of fire, so far it is only
+distance.
+
 ## v3.3
 
 It is bad idea to be in multiple crossfires, but this is what happens in 1 vs
