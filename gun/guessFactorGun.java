@@ -28,6 +28,10 @@ public class guessFactorGun extends baseGun {
 		double latteralSpeed = tBStat.getLateralSpeed( fPos );
 		double[] gfBins = getRelevantGF( fBot, tBot );
 		double gf = getMostProbableGF( gfBins ) * math.signNoZero( latteralSpeed );
+		if ( Double.isNaN( gf ) ) {
+			// no enough stats
+			return fSols;
+		}
 		double firingAngle = math.angle2pt( fPos, tBStat.getPosition() ); // head on
 		firingAngle += gf*physics.calculateMEA( physics.bulletSpeed(bulletEnergy) );
 		firingSolution fS = new firingSolution( this, fPos, firingAngle, time, bulletEnergy );
@@ -72,6 +76,7 @@ public class guessFactorGun extends baseGun {
 		if ( binsSum == 0 ) {
 			// empty statistics
 			gf =  0; // head on guess factor
+			gf = Double.NaN;
 		} else {
 			gf =  math.bin2gf( indMax, numBins );
 		}

@@ -31,6 +31,10 @@ public class assistedGFGun extends guessFactorGun {
 		double gf = getMostProbableGF( gfBins ) * math.signNoZero( latteralSpeed );
 		double firingAngle = math.angle2pt( fPos, tBStat.getPosition() ); // head on
 		firingAngle += gf*physics.calculateMEA( physics.bulletSpeed(bulletEnergy) );
+		if ( Double.isNaN( gf ) ) {
+			// no enough stats
+			return fSols;
+		}
 		firingSolution fS = new firingSolution( this, fPos, firingAngle, time, bulletEnergy );
 		setDistanceAtLastAimFor( fS, fPos, tBStat.getPosition() );
 		if (fS == null)
