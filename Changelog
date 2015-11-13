@@ -69,6 +69,10 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v3.5
+
+Retune the point when GF guns provide results.
+
 ## v3.4
 
 New gun: assistedGFGun. This is the guess factor gun with segmentation on
