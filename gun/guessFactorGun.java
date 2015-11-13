@@ -85,10 +85,18 @@ public class guessFactorGun extends baseGun {
 		double mean = binsSum/numBins;
 		double std  = Math.sqrt( (binsSqSum - mean*mean)/ numBins );
 		double gf;
-		if ( (binsSum == 0) || ((maxCnt - minCnt) < 2*std) ) {
+		if ( (binsSum == 0) ) {
+			// empty statistics
+			gf =  0; // head on guess factor
+			gf = Double.NaN;
+			return gf;
+		}
+		//if ( (maxCnt/binsSum) < 2*1.0/numBins) {
+		if ( binsSum < 30) {
 			// empty statistics or not strong enough stats
 			gf =  0; // head on guess factor
 			gf = Double.NaN;
+			return gf;
 		} else {
 			gf =  math.bin2gf( indMax, numBins );
 		}
