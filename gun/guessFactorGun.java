@@ -11,6 +11,7 @@ import java.awt.Color;
 
 
 public class guessFactorGun extends baseGun {
+	protected double binsSumThreshold = 30; // some heuristic to estimate gun quality
 	public guessFactorGun() {
 		gunName = "guessFactorGun";
 		color = new Color(0xff, 0x88, 0xff, 0x80);
@@ -67,6 +68,7 @@ public class guessFactorGun extends baseGun {
 		double binsSqSum = 0;
 		int indMax = 0;
 		int indMin = 0;
+		int nonZeroBinsN = 0;
 		double maxCnt =  Double.NEGATIVE_INFINITY;
 		double minCnt =  Double.POSITIVE_INFINITY;
 		for (int i=0; i < numBins; i++ ) {
@@ -81,6 +83,9 @@ public class guessFactorGun extends baseGun {
 				minCnt = b;
 				indMin = i;
 			}
+			if ( b != 0 ) {
+				nonZeroBinsN++;
+			}
 		}
 		double mean = binsSum/numBins;
 		double std  = Math.sqrt( (binsSqSum - mean*mean)/ numBins );
@@ -92,7 +97,7 @@ public class guessFactorGun extends baseGun {
 			return gf;
 		}
 		//if ( (maxCnt/binsSum) < 2*1.0/numBins) {
-		if ( binsSum < 30) {
+		if ( binsSum < binsSumThreshold ) {
 			// empty statistics or not strong enough stats
 			gf =  0; // head on guess factor
 			gf = Double.NaN;

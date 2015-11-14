@@ -14,6 +14,7 @@ public class decayingGuessFactorGun extends guessFactorGun {
 	public decayingGuessFactorGun() {
 		gunName = "decayingGuessFactorGun";
 		color = new Color(0x00, 0xff, 0x00, 0xff);
+		binsSumThreshold=.1;
 	}
 
 	@Override
