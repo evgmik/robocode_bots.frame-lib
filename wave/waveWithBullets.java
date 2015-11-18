@@ -10,6 +10,7 @@ import eem.frame.misc.*;
 import robocode.Bullet;
 import java.util.LinkedList;
 import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.geom.Point2D;
 
 public class waveWithBullets extends wave {
@@ -60,6 +61,8 @@ public class waveWithBullets extends wave {
 		}
 	}
 
+
+
 	public void updateStatsForHitBy( firingSolution fS) {
 		String str = "hitFS";
 		String separator = " ";
@@ -100,6 +103,12 @@ public class waveWithBullets extends wave {
 		return firingSolutions.size();
 	}
 
+	public void drawSafetyCorridor(Graphics2D g, safetyCorridor sC, long time) {
+		double distTraveled = getDistanceTraveledAtTime( time );
+		g.setColor( new Color(0x00, 0xff, 0x00, 0x80) );
+		graphics.drawCircArc( g, firedPosition, distTraveled, sC.getMinAngle(), sC.getMaxAngle() );
+	}
+
 	public void onPaint(Graphics2D g, long time) {
 		super.onPaint( g, time );
 		g.setColor(waveColor);
@@ -107,6 +116,10 @@ public class waveWithBullets extends wave {
 		// draw overall  wave
 		for ( firingSolution fS : firingSolutions ) {
 			fS.onPaint( g, time );
+		}
+
+		for ( safetyCorridor sC : safetyCorridors ) {
+			drawSafetyCorridor(g, sC, time);
 		}
 	}
 }

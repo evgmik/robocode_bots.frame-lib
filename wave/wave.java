@@ -24,6 +24,7 @@ public class wave {
 	protected Color waveUncertaintyColorLower = new Color(0x00, 0x00, 0xff, 0x80);
 	protected int count=0; // wave count for a particular bot
 
+	public LinkedList<safetyCorridor> safetyCorridors = new LinkedList<safetyCorridor>();
 
 	public wave(InfoBot firedBot, long firedTime, double bulletEnergy) {
 		this.firedBot = firedBot;
@@ -166,6 +167,25 @@ public class wave {
 
 	}
 
+	public void addSafetyCorridor( fighterBot bot) {
+		Point2D.Double pos = bot.getPosition();
+		double hitAngle = math.angle2pt( firedPosition, pos );
+		double dist = firedPosition.distance( pos );
+		double shadowHalfAngle = Math.atan(physics.robotHalfDiagonal/dist);
+		shadowHalfAngle = Math.toDegrees( shadowHalfAngle );
+		safetyCorridor sC = new safetyCorridor( hitAngle - shadowHalfAngle, hitAngle + shadowHalfAngle );
+		safetyCorridors.add(sC);
+
+	}
+
+	public void drawSafetyCorridor(Graphics2D g, safetyCorridor sC, long time) {
+		double distTraveled = getDistanceTraveledAtTime( time );
+		g.setColor( new Color(0x00, 0xff, 0x00, 0x80) );
+		graphics.drawCircArc( g, firedPosition, distTraveled, sC.getMinAngle(), sC.getMaxAngle() );
+		graphics.drawCircArc( g, firedPosition, distTraveled+1, sC.getMinAngle(), sC.getMaxAngle() );
+		graphics.drawCircArc( g, firedPosition, distTraveled-1, sC.getMinAngle(), sC.getMaxAngle() );
+	}
+
 	public void onPaint(Graphics2D g, long timeNow) {
 		g.setColor(waveColor);
 
@@ -175,6 +195,9 @@ public class wave {
 		if ( timeUncertaintyLower !=  0 ) {
 			g.setColor(waveUncertaintyColorLower);
 			graphics.drawCircle(g, firedBot.getPositionAtTime(firedTime - timeUncertaintyLower), distTraveled + bulletSpeed * timeUncertaintyLower);
+		}
+		for ( safetyCorridor sC : safetyCorridors ) {
+			drawSafetyCorridor(g, sC, timeNow);
 		}
 	}
 }
