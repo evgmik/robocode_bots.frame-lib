@@ -266,7 +266,7 @@ public class gunManager implements gunManagerInterface {
 
 	public void updateHitGuessFactor( InfoBot bot, double gf, double gfRange, double circularGF, double distAtLastAim, int wave_count ) {
 		logger.routine("hitGF" +  " target:" + bot.getName() + " gf:" + gf + " cgf:" +circularGF + " distance:" + distAtLastAim );
-		int di = (int)Math.ceil( gfRange/2*numGuessFactorBins );
+		int di0 = (int)Math.round( gfRange/2*numGuessFactorBins );
 		int iCenter = (int)math.gf2bin( gf, numGuessFactorBins );
 
 		double[] gfBins = getGuessFactors( bot.getName() );
@@ -277,21 +277,24 @@ public class gunManager implements gunManagerInterface {
 			gfBinsDecaying[k] *= decayRate;	
 		}
 
-		int minI = (int)math.putWithinRange( iCenter - di, 0, (numGuessFactorBins-1) );
-		int maxI = (int)math.putWithinRange( iCenter + di, 0, (numGuessFactorBins-1) );
+		int minI = (int)math.putWithinRange( iCenter - di0, 0, (numGuessFactorBins-1) );
+		int maxI = (int)math.putWithinRange( iCenter + di0, 0, (numGuessFactorBins-1) );
 		for ( int i = minI; i <= maxI; i++ ) {
 			i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
+
+			double di = i-iCenter; // bin displacement from the center
+			double binW = Math.exp( - Math.pow( di/di0 , 2 ) );
 			// update accumulating map
-			gfBins[i]++;
+			gfBins[i]+= binW;
 
 			// update decaying map
-			gfBinsDecaying[i] += (1-decayRate); // update bin where hit detected
+			gfBinsDecaying[i] += (1-decayRate)*binW; // update bin where hit detected
 
 			// update assisted GF map
 			if ( !Double.isNaN( circularGF ) ) {
 				int j = (int)math.gf2bin( circularGF, numGuessFactorBins );
 				j = (int)math.putWithinRange( j, 0, (numGuessFactorBins-1) );
-				assistedGFBins[j][i]++;
+				assistedGFBins[j][i] += binW;
 			}
 		}
 	}
