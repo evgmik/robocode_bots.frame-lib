@@ -124,6 +124,12 @@ public class wave {
 		return headOnAngle; // degrees
 	}
 
+	public double getFiringGuessFactorRange( InfoBot bot, long time ) {
+		double dist = bot.getStatClosestToTime( time ).getPosition().distance( firedPosition );
+		double gfRange = 2*Math.atan(physics.robotHalfDiagonal/dist)/Math.toRadians( physics.calculateMEA( bulletSpeed ) );
+		return gfRange;
+	}
+
 	public double getFiringGuessFactor( InfoBot bot, long time ) {
 		double lateralSpeed = bot.getStatClosestToTime(firedTime).getLateralSpeed( firedPosition );
 		//logger.dbg("lat speed = " + lateralSpeed );
