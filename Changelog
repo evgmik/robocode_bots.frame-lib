@@ -69,6 +69,10 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v3.7-pre 
+
+GF updates touch the range of angles covered by a bot body
+
 ## v3.6
 
 Each GF gun has its own threshold for goodness decision. As result decayin GF
