@@ -57,7 +57,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public boolean isItMasterBotDriver() {
-		return  getName().equals( _gameinfo.getMasterBot().getName() );  
+		return  _gameinfo.isItMasterBotDriver( this );
 	}
 
 	public InfoBot getInfoBot() {

@@ -208,6 +208,18 @@ public class gameInfo implements botListener {
 		return allBots;
 	}
 
+	public boolean isItMasterBotDriver( String bName ) {
+		return  bName.equals( getMasterBot().getName() );  
+	}
+
+	public boolean isItMasterBotDriver( InfoBot b ) {
+		return  isItMasterBotDriver( b.getName() );
+	}
+
+	public boolean isItMasterBotDriver( fighterBot b ) {
+		return  isItMasterBotDriver( b.getName() );
+	}
+
 	public void botsReportStats() {
 		HashMap<String,fighterBot> allBots = getAllFighterBots(); 
 
@@ -225,7 +237,7 @@ public class gameInfo implements botListener {
 
 	public void onPaint( Graphics2D g ) {
 		_botsmanager.onPaint(g);
-		//_wavesManager.onPaint(g);
+		_wavesManager.onPaint(g);
 		long timeNow = myBot.getTime();
 		for ( fighterBot fB: liveBots.values() ) {
 			fB.onPaint( g, timeNow );
