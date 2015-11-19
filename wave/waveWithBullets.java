@@ -103,6 +103,18 @@ public class waveWithBullets extends wave {
 		return firingSolutions.size();
 	}
 
+	public void removeFiringSolutionsInSafetyCorridor( safetyCorridor sC ) {
+		for ( firingSolution fS : firingSolutions ) {
+			//FIXME: make the code
+		}
+	}
+
+	public void addSafetyCorridor( fighterBot bot) {
+		safetyCorridor sC = getSafetyCorridor( bot );
+		removeFiringSolutionsInSafetyCorridor( sC );
+		safetyCorridors.add(sC);
+	}
+
 	public void drawSafetyCorridor(Graphics2D g, safetyCorridor sC, long time) {
 		double distTraveled = getDistanceTraveledAtTime( time );
 		g.setColor( new Color(0x00, 0xff, 0x00, 0x80) );
