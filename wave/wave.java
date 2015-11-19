@@ -167,15 +167,18 @@ public class wave {
 
 	}
 
-	public void addSafetyCorridor( fighterBot bot) {
+	public safetyCorridor getSafetyCorridor( fighterBot bot) {
 		Point2D.Double pos = bot.getPosition();
 		double hitAngle = math.angle2pt( firedPosition, pos );
 		double dist = firedPosition.distance( pos );
 		double shadowHalfAngle = Math.atan(physics.robotHalfDiagonal/dist);
 		shadowHalfAngle = Math.toDegrees( shadowHalfAngle );
-		safetyCorridor sC = new safetyCorridor( hitAngle - shadowHalfAngle, hitAngle + shadowHalfAngle );
-		safetyCorridors.add(sC);
+		return new safetyCorridor( hitAngle - shadowHalfAngle, hitAngle + shadowHalfAngle );
+	}
 
+	public void addSafetyCorridor( fighterBot bot) {
+		safetyCorridor sC = getSafetyCorridor( bot );
+		safetyCorridors.add(sC);
 	}
 
 	public void drawSafetyCorridor(Graphics2D g, safetyCorridor sC, long time) {
