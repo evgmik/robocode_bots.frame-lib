@@ -283,7 +283,7 @@ public class gunManager implements gunManagerInterface {
 			i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
 
 			double di = i-iCenter; // bin displacement from the center
-			double binW = Math.exp( - Math.pow( di/di0 , 2 ) );
+			double binW = Math.exp( - Math.pow( 6*di/di0 , 2 ) );
 			// update accumulating map
 			gfBins[i]+= binW;
 
@@ -301,12 +301,18 @@ public class gunManager implements gunManagerInterface {
 
 	public void onWavePassingOverMe( wave w ) {
 		logger.dbg("wave from " + w.getFiredBot().getName() + " is passing over " + myBot.getName() );
-		w.addSafetyCorridor( myBot );
+		if ( !myBot.getGameInfo().isItMasterBotDriver(w.getFiredBot()) && !myBot.isItMasterBotDriver() ) {
+			// do not track safety corridors in masterBot waves or shadows
+			w.addSafetyCorridor( myBot );
+		}
 		long time = myBot.getTime();
 		Point2D.Double botPos = myBot.getPosition( ); // time is now
 		for ( waveWithBullets wB: myBot.enemyWaves ) {
 			if ( w.equals( wB) ) {
-				wB.addSafetyCorridor( myBot );
+				if ( !myBot.getGameInfo().isItMasterBotDriver(w.getFiredBot()) && !myBot.isItMasterBotDriver() ) {
+					// do not track safety corridors in masterBot waves or shadows
+					wB.addSafetyCorridor( myBot );
+				}
 				LinkedList<firingSolution> hitSolutions = wB.getFiringSolutionsWhichHitBotAt( botPos,  time );
 				for ( firingSolution fS : hitSolutions ) {
 					String gunName = fS.getGunName();
