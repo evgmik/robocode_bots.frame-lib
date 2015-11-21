@@ -105,7 +105,9 @@ public class waveWithBullets extends wave {
 
 	public void removeFiringSolutionsInSafetyCorridor( safetyCorridor sC ) {
 		for ( firingSolution fS : firingSolutions ) {
-			//FIXME: make the code
+			if ( fS.isItInCoridor( sC ) ) {
+				firingSolutions.remove(fS);
+			}
 		}
 	}
 
