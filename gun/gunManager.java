@@ -300,19 +300,10 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public void onWavePassingOverMe( wave w ) {
-		logger.dbg("wave from " + w.getFiredBot().getName() + " is passing over " + myBot.getName() );
-		if ( !myBot.getGameInfo().isItMasterBotDriver(w.getFiredBot()) && !myBot.isItMasterBotDriver() ) {
-			// do not track safety corridors in masterBot waves or shadows
-			w.addSafetyCorridor( myBot );
-		}
 		long time = myBot.getTime();
 		Point2D.Double botPos = myBot.getPosition( ); // time is now
 		for ( waveWithBullets wB: myBot.enemyWaves ) {
 			if ( w.equals( wB) ) {
-				if ( !myBot.getGameInfo().isItMasterBotDriver(w.getFiredBot()) && !myBot.isItMasterBotDriver() ) {
-					// do not track safety corridors in masterBot waves or shadows
-					wB.addSafetyCorridor( myBot );
-				}
 				LinkedList<firingSolution> hitSolutions = wB.getFiringSolutionsWhichHitBotAt( botPos,  time );
 				for ( firingSolution fS : hitSolutions ) {
 					String gunName = fS.getGunName();
