@@ -462,6 +462,12 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			// someone else wave passing over other bot
 			// FIXME: think about possible energy drop detection
 			//        to avoid false fired wave generation
+			w.addSafetyCorridor( getGameInfo().getFighterBot( bot.getName() ) );
+			for ( waveWithBullets wB: getEnemyWaves() ) {
+				if ( w.equals( wB) ) {
+					wB.addSafetyCorridor( getGameInfo().getFighterBot( bot.getName() ) );
+				}
+			}
 		}
 	}
 
