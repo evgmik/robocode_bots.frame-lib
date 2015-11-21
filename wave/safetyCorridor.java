@@ -12,11 +12,11 @@ public class safetyCorridor {
 		maxAngle = maxA;
 	}
 
-	double getMinAngle() {
+	public double getMinAngle() {
 		return minAngle;
 	}
 
-	double getMaxAngle() {
+	public double getMaxAngle() {
 		return maxAngle;
 	}
 }
