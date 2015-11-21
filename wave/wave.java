@@ -184,9 +184,12 @@ public class wave {
 	public void drawSafetyCorridor(Graphics2D g, safetyCorridor sC, long time) {
 		double distTraveled = getDistanceTraveledAtTime( time );
 		g.setColor( new Color(0x00, 0xff, 0x00, 0x80) );
-		graphics.drawCircArc( g, firedPosition, distTraveled, sC.getMinAngle(), sC.getMaxAngle() );
-		graphics.drawCircArc( g, firedPosition, distTraveled+1, sC.getMinAngle(), sC.getMaxAngle() );
-		graphics.drawCircArc( g, firedPosition, distTraveled-1, sC.getMinAngle(), sC.getMaxAngle() );
+		// strangely drawCircArc uses games coordinates
+		double minA = ( sC.getMinAngle() );
+		double maxA = ( sC.getMaxAngle() );
+		graphics.drawCircArc( g, firedPosition, distTraveled, minA, maxA );
+		graphics.drawCircArc( g, firedPosition, distTraveled+1, minA, maxA );
+		graphics.drawCircArc( g, firedPosition, distTraveled-1, minA, maxA );
 	}
 
 	public void onPaint(Graphics2D g, long timeNow) {
