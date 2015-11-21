@@ -85,6 +85,18 @@ public class firingSolution {
 		return firingAngle;
 	}
 
+	public Point2D.Double getFiringPositon() {
+		return firingPosition;
+	}
+
+	public long getFiredTime() {
+		return firedTime;
+	}
+
+	public double getBulletSpeed() {
+		return physics.bulletSpeed( bulletEnergy );
+	}
+
 	public void setDistanceAtLastAim( double d ) {
 		distanceAtLastAim = d;
 	}
