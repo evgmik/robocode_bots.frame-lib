@@ -3,6 +3,7 @@
 package eem.frame.gun;
 import eem.frame.misc.*;
 import eem.frame.bot.*;
+import eem.frame.wave.*;
 import eem.frame.gameInfo.*;
 
 import java.awt.geom.Point2D;
@@ -199,6 +200,13 @@ public class firingSolution {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean isItInCoridor( safetyCorridor sC ) {
+		if ( ( sC.getMinAngle() <= firingAngle ) && ( firingAngle <= sC.getMaxAngle() ) ) {
+			return true;
+		}
+		return false;	
 	}
 
 	public String toString() {
