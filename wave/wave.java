@@ -212,12 +212,20 @@ public class wave {
 			}
 		}
 
+		if ( ((tmin - t2) <= 1) || ((tmin - firedTime) <=1) ) {
+			// one of the bullets is inside a bot
+			// TODO: be more smart about travel time inside a bot body
+			// replace 1 with physics.robotHalfDiagonal/bulletSpeed
+			// and it should depend on bullet or wave speed
+			haveSolution = false;
+		}
+
 		if ( !haveSolution ) {
 			return null;
 		}
 
-		Point2D.Double fsPos1 = fS.getLocationAt ( (long) Math.floor(tmin) );
-		Point2D.Double fsPos2 = fS.getLocationAt ( (long) Math.ceil(tmin) );
+		Point2D.Double fsPos1 = fS.getLocationAt ( tmin );
+		Point2D.Double fsPos2 = fS.getLocationAt ( (long) Math.floor(tmin+1) );
 
 		double hitAngle1 = math.angle2pt( firedPosition, fsPos1 );
 		double hitAngle2 = math.angle2pt( firedPosition, fsPos2 );
