@@ -39,9 +39,15 @@ public class masterBotGunManager extends gunManager {
 			// http://robowiki.net/wiki/Robocode/Game_Physics#Firing_Pitfall
 			// essentially we need to set firing solution at previous tick
 			if ( myBot.proxy.getGunHeat() == 0 ) {
+				bestFiringSolution.setIsRealBulletFlag( true );
 				myBot.proxy.setFireBullet(bestFiringSolution.bulletEnergy);
 				firedAt.incrHashCounter( targetBot.getName() );
 				wave nW = new wave( myBot.getInfoBot(), myBot.getTime(), bestFiringSolution.bulletEnergy );
+				// add safety corridors in enemy waves
+				for ( waveWithBullets wB: myBot.getEnemyWaves() ) {
+					wB.addSafetyCorridor( bestFiringSolution );
+				}
+
 				myBot.getGameInfo()._wavesManager.add( nW );
 				waveWithBullets wB = new waveWithBullets( nW );
 				for ( firingSolution fS: firingSolutions ) {
