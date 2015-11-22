@@ -38,6 +38,10 @@ public class safetyCorridor {
 		}
 	}
 
+	public double getCorridorSize() {
+		return (maxAngle - minAngle);
+	}
+
 	public String toString() {
 		String str = "";
 		str += "minA " + minAngle + " maxA " + maxAngle ;
