@@ -37,4 +37,10 @@ public class safetyCorridor {
 			maxAngle = hitAngle1 + dA;
 		}
 	}
+
+	public String toString() {
+		String str = "";
+		str += "minA " + minAngle + " maxA " + maxAngle ;
+		return str;
+	}
 }
