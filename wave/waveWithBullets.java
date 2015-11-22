@@ -139,12 +139,6 @@ public class waveWithBullets extends wave {
 		}
 	}
 
-	public void drawSafetyCorridor(Graphics2D g, safetyCorridor sC, long time) {
-		double distTraveled = getDistanceTraveledAtTime( time );
-		g.setColor( new Color(0x00, 0xff, 0x00, 0x80) );
-		graphics.drawCircArc( g, firedPosition, distTraveled, sC.getMinAngle(), sC.getMaxAngle() );
-	}
-
 	public void onPaint(Graphics2D g, long time) {
 		super.onPaint( g, time );
 		g.setColor(waveColor);
