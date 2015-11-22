@@ -81,6 +81,16 @@ public class math {
 		return false;
 	}
 
+	public static double angleNorm360( double angle ) {
+		// return angle so it is always in (0,360) interval
+		while (angle > 360 ) {
+			angle -= 360;
+		}
+		while (angle < 0 ) {
+			angle += 360;
+		}
+		return angle;
+	}
 	
 	public static double eventRate(double nEvents, double nTotal) {
 		return nEvents / Math.max( nTotal, 1 );
