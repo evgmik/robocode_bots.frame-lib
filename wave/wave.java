@@ -173,7 +173,9 @@ public class wave {
 		double dist = firedPosition.distance( pos );
 		double shadowHalfAngle = Math.atan(physics.robotHalfDiagonal/dist);
 		shadowHalfAngle = Math.toDegrees( shadowHalfAngle );
-		return new safetyCorridor( hitAngle - shadowHalfAngle, hitAngle + shadowHalfAngle );
+		safetyCorridor sC = new safetyCorridor( hitAngle - shadowHalfAngle, hitAngle + shadowHalfAngle );
+		sC.normalize();
+		return sC;
 	}
 
 	public void addSafetyCorridor( fighterBot bot) {
