@@ -114,17 +114,29 @@ public class waveWithBullets extends wave {
 	}
 
 	public void removeFiringSolutionsInSafetyCorridor( safetyCorridor sC ) {
+		LinkedList<firingSolution> fStoRemove = new LinkedList<firingSolution>();
 		for ( firingSolution fS : firingSolutions ) {
 			if ( fS.isItInCoridor( sC ) ) {
-				firingSolutions.remove(fS);
+				fStoRemove.add(fS);
 			}
 		}
+		firingSolutions.removeAll(fStoRemove);
 	}
 
 	public void addSafetyCorridor( fighterBot bot) {
 		safetyCorridor sC = getSafetyCorridor( bot );
-		removeFiringSolutionsInSafetyCorridor( sC );
-		safetyCorridors.add(sC);
+		if ( sC != null ) {
+			removeFiringSolutionsInSafetyCorridor( sC );
+			safetyCorridors.add(sC);
+		}
+	}
+
+	public void addSafetyCorridor( firingSolution fS) {
+		safetyCorridor sC = getSafetyCorridor( fS );
+		if ( sC != null ) {
+			removeFiringSolutionsInSafetyCorridor( sC );
+			safetyCorridors.add(sC);
+		}
 	}
 
 	public void drawSafetyCorridor(Graphics2D g, safetyCorridor sC, long time) {
