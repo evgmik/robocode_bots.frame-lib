@@ -307,6 +307,10 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				// ignoring it
 				return; 
 			}
+			// make safety corridors in this wave from my bullets
+			for ( firingSolution fS : getMyRealBullets() ) {
+				wB.addSafetyCorridor( fS );
+			}
 			enemyWaves.add(wB);
 			// calculate time when wave hits us if we do not move
 			long hitTime = (long) (w.getFiredTime() + w.getTimeToReach( fBot.getPosition() ) );
