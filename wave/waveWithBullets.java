@@ -37,7 +37,7 @@ public class waveWithBullets extends wave {
 		double waveDanger= 1.0;
 		double dL = 0;
 		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
-		if ( dist <= Math.sqrt(2) * physics.robotHalfSize ) {
+		if ( dist <= physics.robotHalfDiagonal ) {
 			// wave is passing through a bot at point dP
 			for ( firingSolution fS : firingSolutions ) {
 				dL += fS.getDanger( time, dP );
