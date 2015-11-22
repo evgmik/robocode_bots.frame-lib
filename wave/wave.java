@@ -238,6 +238,10 @@ public class wave {
 
 	public safetyCorridor getSafetyCorridor( fighterBot bot) {
 		Point2D.Double pos = bot.getPosition();
+		return getSafetyCorridor( pos );
+	}
+
+	public safetyCorridor getSafetyCorridor( Point2D.Double pos ) {
 		double hitAngle = math.angle2pt( firedPosition, pos );
 		double dist = firedPosition.distance( pos );
 		double shadowHalfAngle = Math.atan(physics.robotHalfDiagonal/dist);
