@@ -61,6 +61,16 @@ public class waveWithBullets extends wave {
 		}
 	}
 
+	public firingSolution getRealFiringSolution() {
+		firingSolution realBullet = null;	
+		for ( firingSolution fS : firingSolutions ) {
+			if ( fS.isRealBullet() ) {
+				realBullet = fS;
+				break;
+			}
+		}
+		return realBullet;
+	}
 
 
 	public void updateStatsForHitBy( firingSolution fS) {
