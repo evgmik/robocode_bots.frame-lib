@@ -329,6 +329,17 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		}
 	}
 
+	public LinkedList<firingSolution> getMyRealBullets() {
+		LinkedList<firingSolution> realBulletList = new LinkedList<firingSolution>();
+		for (waveWithBullets wB : getMyWaves() ) {
+			firingSolution fS = wB.getRealFiringSolution();
+			if ( fS != null ) {
+				realBulletList.add( fS );
+			}
+		}
+		return realBulletList;
+	}
+
 	public void reportStats() {
 		logger.routine("--- bot " + getName() + " stats:");
 		if ( isItMasterBotDriver() ) {
