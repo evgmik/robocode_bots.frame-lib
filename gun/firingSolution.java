@@ -224,7 +224,12 @@ public class firingSolution {
 	}
 
 	public boolean isItInCoridor( safetyCorridor sC ) {
-		if ( ( sC.getMinAngle() <= firingAngle ) && ( firingAngle <= sC.getMaxAngle() ) ) {
+		double fA = math.angleNorm360( firingAngle );
+		double dA = math.shortest_arc( sC.getMaxAngle() - sC.getMinAngle() );
+		if ( dA < 0 ) {
+			logger.error( "error: Safety corridor angle is less than 0, this should not happen!" );
+		}
+		if ( ( sC.getMinAngle() <= fA ) && ( fA <= (sC.getMinAngle()+dA) ) ) {
 			return true;
 		}
 		return false;	
