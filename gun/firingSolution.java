@@ -190,7 +190,7 @@ public class firingSolution {
 		return dL;
 	}
 
-	public double getDistanceTraveledAtTime(long time) {
+	public double getDistanceTraveledAtTime(double time) {
 		double timeInFlight = time - firedTime;
 		double distTraveled = timeInFlight * physics.bulletSpeed( bulletEnergy );
 		return distTraveled;
@@ -204,7 +204,7 @@ public class firingSolution {
 		return qualityOfSolution;
 	}
 
-	public Point2D.Double getLocationAt( long time ) {
+	public Point2D.Double getLocationAt( double time ) {
 			double dist = getDistanceTraveledAtTime( time );
 			// note that dx and dy change meaning due to robocode coordinates
 			double a = math.game_angles2cortesian( firingAngle );
