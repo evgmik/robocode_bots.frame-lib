@@ -14,6 +14,7 @@ public class firingSolution {
 	public double firingAngle;
 	public long firedTime;
 	public double bulletEnergy;
+	public boolean realBulletFlag = false;
 	public String firingBotName = "";
 	public String targetBotName = "";
 	public Point2D.Double firingPosition;
@@ -79,6 +80,14 @@ public class firingSolution {
 
 	public String getFiringBotName() {
 		return firingBotName;
+	}
+
+	public boolean isRealBullet() {
+		return realBulletFlag;
+	}
+
+	public void setIsRealBulletFlag( boolean state) {
+		realBulletFlag = state;
 	}
 
 	public double getFiringAngle() {
