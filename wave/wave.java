@@ -258,7 +258,23 @@ public class wave {
 	}
 
 	public void addToSafetyCorridors( safetyCorridor sC ) {
-		safetyCorridors.add(sC);
+		boolean haveJoin = false;
+		safetyCorridor sCjoin = null;
+		safetyCorridor toRemove = null;
+		for( safetyCorridor c : safetyCorridors ) {
+			if ( c.getOverlap(sC) != null ) {
+				haveJoin = true;
+				sCjoin = c.getJoin(sC);
+				toRemove = c;
+				break;
+			}
+		}
+		if ( haveJoin ) {
+			safetyCorridors.remove( toRemove );
+			addToSafetyCorridors( sCjoin );
+		} else {
+			safetyCorridors.add(sC);
+		}
 	}
 
 	public void drawSafetyCorridor(Graphics2D g, safetyCorridor sC, long time) {
