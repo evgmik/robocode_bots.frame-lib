@@ -70,7 +70,6 @@ public class waveWithBullets extends wave {
 			if ( corridorsCoverage >= 0 ) {
 				dL += waveDanger*( 1 - corridorsCoverage/shadowSize );
 				if ( dL <= 0 ) {
-					logger.dbg("at time " + time + " bot is fully in the safety shadows");
 					dL = 0;
 				}
 			}
