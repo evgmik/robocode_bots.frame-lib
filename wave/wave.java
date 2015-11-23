@@ -170,6 +170,7 @@ public class wave {
 
 	public safetyCorridor getSafetyCorridor( firingSolution fS) {
 		// safety corridor made by a bullet shadow from firingSolution fS.
+
 		Point2D.Double fSStartPos = fS.getFiringPositon();
 		double v2 = fS.getBulletSpeed();
 		double v1 = bulletSpeed;
@@ -220,18 +221,18 @@ public class wave {
 			haveSolution = false;
 		}
 
-		if ( !haveSolution ) {
-			return null;
+		safetyCorridor sC = null;
+
+		if ( haveSolution ) {
+			Point2D.Double fsPos1 = fS.getLocationAt ( tmin );
+			Point2D.Double fsPos2 = fS.getLocationAt ( (long) Math.floor(tmin+1) );
+
+			double hitAngle1 = math.angle2pt( firedPosition, fsPos1 );
+			double hitAngle2 = math.angle2pt( firedPosition, fsPos2 );
+
+			sC = new safetyCorridor( hitAngle1, hitAngle2);
+			sC.normalize();
 		}
-
-		Point2D.Double fsPos1 = fS.getLocationAt ( tmin );
-		Point2D.Double fsPos2 = fS.getLocationAt ( (long) Math.floor(tmin+1) );
-
-		double hitAngle1 = math.angle2pt( firedPosition, fsPos1 );
-		double hitAngle2 = math.angle2pt( firedPosition, fsPos2 );
-
-		safetyCorridor sC = new safetyCorridor( hitAngle1, hitAngle2);
-		sC.normalize();
 
 		return sC; 
 	}
