@@ -63,6 +63,10 @@ public class wave {
 		return firedTime;
 	}
 
+	public double getBulletSpeed() {
+		return bulletSpeed;
+	}
+
 	public void setCount(int c) {
 		count = c;
 	}
