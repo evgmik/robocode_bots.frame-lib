@@ -127,7 +127,7 @@ public class waveWithBullets extends wave {
 		safetyCorridor sC = getSafetyCorridor( bot );
 		if ( sC != null ) {
 			removeFiringSolutionsInSafetyCorridor( sC );
-			safetyCorridors.add(sC);
+			addToSafetyCorridors(sC);
 		}
 	}
 
@@ -135,7 +135,7 @@ public class waveWithBullets extends wave {
 		safetyCorridor sC = getSafetyCorridor( fS );
 		if ( sC != null ) {
 			removeFiringSolutionsInSafetyCorridor( sC );
-			safetyCorridors.add(sC);
+			addToSafetyCorridors(sC);
 		}
 	}
 

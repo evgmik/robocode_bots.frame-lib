@@ -254,6 +254,10 @@ public class wave {
 
 	public void addSafetyCorridor( fighterBot bot) {
 		safetyCorridor sC = getSafetyCorridor( bot );
+		addToSafetyCorridors(sC);
+	}
+
+	public void addToSafetyCorridors( safetyCorridor sC ) {
 		safetyCorridors.add(sC);
 	}
 
