@@ -71,6 +71,30 @@ public class safetyCorridor {
 		return sCoverlap;
 	}
 
+	public safetyCorridor getJoin( safetyCorridor sC ) {
+		// joins two corridors
+		// IMPORTANT: it assume that there is an overlap
+		profiler.start( "getJoin" );
+
+		safetyCorridor sCjoin = null;
+
+		// count angles with respect to the smallest minAngle.
+		double refAngle = Math.min( this.getMinAngle(), sC.getMinAngle() );
+		double sc1amin = this.getMinAngle() - refAngle;
+		double sc1amax = this.getMaxAngle() - refAngle;
+		double sc2amin = sC.getMinAngle() - refAngle;
+		double sc2amax = sC.getMaxAngle() - refAngle;
+
+		double minEnd = Math.min( sc1amin, sc2amin );
+		double maxEnd = Math.max( sc1amax, sc2amax );
+
+		sCjoin = new safetyCorridor( minEnd + refAngle, maxEnd + refAngle);
+		sCjoin.normalize();
+
+		profiler.stop( "getJoin" );
+		return sCjoin;
+	}
+
 	public String toString() {
 		String str = "";
 		str += "minA " + minAngle + " maxA " + maxAngle ;
