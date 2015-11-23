@@ -69,9 +69,11 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
-## v3.7-pre 
+## v3.7
 
 GF updates touch the range of angles covered by a bot body
+
+Added safety corridors capabilities. I.e., bullet and bots shadows.
 
 ## v3.6
 
