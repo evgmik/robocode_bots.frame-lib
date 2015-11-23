@@ -212,10 +212,10 @@ public class wave {
 			}
 		}
 
-		if ( ((tmin - t2) <= 1) || ((tmin - firedTime) <=1) ) {
+		if ( ((tmin - t2) <= 2) || ((tmin - firedTime) <=2) ) {
 			// one of the bullets is inside a bot
 			// TODO: be more smart about travel time inside a bot body
-			// replace 1 with physics.robotHalfDiagonal/bulletSpeed
+			// replace 2 with physics.robotHalfDiagonal/bulletSpeed
 			// and it should depend on bullet or wave speed
 			haveSolution = false;
 		}
