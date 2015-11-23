@@ -32,12 +32,64 @@ public class waveWithBullets extends wave {
 		firingSolutions.remove(fS);
 	}
 
+	public double getWaveDanger( long time, Point2D.Double dP ) {
+		// this is essentially danger from a wave with no bullets
+		// but if there are safety corridors, than danger is decreased
+		double dL = 0;
+		profiler.start("getWaveDanger");
+		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
+		if ( dist <= physics.robotHalfDiagonal ) {
+			safetyCorridor botShadow = this.getSafetyCorridor( dP );
+			double shadowSize = botShadow.getCorridorSize();
+
+			// random hit probability if enemy aims with in MEA
+			double waveDanger= shadowSize/physics.calculateMEA( bulletSpeed )/2;
+
+			double corridorsCoverage = 0;
+			int overlapCnt = 0;
+			for ( safetyCorridor sC: safetyCorridors ) {
+				safetyCorridor overlap = sC.getOverlap( botShadow );
+				if ( overlap != null ) {
+					corridorsCoverage += overlap.getCorridorSize();
+					overlapCnt++;
+					if ( overlap.getCorridorSize() >shadowSize ) {
+						logger.dbg( "--------------");
+						logger.dbg( sC.toString() );
+						logger.dbg( botShadow.toString() );
+					}
+				}
+			}
+			double eps = 0;
+			if ( corridorsCoverage > (shadowSize+eps) ) {
+				logger.error("error: check safety corridors addition code, looks like there we some overlapping corridors by " + (corridorsCoverage - shadowSize)/shadowSize);
+				logger.error("error: corridors overlapping count = " + overlapCnt );
+				logger.error("error: coverage size = " + corridorsCoverage );
+				logger.error("error: shadow size = " + shadowSize );
+				corridorsCoverage = shadowSize;
+			}
+			if ( corridorsCoverage >= 0 ) {
+				dL += waveDanger*( 1 - corridorsCoverage/shadowSize );
+				if ( dL <= 0 ) {
+					logger.dbg("at time " + time + " bot is fully in the safety shadows");
+					dL = 0;
+				}
+			}
+		}
+		profiler.stop("getWaveDanger");
+		return dL;
+	}
+
 	public double getDanger( long time, Point2D.Double dP ) {
 		double waveDangerRadius = 100;
-		double waveDanger= 1.0;
 		double dL = 0;
 		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
 		if ( dist <= physics.robotHalfDiagonal ) {
+			dL += getWaveDanger( time, dP );
+			if ( dL == 0 ) {
+				// bot is fully covered by safety corridors
+				return 0;
+			}
+
 			// wave is passing through a bot at point dP
 			for ( firingSolution fS : firingSolutions ) {
 				dL += fS.getDanger( time, dP );
