@@ -26,6 +26,9 @@ public class wave {
 	protected int count=0; // wave count for a particular bot
 
 	public LinkedList<safetyCorridor> safetyCorridors = new LinkedList<safetyCorridor>();
+	// small safety corridors could be miscalculated, also they consume time to process
+	// but if they are small they are unlikely to change the wave danger anyway
+	private double safetyCorridorSizeThreshold = 2; // degrees
 
 	public wave(InfoBot firedBot, long firedTime, double bulletEnergy) {
 		this.firedBot = firedBot;
@@ -258,6 +261,9 @@ public class wave {
 	}
 
 	public void addToSafetyCorridors( safetyCorridor sC ) {
+		if ( sC.getCorridorSize() < safetyCorridorSizeThreshold ) {
+			return;
+		}
 		boolean haveJoin = false;
 		safetyCorridor sCjoin = null;
 		safetyCorridor toRemove = null;
