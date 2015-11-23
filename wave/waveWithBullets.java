@@ -52,7 +52,7 @@ public class waveWithBullets extends wave {
 			if ( fS.getTargetBotName().equals(enemyName) ) {
 				// this bullet is intended for this bot
 				if ( fS.isActive() ) {
-					updateStatsForHitBy(fS);
+					//updateStatsForHitBy(fS);
 					fS.setActiveFlag( false );
 				}
 			} else {

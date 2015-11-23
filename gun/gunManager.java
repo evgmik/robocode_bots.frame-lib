@@ -265,7 +265,7 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public void updateHitGuessFactor( InfoBot bot, double gf, double gfRange, double circularGF, double distAtLastAim, int wave_count ) {
-		logger.routine("hitGF" +  " target:" + bot.getName() + " gf:" + gf + " cgf:" +circularGF + " distance:" + distAtLastAim );
+		//logger.routine("hitGF" +  " target:" + bot.getName() + " gf:" + gf + " cgf:" +circularGF + " distance:" + distAtLastAim );
 		int di0 = (int)Math.round( gfRange/2*numGuessFactorBins );
 		int iCenter = (int)math.gf2bin( gf, numGuessFactorBins );
 
