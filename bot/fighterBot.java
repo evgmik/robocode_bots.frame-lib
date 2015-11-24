@@ -295,6 +295,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				return;
 			}
 			waveWithBullets wB = new waveWithBullets( w );
+			wB.setTargetBot( this );
+			wB.copyGFarray( eBot.getGunManager().getGuessFactors( this.getName() ) );
 			LinkedList<firingSolution> fSolutions = eBot.getFiringSolutions( fBot, w.getFiredTime(), w.getBulletEnergy() );
 			for ( firingSolution fS: fSolutions ) {
 				wB.addFiringSolution(fS);
