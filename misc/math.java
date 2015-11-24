@@ -130,6 +130,23 @@ public class math {
 		return n;
 	}
 
+	public static double[] normArray( double[] a ) {
+		int N = a.length;
+		double maxA = Double.NEGATIVE_INFINITY;
+		for ( int i=0; i< N; i++ ) {
+			if ( a[i] > maxA ) {
+				maxA = a[i];
+			}
+		}
+		if (maxA == 0 ) {
+			maxA = 1;
+		}
+		for ( int i=0; i< N; i++ ) {
+			a[i] /= maxA;
+		}
+		return a;
+	}
+
 	public static int binNumByMaxWeight( LinkedList<Double> weights) {
 		// returns bin number with highest weight
 		int n = 0;
