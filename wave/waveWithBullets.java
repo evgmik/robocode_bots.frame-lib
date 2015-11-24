@@ -36,7 +36,7 @@ public class waveWithBullets extends wave {
 		// this is essentially danger from a wave with no bullets
 		// but if there are safety corridors, than danger is decreased
 		double dL = 0;
-		profiler.start("getWaveDanger");
+		profiler.start("waveWithBullets.getWaveDanger");
 		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
 		if ( dist <= physics.robotHalfDiagonal ) {
 			safetyCorridor botShadow = this.getSafetyCorridor( dP );
@@ -44,6 +44,7 @@ public class waveWithBullets extends wave {
 
 			// random hit probability if enemy aims with in MEA
 			double waveDanger= shadowSize/physics.calculateMEA( bulletSpeed )/2;
+			dL = waveDanger;
 
 			double corridorsCoverage = 0;
 			int overlapCnt = 0;
@@ -68,13 +69,27 @@ public class waveWithBullets extends wave {
 				corridorsCoverage = shadowSize;
 			}
 			if ( corridorsCoverage >= 0 ) {
-				dL += waveDanger*( 1 - corridorsCoverage/shadowSize );
+				dL -= waveDanger*corridorsCoverage/shadowSize;
 				if ( dL <= 0 ) {
 					dL = 0;
 				}
 			}
 		}
-		profiler.stop("getWaveDanger");
+		profiler.stop("waveWithBullets.getWaveDanger");
+		return dL;
+	}
+
+	public double getFiringSolutionsDanger( long time, Point2D.Double dP ) {
+		profiler.start("waveWithBullets.getFiringSolutionsDanger");
+		double dL = 0;
+		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
+		if ( dist <= physics.robotHalfDiagonal ) {
+			// wave is passing through a bot at point dP
+			for ( firingSolution fS : firingSolutions ) {
+				dL += fS.getDanger( time, dP );
+			}
+		}
+		profiler.stop("waveWithBullets.getFiringSolutionsDanger");
 		return dL;
 	}
 
@@ -88,10 +103,7 @@ public class waveWithBullets extends wave {
 			if ( dL == 0 ) {
 				// bot is fully covered by safety corridors
 			} else {
-				// wave is passing through a bot at point dP
-				for ( firingSolution fS : firingSolutions ) {
-					dL += fS.getDanger( time, dP );
-				}
+				dL += getFiringSolutionsDanger( time, dP );
 			}
 		}
 		profiler.stop("waveWithBullets.getDanger");
