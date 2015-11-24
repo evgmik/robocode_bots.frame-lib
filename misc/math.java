@@ -151,6 +151,14 @@ public class math {
 		return n;
 	}
 
+	public static Point2D.Double project( Point2D.Double strtPnt, double angle, double R) {
+		// angle is the game angle
+		Point2D.Double endPnt= new Point2D.Double( strtPnt.x, strtPnt.y );
+		double a = math.game_angles2cortesian( angle );
+		endPnt.x += R*Math.cos( Math.toRadians( a ) );
+		endPnt.y += R*Math.sin( Math.toRadians( a ) );
+		return endPnt;
+	}
 
 	public static Point2D.Double putWithinBorders( Point2D.Double pnt, Point2D.Double brdr) {
 		Point2D.Double npnt= new Point2D.Double( pnt.x, pnt.y );
