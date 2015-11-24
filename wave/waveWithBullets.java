@@ -79,6 +79,7 @@ public class waveWithBullets extends wave {
 	}
 
 	public double getDanger( long time, Point2D.Double dP ) {
+		profiler.start("waveWithBullets.getDanger");
 		double waveDangerRadius = 100;
 		double dL = 0;
 		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
@@ -86,14 +87,14 @@ public class waveWithBullets extends wave {
 			dL += getWaveDanger( time, dP );
 			if ( dL == 0 ) {
 				// bot is fully covered by safety corridors
-				return 0;
-			}
-
-			// wave is passing through a bot at point dP
-			for ( firingSolution fS : firingSolutions ) {
-				dL += fS.getDanger( time, dP );
+			} else {
+				// wave is passing through a bot at point dP
+				for ( firingSolution fS : firingSolutions ) {
+					dL += fS.getDanger( time, dP );
+				}
 			}
 		}
+		profiler.stop("waveWithBullets.getDanger");
 		return dL;
 	}
 
