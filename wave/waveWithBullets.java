@@ -15,13 +15,31 @@ import java.awt.geom.Point2D;
 
 public class waveWithBullets extends wave {
 	public LinkedList<firingSolution> firingSolutions = new LinkedList<firingSolution>();
+	protected fighterBot targetBot = null;
+	protected Color gfColor = new Color(0xff, 0x00, 0x00, 0x80);
+	protected int numGuessFactorBins = 31;
+	protected double[] gfDanger = new double[numGuessFactorBins];
 
 	public waveWithBullets( wave w ) {
 		super( w.getFiredBot(), w.getFiredTime(), w.getBulletEnergy() );
+		for ( int i=0; i< numGuessFactorBins; i++ ) {
+			gfDanger[i] = 1;
+		}
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions() {
 		return firingSolutions;
+	}
+
+	public void setTargetBot(fighterBot tBot ) {
+		targetBot = tBot;
+	}
+
+	public void copyGFarray(double[] gfSrc ) {
+		for ( int i=0; i< numGuessFactorBins; i++ ) {
+			gfDanger[i] = gfSrc[i];
+		}
+		gfDanger = math.normArray( gfDanger );
 	}
 
 	public void addFiringSolution( firingSolution fS ) {
@@ -203,6 +221,30 @@ public class waveWithBullets extends wave {
 		}
 	}
 
+	public void drawGFdanger(Graphics2D g, long time) {
+		if ( targetBot == null ) {
+			return;
+		}
+		g.setColor(gfColor);
+		double MEA = physics.calculateMEA( bulletSpeed );
+		botStatPoint tBStat = targetBot.getStatClosestToTime( time - 1 );
+		double latteralSpeed = tBStat.getLateralSpeed( firedPosition );
+		double headOnAngle = math.angle2pt( firedPosition, tBStat.getPosition() );
+		for ( int i=0; i< numGuessFactorBins; i++ ) {
+			double gf =  math.bin2gf( i, numGuessFactorBins) * math.signNoZero( latteralSpeed );
+			double dL = gfDanger[i];
+			double a = headOnAngle + gf * MEA;
+			double dist = (time - firedTime) * bulletSpeed;
+
+			Point2D.Double strtP = math.project( firedPosition, a, dist );
+			dist += dL*10;
+			Point2D.Double endP = math.project( firedPosition, a, dist );
+			graphics.drawLine( g, strtP,  endP );
+
+		}
+
+	}
+
 	public void onPaint(Graphics2D g, long time) {
 		super.onPaint( g, time );
 		g.setColor(waveColor);
@@ -215,5 +257,7 @@ public class waveWithBullets extends wave {
 		for ( safetyCorridor sC : safetyCorridors ) {
 			drawSafetyCorridor(g, sC, time);
 		}
+
+		drawGFdanger(g, time);
 	}
 }
