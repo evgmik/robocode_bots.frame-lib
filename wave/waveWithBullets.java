@@ -227,7 +227,7 @@ public class waveWithBullets extends wave {
 		}
 		g.setColor(gfColor);
 		double MEA = physics.calculateMEA( bulletSpeed );
-		botStatPoint tBStat = targetBot.getStatClosestToTime( time - 1 );
+		botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
 		double latteralSpeed = tBStat.getLateralSpeed( firedPosition );
 		double headOnAngle = math.angle2pt( firedPosition, tBStat.getPosition() );
 		for ( int i=0; i< numGuessFactorBins; i++ ) {
