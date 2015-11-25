@@ -173,9 +173,17 @@ public class firingSolution {
 
 	public double getDanger( long time, safetyCorridor botShadow ) {
 		double dL =0;
+		double bulletDanger = 1 * qualityOfSolution;
 		if ( isItInCoridor( botShadow ) ) {
-			dL += getQualityOfSolution();
+			dL = bulletDanger;
 		}
+		// additional danger which drops with angular distance,
+		// this code give small increase in hit avoidance at least agains
+		// aiming head on bots like rz.HawkOnFire
+		double fA = math.angleNorm360( firingAngle );
+		double bsA = ( botShadow.getMaxAngle() + botShadow.getMinAngle() )/2;
+		double dA = Math.abs(fA - bsA);
+		dL += bulletDanger * Math.exp( - 2*dA/botShadow.getCorridorSize() );
 		return dL;
 	}
 
