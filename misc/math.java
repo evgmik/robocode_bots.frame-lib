@@ -259,6 +259,8 @@ public class math {
 	public static long gf2bin( double gf, double numBins) {
 		// convert gf to its bin location
 		// assumes that gf spans from -1 to 1
-                return Math.round( (gf+1)/2*(numBins-1) );
+		long i = Math.round( (gf+1)/2*(numBins-1) );
+		i = (long) putWithinRange( i, 0, numBins-1 );
+                return i;
         }
 }
