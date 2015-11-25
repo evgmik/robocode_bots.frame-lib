@@ -69,6 +69,16 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v4.0-pre
+
+Bullets and wave danger is calculated on the shadow and guess factors, i.e. no
+real space distance calculations. This gives tremendous speed up. This new way
+of calculations justifies bumping up the major version.
+
+Safety corridors are properly taken in account for wave danger calculations.
+
+Nice plot of the GF danger for enemy bots wave.
+
 ## v3.7
 
 GF updates touch the range of angles covered by a bot body
