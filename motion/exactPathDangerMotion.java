@@ -33,6 +33,8 @@ public class exactPathDangerMotion extends basicMotion {
 	long minimalPathLength = (long) ( Math.max( 32, 2*stopTime ) ); 
 	// tune below to avoid skipped turns
 	long maximalPathLength = 50;
+	// TODO looks like I made some speed up, so it might be better to
+	// do small initial trial number and push up trials to improve
 	long nTrials = 20;
 	long nTrialsToImprove = 2;
 	
