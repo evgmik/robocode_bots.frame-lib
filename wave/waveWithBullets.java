@@ -55,7 +55,7 @@ public class waveWithBullets extends wave {
 		// but if there are safety corridors, than danger is decreased
 		double dL = 0;
 		profiler.start("waveWithBullets.getWaveDanger");
-		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
+		double dist = Math.abs(dP.distance( firedPosition ) - getDistanceTraveledAtTime( time ) );
 		if ( dist <= physics.robotHalfDiagonal ) {
 			safetyCorridor botShadow = this.getSafetyCorridor( dP );
 			double shadowSize = botShadow.getCorridorSize();
@@ -100,7 +100,7 @@ public class waveWithBullets extends wave {
 	public double getFiringSolutionsDanger( long time, Point2D.Double dP ) {
 		profiler.start("waveWithBullets.getFiringSolutionsDanger");
 		double dL = 0;
-		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
+		double dist = Math.abs(dP.distance( firedPosition ) - getDistanceTraveledAtTime( time ) );
 		if ( dist <= physics.robotHalfDiagonal ) {
 			// wave is passing through a bot at point dP
 			for ( firingSolution fS : firingSolutions ) {
@@ -115,7 +115,7 @@ public class waveWithBullets extends wave {
 		profiler.start("waveWithBullets.getDanger");
 		double waveDangerRadius = 100;
 		double dL = 0;
-		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
+		double dist = Math.abs(dP.distance( firedPosition ) - getDistanceTraveledAtTime( time ) );
 		if ( dist <= physics.robotHalfDiagonal ) {
 			dL += getWaveDanger( time, dP );
 			if ( dL == 0 ) {
