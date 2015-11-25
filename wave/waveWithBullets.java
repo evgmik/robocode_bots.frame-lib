@@ -36,6 +36,8 @@ public class waveWithBullets extends wave {
 	}
 
 	public void copyGFarray(double[] gfSrc ) {
+		numGuessFactorBins = gfSrc.length;
+		gfDanger = new double[numGuessFactorBins];
 		for ( int i=0; i< numGuessFactorBins; i++ ) {
 			gfDanger[i] = gfSrc[i];
 		}
