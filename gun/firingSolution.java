@@ -171,6 +171,14 @@ public class firingSolution {
 		return dist;
 	}
 
+	public double getDanger( long time, safetyCorridor botShadow ) {
+		double dL =0;
+		if ( isItInCoridor( botShadow ) ) {
+			dL += getQualityOfSolution();
+		}
+		return dL;
+	}
+
 	public double getDanger( long time, Point2D.Double dP ) {
 		// let's find the danger of this point by finding the minimal
 		// distance from bullet path to the point of interest
