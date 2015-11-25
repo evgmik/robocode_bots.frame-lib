@@ -230,6 +230,7 @@ public class waveWithBullets extends wave {
 		botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
 		double latteralSpeed = tBStat.getLateralSpeed( firedPosition );
 		double headOnAngle = math.angle2pt( firedPosition, tBStat.getPosition() );
+		Point2D.Double prevP = null;
 		for ( int i=0; i< numGuessFactorBins; i++ ) {
 			double gf =  math.bin2gf( i, numGuessFactorBins) * math.signNoZero( latteralSpeed );
 			double dL = gfDanger[i];
@@ -240,6 +241,11 @@ public class waveWithBullets extends wave {
 			dist += dL*10;
 			Point2D.Double endP = math.project( firedPosition, a, dist );
 			graphics.drawLine( g, strtP,  endP );
+			if ( prevP != null ) {
+				// this plot envelope of GF dangers
+				graphics.drawLine( g, prevP,  endP );
+			}
+			prevP = endP;
 
 		}
 
