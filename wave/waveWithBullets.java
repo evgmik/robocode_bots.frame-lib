@@ -102,9 +102,11 @@ public class waveWithBullets extends wave {
 		double dL = 0;
 		double dist = Math.abs(dP.distance( firedPosition ) - getDistanceTraveledAtTime( time ) );
 		if ( dist <= physics.robotHalfDiagonal ) {
+			safetyCorridor botShadow = this.getSafetyCorridor( dP );
 			// wave is passing through a bot at point dP
 			for ( firingSolution fS : firingSolutions ) {
-				dL += fS.getDanger( time, dP );
+				//dL += fS.getDanger( time, dP );
+				dL += fS.getDanger( time, botShadow );
 			}
 		}
 		profiler.stop("waveWithBullets.getFiringSolutionsDanger");
