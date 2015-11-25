@@ -184,6 +184,7 @@ public class firingSolution {
 		double bsA = ( botShadow.getMaxAngle() + botShadow.getMinAngle() )/2;
 		double dA = Math.abs(fA - bsA);
 		dL += bulletDanger * Math.exp( - 2*dA/botShadow.getCorridorSize() );
+
 		return dL;
 	}
 
