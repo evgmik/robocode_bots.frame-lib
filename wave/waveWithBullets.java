@@ -52,6 +52,46 @@ public class waveWithBullets extends wave {
 		firingSolutions.remove(fS);
 	}
 
+	public double getFiringGuessFactor( double absFiringAngle ) {
+		double gf = 0;
+		if ( targetBot != null ) {
+			gf = getFiringGuessFactor( targetBot.getInfoBot(), absFiringAngle );
+		}
+		return gf;
+	}
+
+	public double getGFDanger( long time, safetyCorridor botShadow ) {
+		double dL =0;
+		// Let's calculate the danger due to GF stats
+		double gfStrt = getFiringGuessFactor( botShadow.getMinAngle() );
+		double gfEnd  = getFiringGuessFactor( botShadow.getMaxAngle() );
+		if ( ((gfStrt < -1) || (gfStrt > 1)) && ((gfEnd < -1) || (gfEnd > 1)) ) {
+			// both edges are outside of MEA
+			// most likely we called this function to help
+			// danger map drawing
+		} else {
+			long iStrt = math.gf2bin( gfStrt, gfDanger.length );
+			long iEnd  = math.gf2bin( gfEnd,  gfDanger.length );
+
+			if ( iStrt > iEnd ) {
+				// swap them
+				long tmp = iStrt;
+				iStrt = iEnd;
+				iEnd =tmp;
+			}
+			double gfCorridorSum = 0;
+			int cnt = 0;
+			for ( long i = iStrt; i <= iEnd; i++ ) {
+				gfCorridorSum += gfDanger[ (int)i];
+				cnt++;
+			}
+			// now we normalize it
+			gfCorridorSum /= gfDanger.length;
+			dL += gfCorridorSum;
+		}
+		return dL;
+	}
+
 	public double getWaveDanger( long time, Point2D.Double dP ) {
 		// this is essentially danger from a wave with no bullets
 		// but if there are safety corridors, than danger is decreased
@@ -93,6 +133,14 @@ public class waveWithBullets extends wave {
 				if ( dL <= 0 ) {
 					dL = 0;
 				}
+			}
+			if ( dL > 0 ) {
+				// The bot/point is not completely covered by safety corridors
+				// This part helps with flattening of the bot GF
+				// but it is time/CPU expensive.
+				//
+				// TODO: for now I disable it
+				//getGFDanger( time, botShadow );
 			}
 		}
 		profiler.stop("waveWithBullets.getWaveDanger");
