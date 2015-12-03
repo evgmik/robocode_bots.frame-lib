@@ -140,7 +140,7 @@ public class waveWithBullets extends wave {
 				// but it is time/CPU expensive.
 				//
 				// TODO: for now I disable it
-				//getGFDanger( time, botShadow );
+				//dL += getGFDanger( time, botShadow );
 			}
 		}
 		profiler.stop("waveWithBullets.getWaveDanger");
