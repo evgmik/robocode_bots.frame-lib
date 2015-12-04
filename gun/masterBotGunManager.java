@@ -121,6 +121,12 @@ public class masterBotGunManager extends gunManager {
 	protected double bulletEnergyVsDistance( fighterBot targetBot ) {
 		double targetDistance = myBot.getPosition().distance( targetBot.getPosition() );
 		double bulletEnergy = Math.min( 500/targetDistance, robocode.Rules.MAX_BULLET_POWER);
+		// attempting to use the  wiki BasicSurfer x.x5 power detection bug
+		// the bug was present in the old wiki version, presumably used 
+		// by many bots based on it
+		// http://robowiki.net/w/index.php?title=User_talk:Beaming&offset=20151204021729&lqt_mustshow=4826#Fire_power_2.95_bug_4826
+		bulletEnergy = (Math.round( bulletEnergy * 10 ) + .5 )/10; // energy = x.x5
+		logger.dbg( "bE = " + bulletEnergy );
 		// no point to fire bullets more energetic than enemy bot energy level
 		bulletEnergy = Math.min( bulletEnergy, physics.minReqBulEnergyToKillTarget( targetBot.getEnergy() ) );
 
