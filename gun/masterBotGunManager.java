@@ -124,7 +124,10 @@ public class masterBotGunManager extends gunManager {
 				return; // no solution
 			}
 			//targetBot = myBot.getGameInfo().getFighterBot( fS.getTargetBotName() );
-			logger.dbg( "The best fS for " + fS.getTargetBotName() + " gun " + fS.getGunName() + " Q " + fS.getQualityOfSolution() );
+			if ( !targetBot.getName().equals( fS.getTargetBotName() ) ) {
+				logger.dbg( "The best target " + targetBot.getName());
+				logger.dbg( "The best fS for " + fS.getTargetBotName() + " gun " + fS.getGunName() + " Q " + fS.getQualityOfSolution() );
+			}
 			if ( isBulletShieldDetected( targetBot.getName() ) ) {
 				//logger.dbg( "time " + myBot.getTime() +" bullet shield detected for " + targetBot.getName() );
 				// apply small angle shift of couple degrees
