@@ -70,15 +70,7 @@ public class circularAccelGun extends circularGun {
 		firingSolution fS = new firingSolution( this, fPos, posFut, time, bulletEnergy );
 		setDistanceAtLastAimFor( fS, fPos, tPos );
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
-		if ( infoLagTime <= 0  ) {
-			// time point from the future
-			fS.setQualityOfSolution(1); // 1 is the best
-		}
-		if ( infoLagTime > 0  ) {
-			// we are using outdated info
-			fS.setQualityOfSolution( Math.exp(infoLagTime/5) );
-			logger.noise("time " + time + " target info is outdated by " + infoLagTime);
-		}
+		fS.setQualityOfSolution( getLagTimePenalty( infoLagTime ) );
 		fSolultions.add(fS);
 		fSolultions = setTargetBotName( tBot.getName(), fSolultions );
 		return fSolultions;

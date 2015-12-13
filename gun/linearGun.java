@@ -59,15 +59,7 @@ public class linearGun extends baseGun {
 		firingSolution fS = new firingSolution( this, fPos, tFPos, time, bulletEnergy );
 
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
-		if ( infoLagTime <= 0  ) {
-			// time point from the future
-			fS.setQualityOfSolution(1); // 1 is the best
-		}
-		if ( infoLagTime > 0  ) {
-			// we are using outdated info
-			fS.setQualityOfSolution( Math.exp(infoLagTime/5) );
-			logger.noise("time " + time + " target info is outdated by " + infoLagTime);
-		}
+		fS.setQualityOfSolution( getLagTimePenalty( infoLagTime ) );
 		// check if the future target point is within botReacheable space
 		if ( !physics.botReacheableBattleField.contains( tFPos ) ) {
 			logger.noise("time " + time + " unphysical future target position");
