@@ -49,13 +49,17 @@ public class baseGun {
 	}
 
 	public double getLagTimePenalty( long infoLagTime ) {
-		if ( infoLagTime <= 0  ) {
-			// time point from the future
-			return 1.0; // 1 is the best solution
+		double p = 1;
+		long maxOkLag = 1;
+		if ( infoLagTime <= maxOkLag  ) {
+			// <= 0 time point from the future
+			// 1 is acceptable with out penalty
+			p = 1.0; // 1 is the best solution
 		} else {
 			// we are using outdated info
-			return Math.exp(infoLagTime/5);
+			p = Math.exp(-(infoLagTime-maxOkLag)/5.0);
 		}
+		return p;
 	}
 
 	public Point2D.Double shiftFromDirectLine( Point2D.Double fP, Point2D.Double originalTP ){
