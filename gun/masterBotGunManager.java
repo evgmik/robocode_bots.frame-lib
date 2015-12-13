@@ -16,6 +16,7 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 
 public class masterBotGunManager extends gunManager {
+	boolean aimAtEveryone = true;
 
 	public	masterBotGunManager() {
 	}
@@ -58,6 +59,32 @@ public class masterBotGunManager extends gunManager {
 		}
 	}
 
+	public void rankAimAtAllSolutions( LinkedList<firingSolution> fSols, double bulletEnergy ) {
+		double MEA = physics.calculateMEA( physics.bulletSpeed(bulletEnergy) );
+		Point2D.Double myPos = myBot.getPosition();
+		double distToGlobalTarget = myPos.distance( targetBot.getPosition() );
+		for ( firingSolution fS1 : fSols ) {
+			double fS1Q = fS1.getQualityOfSolution();
+			double a1 = fS1.getFiringAngle();
+			Point2D.Double tPos = myBot.getGameInfo().getFighterBot( fS1.getTargetBotName() ).getPosition();
+			double dist = myPos.distance( tPos );
+			String tName1 = fS1.getTargetBotName();
+			double sumWa =  1;
+			for ( firingSolution fS2 : fSols ) {
+				if ( fS1 == fS2 || tName1.equals( fS2.getTargetBotName() ) ) {
+					continue;
+				}
+				double a2 = fS2.getFiringAngle();
+				double da = Math.abs( math.shortest_arc(a1 - a2) )/MEA;
+				//sumWa += Math.exp( - (da*da) );
+				sumWa +=  1/(1+(da*da));
+			}
+			if ( sumWa == 0 ) sumWa = 1;
+			double distW =  Math.pow(distToGlobalTarget/dist,1);
+			fS1.setQualityOfSolution( fS1Q * sumWa * distW );
+		}
+	}
+
 	public void aimTheGun() {
 		if ( myBot.proxy.getGunHeat()/physics.gunCoolingRate >  (180/robocode.Rules.GUN_TURN_RATE + 1) ) {
 			// do not waste CPU on aiming hot gun
@@ -76,14 +103,28 @@ public class masterBotGunManager extends gunManager {
 			if ( bulletEnergy <= 0 ) {
 				return; // bad bullet
 			}
-			// note getTime()+1, the fire command is executed at next tic
-			fSols =  getFiringSolutions( targetBot, myBot.getTime()+1, bulletEnergy );
-			firingSolutions.addAll( fSols ); // virtual solutions
+			if ( aimAtEveryone ) {
+				for ( fighterBot eB : myBot.getEnemyBots() ) {
+					//logger.dbg("aiming at everyone");
+					// note getTime()+1, the fire command is executed at next tic
+					fSols =  getFiringSolutions( eB, myBot.getTime()+1, bulletEnergy );
+					firingSolutions.addAll( fSols ); // virtual solutions
+				}
+				rankAimAtAllSolutions( firingSolutions, bulletEnergy );
+				fSols = firingSolutions;
+			} else {
+				// aim only at target bot
+				// note getTime()+1, the fire command is executed at next tic
+				fSols =  getFiringSolutions( targetBot, myBot.getTime()+1, bulletEnergy );
+				firingSolutions.addAll( fSols ); // virtual solutions
+			}
 			firingSolution fS = getTheBestFiringSolution( fSols ); // real one
 			if ( fS == null) {
 				logger.noise("time " + myBot.getTime() + " Veto on fire: no firing solution");
 				return; // no solution
 			}
+			//targetBot = myBot.getGameInfo().getFighterBot( fS.getTargetBotName() );
+			logger.dbg( "The best fS for " + fS.getTargetBotName() + " gun " + fS.getGunName() + " Q " + fS.getQualityOfSolution() );
 			if ( isBulletShieldDetected( targetBot.getName() ) ) {
 				//logger.dbg( "time " + myBot.getTime() +" bullet shield detected for " + targetBot.getName() );
 				// apply small angle shift of couple degrees
