@@ -13,6 +13,7 @@ import java.awt.Color;
 public class baseGun {
 	public String gunName;
 	public Color color = new Color(0x00, 0x00, 0x00, 0xff); // default color
+	long infoDelayTimeThreshold = (long) (360/robocode.Rules.RADAR_TURN_RATE + 1);
 
 	public baseGun() {
 		gunName = "baseGun";
@@ -50,14 +51,13 @@ public class baseGun {
 
 	public double getLagTimePenalty( long infoLagTime ) {
 		double p = 1;
-		long maxOkLag = 1;
+		long maxOkLag = 0;
 		if ( infoLagTime <= maxOkLag  ) {
 			// <= 0 time point from the future
-			// 1 is acceptable with out penalty
 			p = 1.0; // 1 is the best solution
 		} else {
 			// we are using outdated info
-			p = Math.exp(-(infoLagTime-maxOkLag)/5.0);
+			p = Math.exp( -(infoLagTime-maxOkLag)/(3*infoDelayTimeThreshold) );
 		}
 		return p;
 	}
