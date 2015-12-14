@@ -84,6 +84,7 @@ public class masterBotGunManager extends gunManager {
 			}
 			double angleW = (1 + sumWa)/(1 + cnt); // solution fS1 has weight too
 			double distW =  botTargetingWeightByDistance( tB1 );
+			distW *= distW;
 			double energyW = botTargetingWeightByEnemyEnergy( tB1);
 			fS1.setQualityOfSolution( fS1Q * angleW * distW * energyW );
 		}
