@@ -120,8 +120,9 @@ public class masterBotGunManager extends gunManager {
 				return; // bad bullet
 			}
 			if ( aimAtEveryone ) {
-				firingSolutions = getAimAtEveryoneFiringSolutions( bulletEnergy );
-				rankAimAtAllSolutions( firingSolutions, bulletEnergy );
+				// firingSolutions are already calculated during bestTargetBot search
+				//firingSolutions = getAimAtEveryoneFiringSolutions( bulletEnergy );
+				//rankAimAtAllSolutions( firingSolutions, bulletEnergy );
 				fSols = firingSolutions;
 			} else {
 				// aim only at target bot
@@ -133,11 +134,6 @@ public class masterBotGunManager extends gunManager {
 			if ( fS == null) {
 				logger.noise("time " + myBot.getTime() + " Veto on fire: no firing solution");
 				return; // no solution
-			}
-			//targetBot = myBot.getGameInfo().getFighterBot( fS.getTargetBotName() );
-			if ( !targetBot.getName().equals( fS.getTargetBotName() ) ) {
-				logger.dbg( "The best target " + targetBot.getName());
-				logger.dbg( "The best fS for " + fS.getTargetBotName() + " gun " + fS.getGunName() + " Q " + fS.getQualityOfSolution() );
 			}
 			if ( isBulletShieldDetected( targetBot.getName() ) ) {
 				//logger.dbg( "time " + myBot.getTime() +" bullet shield detected for " + targetBot.getName() );
