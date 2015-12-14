@@ -106,7 +106,6 @@ public class masterBotGunManager extends gunManager {
 			// do not waste CPU on aiming hot gun
 			return;
 		}
-		firingSolutions = new LinkedList<firingSolution>(); //clear the list
 		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
 		double bulletEnergy = -1000; // intentionally bad
 		if ( targetBot != null ) {
@@ -127,6 +126,7 @@ public class masterBotGunManager extends gunManager {
 			} else {
 				// aim only at target bot
 				// note getTime()+1, the fire command is executed at next tic
+				firingSolutions = new LinkedList<firingSolution>(); //clear the list
 				fSols =  getFiringSolutions( targetBot, myBot.getTime()+1, bulletEnergy );
 				firingSolutions.addAll( fSols ); // virtual solutions
 			}
