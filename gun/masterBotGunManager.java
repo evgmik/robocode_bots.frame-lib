@@ -335,9 +335,9 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public double botTargetingWeightByScanLag(fighterBot bot) {
-		long infoDelayTimeThreshold = (long) (360/robocode.Rules.RADAR_TURN_RATE + 1);
+		baseGun bG = new baseGun();
 		double w;
-		w = Math.exp ( -(myBot.getTime() - bot.getLastSeenTime()) / (3*infoDelayTimeThreshold) );
+		w = bG.getLagTimePenalty( myBot.getTime() - bot.getLastSeenTime() ) ;
 		return w;
 	}
 
