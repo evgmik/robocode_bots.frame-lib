@@ -85,6 +85,18 @@ public class masterBotGunManager extends gunManager {
 		}
 	}
 
+	public LinkedList<firingSolution> getAimAtEveryoneFiringSolutions(double bulletEnergy) {
+		LinkedList<firingSolution> fSols    = new LinkedList<firingSolution>();
+		LinkedList<firingSolution> fSolsAll = new LinkedList<firingSolution>();
+		for ( fighterBot eB : myBot.getEnemyBots() ) {
+			//logger.dbg("aiming at everyone");
+			// note getTime()+1, the fire command is executed at next tic
+			fSols =  getFiringSolutions( eB, myBot.getTime()+1, bulletEnergy );
+			fSolsAll.addAll( fSols ); // virtual solutions
+		}
+		return fSolsAll;
+	}
+
 	public void aimTheGun() {
 		if ( myBot.proxy.getGunHeat()/physics.gunCoolingRate >  (180/robocode.Rules.GUN_TURN_RATE + 1) ) {
 			// do not waste CPU on aiming hot gun
@@ -104,12 +116,7 @@ public class masterBotGunManager extends gunManager {
 				return; // bad bullet
 			}
 			if ( aimAtEveryone ) {
-				for ( fighterBot eB : myBot.getEnemyBots() ) {
-					//logger.dbg("aiming at everyone");
-					// note getTime()+1, the fire command is executed at next tic
-					fSols =  getFiringSolutions( eB, myBot.getTime()+1, bulletEnergy );
-					firingSolutions.addAll( fSols ); // virtual solutions
-				}
+				firingSolutions = getAimAtEveryoneFiringSolutions( bulletEnergy );
 				rankAimAtAllSolutions( firingSolutions, bulletEnergy );
 				fSols = firingSolutions;
 			} else {
