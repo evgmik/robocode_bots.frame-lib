@@ -197,11 +197,12 @@ public class masterBotGunManager extends gunManager {
 
 	public void aimAndSetGun( firingSolution fS ) {
 		if ( fS == null) {
+			logger.noise("time " + myBot.getTime() + " no firing solution. Veto on firing gun " + fS.getGunName() );
 			bestFiringSolution = null;
 			return;
 		}
 		if ( fS.getQualityOfSolution() < firingSolutionQualityThreshold ) {
-			logger.noise("time " + myBot.getTime() + " bad firing solution. Veto on firing gun " + fS.getGunName() );
+			logger.noise("time " + myBot.getTime() + " bad quality " + fS.getQualityOfSolution() + " of firing solution. Veto on firing gun " + fS.getGunName() );
 			return; // no good enough solution
 		}
 		logger.noise("time " + myBot.getTime() + " firing solution is good");
