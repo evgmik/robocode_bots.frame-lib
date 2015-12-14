@@ -227,6 +227,58 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public fighterBot findTheBestTarget() {
+		fighterBot bestTargetBot = targetBot;
+		if ( myBot.getEnemyBots().size() == 0 ) {
+			return null;
+		}
+		if ( bestTargetBot == null ) {
+			bestTargetBot = findTheBestTargetBotWise();
+		} else  if ( aimAtEveryone ) {
+			fighterBot bestTargetBotFSWise = findTheBestTargetFSWise();
+			if ( bestTargetBot == null || bestTargetBotFSWise == null ) {
+				return null;
+			}
+			if ( !bestTargetBot.getName().equals( bestTargetBotFSWise.getName() ) ) {
+				logger.dbg("FS overrides target: " + bestTargetBot.getName() + " ==> " + bestTargetBotFSWise.getName() );
+				bestTargetBot = bestTargetBotFSWise;
+			}
+		}
+		reportBestTargetBot( bestTargetBot );
+		return bestTargetBot;
+	}
+
+	public fighterBot findTheBestTargetFSWise() {
+		fighterBot bestTargetBot = null;
+		if ( myBot.getEnemyBots().size() == 0 ) {
+			return null;
+		}
+		firingSolutions = new LinkedList<firingSolution>(); //clear the list
+		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
+		double bulletEnergy = -1000; // intentionally bad
+		firingSolution fS = null;
+		if ( targetBot != null ) {
+			bulletEnergy = bulletEnergyVsDistance( targetBot );
+			if ( bulletEnergy >= (myBot.getEnergy() - 1e-4) ) {
+				// do not fire or we will get ourself disabled
+				return null;
+			}
+			bulletEnergy = Math.max( bulletEnergy, 0 ); // zero means no fire
+			if ( bulletEnergy <= 0 ) {
+				return null; // bad bullet
+			}
+			firingSolutions = getAimAtEveryoneFiringSolutions( bulletEnergy );
+			rankAimAtAllSolutions( firingSolutions, bulletEnergy );
+			fSols = firingSolutions;
+			fS = getTheBestFiringSolution( fSols ); // real one
+		}
+		if ( fS == null ) {
+			return null;
+		}
+		bestTargetBot = myBot.getGameInfo().getFighterBot( fS.getTargetBotName() );
+		return bestTargetBot;
+	}
+
+	public fighterBot findTheBestTargetBotWise() {
 		fighterBot bestTargetBot = null;
 		if ( myBot.getEnemyBots().size() == 0 ) {
 			return null;
@@ -261,7 +313,6 @@ public class masterBotGunManager extends gunManager {
 			}
 		}
 
-		reportBestTargetBot( bestTargetBot );
 		return bestTargetBot;
 	}
 
