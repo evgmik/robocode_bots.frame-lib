@@ -69,7 +69,9 @@ public class masterBotGunManager extends gunManager {
 			Point2D.Double tPos = myBot.getGameInfo().getFighterBot( fS1.getTargetBotName() ).getPosition();
 			double dist = myPos.distance( tPos );
 			String tName1 = fS1.getTargetBotName();
-			double sumWa =  1;
+			fighterBot tB1 = myBot.getGameInfo().getFighterBot( tName1 );
+			double sumWa =  0;
+			int cnt =0; 
 			for ( firingSolution fS2 : fSols ) {
 				if ( fS1 == fS2 || tName1.equals( fS2.getTargetBotName() ) ) {
 					continue;
@@ -78,10 +80,12 @@ public class masterBotGunManager extends gunManager {
 				double da = Math.abs( math.shortest_arc(a1 - a2) )/MEA;
 				//sumWa += Math.exp( - (da*da) );
 				sumWa +=  1/(1+(da*da));
+				cnt++;
 			}
-			if ( sumWa == 0 ) sumWa = 1;
-			double distW =  Math.pow(distToGlobalTarget/dist,1);
-			fS1.setQualityOfSolution( fS1Q * sumWa * distW );
+			double angleW = (1 + sumWa)/(1 + cnt); // solution fS1 has weight too
+			double distW =  botTargetingWeightByDistance( tB1 );
+			double energyW = botTargetingWeightByEnemyEnergy( tB1);
+			fS1.setQualityOfSolution( fS1Q * angleW * distW * energyW );
 		}
 	}
 
