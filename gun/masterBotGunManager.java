@@ -64,12 +64,17 @@ public class masterBotGunManager extends gunManager {
 		Point2D.Double myPos = myBot.getPosition();
 		double distToGlobalTarget = myPos.distance( targetBot.getPosition() );
 		for ( firingSolution fS1 : fSols ) {
-			double fS1Q = fS1.getQualityOfSolution();
+			double gunPerf = fS1.getQualityOfSolution();
 			double a1 = fS1.getFiringAngle();
 			Point2D.Double tPos = myBot.getGameInfo().getFighterBot( fS1.getTargetBotName() ).getPosition();
 			double dist = myPos.distance( tPos );
 			String tName1 = fS1.getTargetBotName();
 			fighterBot tB1 = myBot.getGameInfo().getFighterBot( tName1 );
+			double w = 1;
+			w *= botTargetingWeightByDistance(tB1);
+			w *= botTargetingWeightByScanLag(tB1);
+
+			// update weight due to angles distribution
 			double sumWa =  0;
 			int cnt =0; 
 			for ( firingSolution fS2 : fSols ) {
@@ -83,10 +88,23 @@ public class masterBotGunManager extends gunManager {
 				cnt++;
 			}
 			double angleW = (1 + sumWa)/(1 + cnt); // solution fS1 has weight too
-			double distW =  botTargetingWeightByDistance( tB1 );
-			distW *= distW;
+
 			double energyW = botTargetingWeightByEnemyEnergy( tB1);
-			fS1.setQualityOfSolution( fS1Q * angleW * distW * energyW );
+			w *= energyW;
+
+			int gunStatsReliableRound = 4; // recall that we count from 0
+			if ( myBot.getGameInfo().getRoundNum() > gunStatsReliableRound ) {
+				w *= botTargetingWeightByFiredShots(tB1);
+			}
+
+			double perfContr = 0.2;
+			double gunPerfW = (1-perfContr) + perfContr * gunPerf;
+
+			w *= gunPerfW;
+
+			//fS1.setQualityOfSolution( fS1Q * angleW * distW * energyW );
+			//fS1.setQualityOfSolution( fS1Q * distW * energyW );
+			fS1.setQualityOfSolution( w );
 		}
 	}
 
