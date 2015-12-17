@@ -154,6 +154,10 @@ public class gunManager implements gunManagerInterface {
 		Point2D.Double posHit = new Point2D.Double( b.getX(), b.getY() );
 
 		wave w = myBot.getGameInfo().getWavesManager().getWaveMatching( fireBotName, trgtBotName, posHit, time );
+		if ( w == null) {
+			logger.error("error: cannot match a BulletHitEvent to my own wave");
+			return;
+		}
 		for ( waveWithBullets wB: myBot.myWaves ) {
 			if ( w.equals( wB) ) {
 				wB.setMyWavePassedOverTargetFlag( trgtBotName, true );
