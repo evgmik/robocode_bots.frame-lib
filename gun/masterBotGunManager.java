@@ -93,11 +93,13 @@ public class masterBotGunManager extends gunManager {
 			w *= energyW;
 
 			int gunStatsReliableRound = 4; // recall that we count from 0
+			double perfContr = 0.2;
 			if ( myBot.getGameInfo().getRoundNum() > gunStatsReliableRound ) {
 				w *= botTargetingWeightByFiredShots(tB1);
+				w *= botTargetingWeightByHitRate(tB1);
+				perfContr = 0.2;
 			}
 
-			double perfContr = 0.2;
 			double gunPerfW = (1-perfContr) + perfContr * gunPerf;
 
 			w *= gunPerfW;
