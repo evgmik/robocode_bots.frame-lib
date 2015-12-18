@@ -119,8 +119,15 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	protected double bulletEnergyVsDistance( fighterBot targetBot ) {
+		double bulletEnergy = 0;
 		double targetDistance = myBot.getPosition().distance( targetBot.getPosition() );
-		double bulletEnergy = 500/targetDistance;
+		double opt_dist = 800; // chosen somewhat arbitrary
+		double t_max = opt_dist / physics.bulletSpeed( robocode.Rules.MIN_BULLET_POWER );
+		double optBulletSpeed = targetDistance/t_max;
+		bulletEnergy = physics.bulletEnergy( optBulletSpeed );
+		//logger.dbg( "dist = " + targetDistance + " bE = " + bulletEnergy );
+
+		//bulletEnergy = 500/targetDistance;
 		bulletEnergy = Math.min( bulletEnergy, robocode.Rules.MAX_BULLET_POWER);
 		// attempting to use the  wiki BasicSurfer x.x5 power detection bug
 		// the bug was present in the old wiki version, presumably used 
