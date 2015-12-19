@@ -69,6 +69,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v4.2
+
+x.x5 exploit redone to round to smaller side
+
+Modified bullet energy vs distance formula to die off quickly, it improves
+survival
+
 ## v4.1
 
 Added ability to calculate overall danger of a wave from GF stats, it is not
