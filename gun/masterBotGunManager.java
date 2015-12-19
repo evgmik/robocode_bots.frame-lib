@@ -128,7 +128,7 @@ public class masterBotGunManager extends gunManager {
 		//logger.dbg( "dist = " + targetDistance + " bE = " + bulletEnergy );
 
 		//bulletEnergy = 500/targetDistance;
-		bulletEnergy = 3*(200*200)/(targetDistance*targetDistance);
+		bulletEnergy = 3*(300*300)/(targetDistance*targetDistance);
 		bulletEnergy = Math.min( bulletEnergy, robocode.Rules.MAX_BULLET_POWER);
 		// attempting to use the  wiki BasicSurfer x.x5 power detection bug
 		// the bug was present in the old wiki version, presumably used 
