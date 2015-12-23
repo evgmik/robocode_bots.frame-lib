@@ -62,6 +62,63 @@ public class baseGun {
 		return p;
 	}
 
+	public firingSolution correctForInWallFire( firingSolution fS ) {
+		// when a firing bot close to the wall,
+		// it is better to shoot along the wall all the way
+		Point2D.Double fP =  fS.getFiringPositon();
+		double fA = math.shortest_arc( fS.getFiringAngle() );
+
+		double dl = 1; // small uncertainty
+		double botW = 2*physics.robotHalfSize - dl;;
+		double bfW = physics.BattleField.x;
+		double bfH = physics.BattleField.y;
+		
+		double tmpfA;
+		// Now,  we correct the angle if needed
+		if ( fP.x <= botW ) {
+			// firing point is near left wall
+			tmpfA = math.putWithinGameArc( fA, 
+				math.shortest_arc( math.angle2pt( fP, new Point2D.Double( botW, 0 ))),
+				math.shortest_arc( math.angle2pt( fP, new Point2D.Double( botW,  bfH )))
+				);
+			if ( tmpfA != fA ) {
+				fA = tmpfA;
+			}
+		}
+		if ( fP.x >= (bfW-botW) ) {
+			// firing point is near right wall
+			tmpfA = math.putWithinGameArc( fA, 
+				math.shortest_arc( math.angle2pt( fP, new Point2D.Double( bfW-botW, bfH ))),
+				math.shortest_arc( math.angle2pt( fP, new Point2D.Double( bfW-botW, 0 )))
+				);
+			if ( tmpfA != fA ) {
+				fA = tmpfA;
+			}
+		}
+		if ( fP.y >= (bfH-botW) ) {
+			// firing point is near top wall
+			tmpfA = math.putWithinGameArc( fA, 
+				math.shortest_arc( math.angle2pt( fP, new Point2D.Double( 0, bfH-botW ))),
+				math.shortest_arc( math.angle2pt( fP, new Point2D.Double( bfW, bfH-botW )))
+				);
+			if ( tmpfA != fA ) {
+				fA = tmpfA;
+			}
+		}
+		if ( fP.y <= botW ) {
+			// firing point is near bottom wall
+			tmpfA = math.putWithinGameArc( fA, 
+				math.shortest_arc( math.angle2pt( fP, new Point2D.Double( bfW, botW ))),
+				math.shortest_arc( math.angle2pt( fP, new Point2D.Double( 0, botW )))
+				);
+			if ( tmpfA != fA ) {
+				fA = tmpfA;
+			}
+		}
+		fS.setFiringAngle( fA );
+		return fS;
+	}
+
 	public Point2D.Double shiftFromDirectLine( Point2D.Double fP, Point2D.Double originalTP ){
 		Point2D.Double tP = new Point2D.Double( originalTP.getX(), originalTP.getY() );
 		// some bots like DrussGT use fire shield against simple guns
