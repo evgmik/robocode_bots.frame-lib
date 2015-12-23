@@ -51,7 +51,7 @@ public class headOnGun extends baseGun {
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
 		setDistanceAtLastAimFor( fS, fP, tP );
 		fS.setQualityOfSolution( getLagTimePenalty( infoLagTime ) );
-
+		fS = correctForInWallFire(fS);
 		fSolultions.add(fS);
 		fSolultions = setTargetBotName( tBot.getName(), fSolultions );
 		return fSolultions;

@@ -60,6 +60,7 @@ public class linearGun extends baseGun {
 
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
 		fS.setQualityOfSolution( getLagTimePenalty( infoLagTime ) );
+		fS = correctForInWallFire(fS);
 		// check if the future target point is within botReacheable space
 		if ( !physics.botReacheableBattleField.contains( tFPos ) ) {
 			logger.noise("time " + time + " unphysical future target position");

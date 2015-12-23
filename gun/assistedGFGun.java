@@ -42,6 +42,7 @@ public class assistedGFGun extends guessFactorGun {
 
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
 		fS.setQualityOfSolution( getLagTimePenalty( infoLagTime ) );
+		fS = correctForInWallFire(fS);
 		fSols.add(fS);
 		fSols = setFiringBotName( fBot.getName(), fSols );
 		fSols = setTargetBotName( tBot.getName(), fSols );
