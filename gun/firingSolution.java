@@ -94,6 +94,10 @@ public class firingSolution {
 		return firingAngle;
 	}
 
+	public void setFiringAngle(double a) {
+		firingAngle = a;
+	}
+
 	public Point2D.Double getFiringPositon() {
 		return firingPosition;
 	}
