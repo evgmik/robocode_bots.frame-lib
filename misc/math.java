@@ -55,6 +55,39 @@ public class math {
 		return angle;
 	}
 
+	public static double putWithinGameArc(double angle, double arc1a, double arc2a) {
+		if ( !isWithinGameArc( angle, arc1a, arc2a ) ) {
+			double d1 = Math.abs( shortest_arc( angle - arc1a) );
+			double d2 = Math.abs( shortest_arc( angle - arc2a) );
+			if ( d1 <= d2 ) {
+				angle = arc1a;
+			} else {
+				angle = arc2a;
+			}
+		}
+		return angle;
+	}
+
+	public static boolean isWithinGameArc(double angle, double arc1a, double arc2a) {
+		// checks if the angle is within the arc defined by the arc1a and arc2a angles
+		// we count arc as starting at arc1a and moving counter clockwise to arc2a
+		// All angles are game angles!
+
+		// move arc2a to the ref point
+		angle = angleNorm360( angle - arc2a);
+		arc1a = angleNorm360( arc1a - arc2a);
+		arc2a = 0;
+
+		boolean answ = true;
+		if ( ( angle <= arc1a ) && ( angle >= arc2a) ) {
+			answ = true;
+		} else {
+			answ = false;
+		}
+		return answ;
+	}
+
+
 	public static double game_angles2cortesian(double angle) {
 		angle=90-angle;
 		return angle;
