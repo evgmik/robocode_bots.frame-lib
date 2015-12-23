@@ -69,9 +69,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
-## v4.4-pre
+## v4.4
 
 Fixed gun delayed info accounting.
+
+All gun correct the firing solution to make firing angle along the wall
+if the firing bot is sufficiently close to the wall. This should waste less
+bullets.
 
 ## v4.3
 
