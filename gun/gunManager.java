@@ -438,6 +438,10 @@ public class gunManager implements gunManagerInterface {
 		if ( targetBot != null ) {
 			double R = 50;
 			graphics.drawCircle( g, targetBot.getPosition(), R );
+			R++;
+			graphics.drawCircle( g, targetBot.getPosition(), R );
+			R++;
+			graphics.drawCircle( g, targetBot.getPosition(), R );
 		}
 	}
 }
