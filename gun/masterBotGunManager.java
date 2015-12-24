@@ -504,4 +504,45 @@ public class masterBotGunManager extends gunManager {
 		}
 		return fS;
 	}
+
+	public void  drawFiringSolutions( Graphics2D g ) {
+		double R0 = 150;
+
+		//find max Q
+		double Qmax = Double.NEGATIVE_INFINITY;
+		double bestA = 0;
+		for ( firingSolution f: firingSolutions ) {
+			double q = f.getQualityOfSolution();
+			if ( q > Qmax ) {
+				Qmax = q;
+				bestA = f.getFiringAngle();
+			}
+		}
+		if ( Qmax == 0 ) {
+			Qmax = 1;
+		}
+
+		Point2D.Double fP = null;
+		// now we draw firing angles directions
+		for ( firingSolution f: firingSolutions ) {
+			double a = math.game_angles2cortesian( f.getFiringAngle() );
+			fP = f.getFiringPositon();
+			double R = R0*f.getQualityOfSolution()/Qmax;
+			double dx = R*Math.cos( Math.toRadians(a) );
+			double dy = R*Math.sin( Math.toRadians(a) );
+			Point2D.Double endP = new Point2D.Double( fP.x + dx, fP.y + dy );
+			g.setColor( f.getColor() );
+			graphics.drawLine( g, fP,  endP );
+
+		}
+		if ( firingSolutions.size() != 0 ) {
+			//draw a circle with max Q size
+			graphics.drawCircle( g, fP,  R0 );
+		}
+	}
+
+	public void onPaint(Graphics2D g) {
+		super.onPaint( g );
+		drawFiringSolutions( g );
+	}
 }
