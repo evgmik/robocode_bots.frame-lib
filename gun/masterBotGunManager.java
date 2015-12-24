@@ -59,10 +59,10 @@ public class masterBotGunManager extends gunManager {
 		}
 	}
 
-	public void rankAimAtAllSolutions( LinkedList<firingSolution> fSols, double bulletEnergy ) {
+	public void rankAimAtAllSolutions( fighterBot bestTargetBot, LinkedList<firingSolution> fSols, double bulletEnergy ) {
 		double MEA = physics.calculateMEA( physics.bulletSpeed(bulletEnergy) );
 		Point2D.Double myPos = myBot.getPosition();
-		double distToGlobalTarget = myPos.distance( targetBot.getPosition() );
+		double distToGlobalTarget = myPos.distance( bestTargetBot.getPosition() );
 		for ( firingSolution fS1 : fSols ) {
 			double gunPerf = fS1.getQualityOfSolution();
 			double a1 = fS1.getFiringAngle();
@@ -141,8 +141,6 @@ public class masterBotGunManager extends gunManager {
 			}
 			if ( aimAtEveryone ) {
 				// firingSolutions are already calculated during bestTargetBot search
-				//firingSolutions = getAimAtEveryoneFiringSolutions( bulletEnergy );
-				//rankAimAtAllSolutions( firingSolutions, bulletEnergy );
 				fSols = firingSolutions;
 			} else {
 				// aim only at target bot
@@ -249,10 +247,10 @@ public class masterBotGunManager extends gunManager {
 		if ( myBot.getEnemyBots().size() == 0 ) {
 			return null;
 		}
-		if ( bestTargetBot == null ) {
-			bestTargetBot = findTheBestTargetBotWise();
-		} else  if ( aimAtEveryone ) {
-			fighterBot bestTargetBotFSWise = findTheBestTargetFSWise();
+		bestTargetBot = findTheBestTargetBotWise();
+		reportBestTargetBot( bestTargetBot );
+		if ( aimAtEveryone ) {
+			fighterBot bestTargetBotFSWise = findTheBestTargetFSWise( bestTargetBot );
 			if ( bestTargetBot == null || bestTargetBotFSWise == null ) {
 				return null;
 			}
@@ -261,36 +259,34 @@ public class masterBotGunManager extends gunManager {
 				bestTargetBot = bestTargetBotFSWise;
 			}
 		}
-		reportBestTargetBot( bestTargetBot );
 		return bestTargetBot;
 	}
 
-	public fighterBot findTheBestTargetFSWise() {
-		fighterBot bestTargetBot = null;
+	public fighterBot findTheBestTargetFSWise( fighterBot bestTargetBot ) {
 		if ( myBot.getEnemyBots().size() == 0 ) {
-			return null;
+			return bestTargetBot;
 		}
 		firingSolutions = new LinkedList<firingSolution>(); //clear the list
 		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
 		double bulletEnergy = -1000; // intentionally bad
 		firingSolution fS = null;
-		if ( targetBot != null ) {
-			bulletEnergy = bulletEnergyVsDistance( targetBot );
+		if ( bestTargetBot != null ) {
+			bulletEnergy = bulletEnergyVsDistance( bestTargetBot );
 			if ( bulletEnergy >= (myBot.getEnergy() - 1e-4) ) {
 				// do not fire or we will get ourself disabled
-				return null;
+				return bestTargetBot;
 			}
 			bulletEnergy = Math.max( bulletEnergy, 0 ); // zero means no fire
 			if ( bulletEnergy <= 0 ) {
-				return null; // bad bullet
+				return bestTargetBot; // bad bullet
 			}
 			firingSolutions = getAimAtEveryoneFiringSolutions( bulletEnergy );
-			rankAimAtAllSolutions( firingSolutions, bulletEnergy );
+			rankAimAtAllSolutions( bestTargetBot,  firingSolutions, bulletEnergy );
 			fSols = firingSolutions;
 			fS = getTheBestFiringSolution( fSols ); // real one
 		}
 		if ( fS == null ) {
-			return null;
+			return bestTargetBot;
 		}
 		bestTargetBot = myBot.getGameInfo().getFighterBot( fS.getTargetBotName() );
 		return bestTargetBot;
