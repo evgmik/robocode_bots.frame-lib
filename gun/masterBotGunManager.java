@@ -548,8 +548,36 @@ public class masterBotGunManager extends gunManager {
 		}
 	}
 
+	public void  drawGunsHitProb( Graphics2D g ) {
+		double dy = 8;
+		double xOffs = 4;
+		double statW0 = 50;
+		double statH = dy -2;
+		for ( fighterBot eB : myBot.getEnemyBots() ) {
+			long cnt = 0;
+			Point2D.Double eBpos = eB.getPosition();
+			double cornX = eBpos.x + physics.robotHalfSize + xOffs;
+			double cornY = eBpos.y - physics.robotHalfSize + statH/2;
+			for ( baseGun gun : gunList ) {
+				String2D key = new String2D( gun.getName(), eB.getName() );
+				double gunPerfRate = math.perfRate( hitByMyGun.getHashCounter(key) , firedAtEnemyByGun.getHashCounter(key) );
+				Point2D.Double gStatPos = new Point2D.Double( cornX, cornY );
+				double statW = statW0*gunPerfRate;
+				gStatPos.x += statW/2;
+				gStatPos.y += dy*cnt;
+
+				g.setColor( gun.getColor() );
+				graphics.fillRect( g, gStatPos,  statW, statH );
+
+
+				cnt++;
+			}
+		}
+	}
+
 	public void onPaint(Graphics2D g) {
 		super.onPaint( g );
 		drawFiringSolutions( g );
+		drawGunsHitProb( g );
 	}
 }
