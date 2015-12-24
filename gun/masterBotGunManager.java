@@ -511,11 +511,14 @@ public class masterBotGunManager extends gunManager {
 		//find max Q
 		double Qmax = Double.NEGATIVE_INFINITY;
 		double bestA = 0;
+		Color bestFScolor = null;
+
 		for ( firingSolution f: firingSolutions ) {
 			double q = f.getQualityOfSolution();
 			if ( q > Qmax ) {
 				Qmax = q;
 				bestA = f.getFiringAngle();
+				bestFScolor = f.getColor();
 			}
 		}
 		if ( Qmax == 0 ) {
@@ -537,7 +540,15 @@ public class masterBotGunManager extends gunManager {
 		}
 		if ( firingSolutions.size() != 0 ) {
 			//draw a circle with max Q size
+			g.setColor( bestFScolor );
 			graphics.drawCircle( g, fP,  R0 );
+			double markerOffset =5;
+			double markerR = 4;
+			double R = R0 + markerOffset;
+			double dx = R*Math.sin( Math.toRadians(bestA) );
+			double dy = R*Math.cos( Math.toRadians(bestA) );
+			Point2D.Double endP = new Point2D.Double( fP.x + dx, fP.y + dy );
+			graphics.drawCircle( g, endP,  markerR );
 		}
 	}
 
