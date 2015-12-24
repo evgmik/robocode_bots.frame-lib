@@ -14,7 +14,7 @@ import java.awt.Color;
 public class assistedGFGun extends guessFactorGun {
 	public assistedGFGun() {
 		gunName = "assistedGFGun";
-		color = new Color(0xff, 0x88, 0xff, 0x80);
+		color = new Color(0xaa, 0x88, 0xff, 0x80);
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
