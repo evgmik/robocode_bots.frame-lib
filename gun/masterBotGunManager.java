@@ -11,12 +11,14 @@ import robocode.Rules.*;
 import robocode.BattleRules.*;
 
 import java.util.LinkedList;
+import java.util.*;
 import java.awt.geom.Point2D;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
 public class masterBotGunManager extends gunManager {
 	boolean aimAtEveryone = true;
+	protected HashMap<String, Double> weightsBotWise = new HashMap<String, Double>();
 
 	public	masterBotGunManager() {
 	}
@@ -320,6 +322,8 @@ public class masterBotGunManager extends gunManager {
 				w *= botTargetingWeightByFiredShots(eBot);
 				w *= botTargetingWeightByHitRate(eBot);
 			}
+
+			weightsBotWise.put( eBot.getName(), w);
 
 			if (w > bestWeight ) {
 				bestWeight = w;
