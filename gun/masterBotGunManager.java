@@ -82,6 +82,7 @@ public class masterBotGunManager extends gunManager {
 			// update weight due to angles distribution
 			double sumWa =  0;
 			int cnt =0; 
+			if ( false ) { //disable angle normalization
 			for ( firingSolution fS2 : fSols ) {
 				if ( fS1 == fS2 || tName1.equals( fS2.getTargetBotName() ) ) {
 					continue;
@@ -93,6 +94,7 @@ public class masterBotGunManager extends gunManager {
 				cnt++;
 			}
 			double angleW = (1 + sumWa)/(1 + cnt); // solution fS1 has weight too
+			}
 
 			int gunStatsReliableRound = 4; // recall that we count from 0
 			double perfContr = 0.2;
