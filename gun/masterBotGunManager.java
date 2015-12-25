@@ -163,16 +163,18 @@ public class masterBotGunManager extends gunManager {
 				fS.offsetFiringAngle( offsetAngle );
 			}
 			aimAndSetGun( fS );
-			// if getNumEnemyAlive is too large we have a lot of skipped turns
-			if ( myBot.getGameInfo().getNumEnemyAlive() <= 4 ) {
-				// now we add virtual solutions for other bots
-				for ( fighterBot eBot: myBot.getEnemyBots() ) {
-					// skip targetBot we already have its firing solutions
-					if ( !eBot.getName().equals( targetBot.getName() ) ) {
-						// FIXME: be smart about game stage, bot distance ...
-						// note getTime()+1, the fire command is executed at next tic
-						fSols =  getFiringSolutions( eBot, myBot.getTime()+1,  bulletEnergy );
-						firingSolutions.addAll( fSols ); // virtual solutions
+			if ( !aimAtEveryone ) { // add firing solutions for other bots
+				// if getNumEnemyAlive is too large we have a lot of skipped turns
+				if ( myBot.getGameInfo().getNumEnemyAlive() <= 4 ) {
+					// now we add virtual solutions for other bots
+					for ( fighterBot eBot: myBot.getEnemyBots() ) {
+						// skip targetBot we already have its firing solutions
+						if ( !eBot.getName().equals( targetBot.getName() ) ) {
+							// FIXME: be smart about game stage, bot distance ...
+							// note getTime()+1, the fire command is executed at next tic
+							fSols =  getFiringSolutions( eBot, myBot.getTime()+1,  bulletEnergy );
+							firingSolutions.addAll( fSols ); // virtual solutions
+						}
 					}
 				}
 			}
