@@ -288,12 +288,18 @@ public class InfoBot {
 			return;
 		}
 		long roundStartTime = physics.getRoundStartTime( bsLast.getTime() );
+		long maxCnt = 500;
+		long cnt = 0;
 		while (bLIter.hasPrevious()) {
 			bsPrev = bLIter.previous();
 			if ( bsPrev.getTime() < roundStartTime )
 				return; // we see previous round point
 			graphics.drawLine( g, bsLast.getPosition(), bsPrev.getPosition() );
 			bsLast = bsPrev;
+			cnt++;
+			if ( cnt > maxCnt ) {
+				return; // to avoid graph buffer overfill
+			}
 		}
 
 	}
