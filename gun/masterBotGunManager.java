@@ -73,8 +73,11 @@ public class masterBotGunManager extends gunManager {
 			String tName1 = fS1.getTargetBotName();
 			fighterBot tB1 = myBot.getGameInfo().getFighterBot( tName1 );
 			double w = 1;
-			w *= botTargetingWeightByDistance(tB1);
-			w *= botTargetingWeightByScanLag(tB1);
+			double wBotWise = 1;
+			if ( weightsBotWise.containsKey( tName1 ) ) {
+				wBotWise = weightsBotWise.get( tName1 );
+			}
+			w *= wBotWise;
 
 			// update weight due to angles distribution
 			double sumWa =  0;
@@ -91,14 +94,9 @@ public class masterBotGunManager extends gunManager {
 			}
 			double angleW = (1 + sumWa)/(1 + cnt); // solution fS1 has weight too
 
-			double energyW = botTargetingWeightByEnemyEnergy( tB1);
-			w *= energyW;
-
 			int gunStatsReliableRound = 4; // recall that we count from 0
 			double perfContr = 0.2;
 			if ( myBot.getGameInfo().getRoundNum() > gunStatsReliableRound ) {
-				w *= botTargetingWeightByFiredShots(tB1);
-				w *= botTargetingWeightByHitRate(tB1);
 				perfContr = 0.2;
 			}
 
