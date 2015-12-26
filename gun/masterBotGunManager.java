@@ -149,10 +149,6 @@ public class masterBotGunManager extends gunManager {
 		double bulletEnergy = -1000; // intentionally bad
 		if ( targetBot != null ) {
 			bulletEnergy = bulletEnergyVsDistance( targetBot );
-			if ( bulletEnergy >= (myBot.getEnergy() - 1e-4) ) {
-				// do not fire or we will get ourself disabled
-				return;
-			}
 			bulletEnergy = Math.max( bulletEnergy, 0 ); // zero means no fire
 			if ( bulletEnergy <= 0 ) {
 				return; // bad bullet
@@ -297,10 +293,6 @@ public class masterBotGunManager extends gunManager {
 		firingSolution fS = null;
 		if ( bestTargetBot != null ) {
 			bulletEnergy = bulletEnergyVsDistance( bestTargetBot );
-			if ( bulletEnergy >= (myBot.getEnergy() - 1e-4) ) {
-				// do not fire or we will get ourself disabled
-				return bestTargetBot;
-			}
 			bulletEnergy = Math.max( bulletEnergy, 0 ); // zero means no fire
 			if ( bulletEnergy <= 0 ) {
 				return bestTargetBot; // bad bullet
