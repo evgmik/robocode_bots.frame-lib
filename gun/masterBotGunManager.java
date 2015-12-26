@@ -64,9 +64,6 @@ public class masterBotGunManager extends gunManager {
 
 	public void rankAimAtAllSolutions( fighterBot bestTargetBot, LinkedList<firingSolution> fSols, double bulletEnergy ) {
 		profiler.start( "rankAimAtAllSolutions" );
-		double MEA = physics.calculateMEA( physics.bulletSpeed(bulletEnergy) );
-		Point2D.Double myPos = myBot.getPosition();
-		double distToGlobalTarget = myPos.distance( bestTargetBot.getPosition() );
 
 		//first we rank firing solution based on target bot weights
 		for ( firingSolution fS1 : fSols ) {
@@ -94,14 +91,15 @@ public class masterBotGunManager extends gunManager {
 			fS1.setQualityOfSolution( w );
 		}
 		if ( useAngleDistribution ) { //disable angle normalization
+		double MEA = physics.calculateMEA( physics.bulletSpeed(bulletEnergy) );
 		HashMap<firingSolution, Double> weightsPerFS = new HashMap<firingSolution, Double>();
 		// calculate additional weight due to angles distribution
 		for ( firingSolution fS1 : fSols ) {
 			String tName1 = fS1.getTargetBotName();
 			double a1 = fS1.getFiringAngle();
 
-			double sumWa = 0;
-			int cnt =0; 
+			double sumWa = fS1.getQualityOfSolution();
+			int cnt =1; 
 			for ( firingSolution fS2 : fSols ) {
 				if ( fS1 == fS2 || tName1.equals( fS2.getTargetBotName() ) ) {
 					continue;
@@ -109,16 +107,15 @@ public class masterBotGunManager extends gunManager {
 				double a2 = fS2.getFiringAngle();
 				double da = Math.abs( math.shortest_arc(a1 - a2) )/MEA;
 				//sumWa += Math.exp( - (da*da) );
-				sumWa +=  fS2.getQualityOfSolution()/(1+(da*da));
+				sumWa +=  fS2.getQualityOfSolution()*Math.exp(-(da*da));
 				cnt++;
 			}
 			if ( cnt == 0 ) {
 				cnt=1;
 			}
 			weightsPerFS.put( fS1, sumWa/cnt );
-			double angleW = (1 + sumWa)/(1 + cnt); // solution fS1 has weight too
 		}
-		double angleDistrW = 0.5;
+		double angleDistrW = 0.2;
 		for ( firingSolution fS1 : fSols ) {
 			double wDistr = weightsPerFS.get( fS1 );
 			double w = fS1.getQualityOfSolution();
