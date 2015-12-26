@@ -82,12 +82,10 @@ public class masterBotGunManager extends gunManager {
 				perfContr = 0.2;
 			}
 
-			double gunPerfW = (1-perfContr) + perfContr * gunPerf;
+			//double gunPerfW = (1-perfContr) + perfContr * gunPerf;
+			w =  (1-perfContr)*w + perfContr * gunPerf;
+			//w *= gunPerfW;
 
-			w *= gunPerfW;
-
-			//fS1.setQualityOfSolution( fS1Q * angleW * distW * energyW );
-			//fS1.setQualityOfSolution( fS1Q * distW * energyW );
 			fS1.setQualityOfSolution( w );
 		}
 		if ( useAngleDistribution ) { //disable angle normalization
