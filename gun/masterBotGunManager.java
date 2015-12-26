@@ -18,7 +18,7 @@ import java.awt.Color;
 
 public class masterBotGunManager extends gunManager {
 	boolean aimAtEveryone = true;
-	boolean useAngleDistribution = true;
+	boolean useAngleDistribution = false;
 	protected HashMap<String, Double> weightsBotWise = new HashMap<String, Double>();
 
 	public	masterBotGunManager() {
@@ -62,33 +62,7 @@ public class masterBotGunManager extends gunManager {
 		}
 	}
 
-	public void rankAimAtAllSolutions( fighterBot bestTargetBot, LinkedList<firingSolution> fSols, double bulletEnergy ) {
-		profiler.start( "rankAimAtAllSolutions" );
-
-		//first we rank firing solution based on target bot weights
-		for ( firingSolution fS1 : fSols ) {
-			String tName1 = fS1.getTargetBotName();
-			double gunPerf = fS1.getQualityOfSolution();
-			double w = 1;
-			double wBotWise = 1;
-			if ( weightsBotWise.containsKey( tName1 ) ) {
-				wBotWise = weightsBotWise.get( tName1 );
-			}
-			w *= wBotWise;
-
-			int gunStatsReliableRound = 4; // recall that we count from 0
-			double perfContr = 0.2;
-			if ( myBot.getGameInfo().getRoundNum() > gunStatsReliableRound ) {
-				perfContr = 0.2;
-			}
-
-			//double gunPerfW = (1-perfContr) + perfContr * gunPerf;
-			w =  (1-perfContr)*w + perfContr * gunPerf;
-			//w *= gunPerfW;
-
-			fS1.setQualityOfSolution( w );
-		}
-		if ( useAngleDistribution ) { //disable angle normalization
+	public void rankSolutionsBasedOnAngleDistribution( fighterBot bestTargetBot, LinkedList<firingSolution> fSols, double bulletEnergy ) {
 		double MEA = physics.calculateMEA( physics.bulletSpeed(bulletEnergy) );
 		HashMap<firingSolution, Double> weightsPerFS = new HashMap<firingSolution, Double>();
 		// calculate additional weight due to angles distribution
@@ -119,8 +93,37 @@ public class masterBotGunManager extends gunManager {
 			double w = fS1.getQualityOfSolution();
 			w = (1-angleDistrW)*w + angleDistrW*wDistr;
 			fS1.setQualityOfSolution( w );
-
 		}
+	}
+
+	public void rankAimAtAllSolutions( fighterBot bestTargetBot, LinkedList<firingSolution> fSols, double bulletEnergy ) {
+		profiler.start( "rankAimAtAllSolutions" );
+
+		//first we rank firing solution based on target bot weights
+		for ( firingSolution fS1 : fSols ) {
+			String tName1 = fS1.getTargetBotName();
+			double gunPerf = fS1.getQualityOfSolution();
+			double w = 1;
+			double wBotWise = 1;
+			if ( weightsBotWise.containsKey( tName1 ) ) {
+				wBotWise = weightsBotWise.get( tName1 );
+			}
+			w *= wBotWise;
+
+			int gunStatsReliableRound = 4; // recall that we count from 0
+			double perfContr = 0.2;
+			if ( myBot.getGameInfo().getRoundNum() > gunStatsReliableRound ) {
+				perfContr = 0.2;
+			}
+
+			//double gunPerfW = (1-perfContr) + perfContr * gunPerf;
+			w =  (1-perfContr)*w + perfContr * gunPerf;
+			//w *= gunPerfW;
+
+			fS1.setQualityOfSolution( w );
+		}
+		if ( useAngleDistribution ) { //disable angle normalization
+			rankSolutionsBasedOnAngleDistribution( bestTargetBot, fSols, bulletEnergy );
 		}
 		profiler.stop( "rankAimAtAllSolutions" );
 	}
