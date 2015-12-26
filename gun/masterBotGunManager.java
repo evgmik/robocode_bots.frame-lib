@@ -227,9 +227,14 @@ public class masterBotGunManager extends gunManager {
 		//logger.dbg( "-bE = " + bulletEnergy );
 		// no point to fire bullets more energetic than enemy bot energy level
 		bulletEnergy = Math.min( bulletEnergy, physics.minReqBulEnergyToKillTarget( targetBot.getEnergy() ) );
+		bulletEnergy = Math.min( bulletEnergy, (myBot.getEnergy() - 1e-3) );
 		bulletEnergy = (Math.round( bulletEnergy * 10 ) - .5 )/10; // energy = x.x5
 
 		bulletEnergy = Math.max( bulletEnergy, robocode.Rules.MIN_BULLET_POWER );
+		if ( bulletEnergy >= (myBot.getEnergy() - 1e-4) ) {
+			// do not fire or we will get ourself disabled
+			bulletEnergy = -1; // negative = no fire
+		}
 
 		return bulletEnergy;
 	}
