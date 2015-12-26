@@ -69,6 +69,12 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v4.6
+
+Weight due to gun performance redone/increased.
+
+Redone the logic for the best firing solution based on weight distribution.
+
 ## v4.5
 
 Added aim at everyone logic. 
