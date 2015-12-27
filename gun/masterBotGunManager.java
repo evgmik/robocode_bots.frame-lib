@@ -20,6 +20,7 @@ public class masterBotGunManager extends gunManager {
 	boolean aimAtEveryone = true;
 	boolean useAngleDistribution = false;
 	protected HashMap<String, Double> weightsBotWise = new HashMap<String, Double>();
+	protected fighterBot mostEnergeticEnemy = null;
 
 	public	masterBotGunManager() {
 	}
@@ -314,9 +315,16 @@ public class masterBotGunManager extends gunManager {
 		if ( myBot.getEnemyBots().size() == 0 ) {
 			return null;
 		}
+		mostEnergeticEnemy = null;
 		double bestWeight = -1e6;
 		double w=1;
 		for ( fighterBot eBot: myBot.getEnemyBots() ) {
+			// updating most energetic enemy, we will need it later
+			if ( mostEnergeticEnemy == null ) {
+				mostEnergeticEnemy = eBot;
+			} else if ( eBot.getEnergy() > mostEnergeticEnemy.getEnergy() ) {
+				mostEnergeticEnemy = eBot;
+			}
 			w = 1;
 			w *= botTargetingWeightByDistance(eBot);
 			w *= botTargetingWeightByScanLag(eBot);
