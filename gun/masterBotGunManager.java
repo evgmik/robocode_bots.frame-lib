@@ -234,6 +234,39 @@ public class masterBotGunManager extends gunManager {
 		bulletEnergy = (Math.round( bulletEnergy * 10 ) - .5 )/10; // energy = x.x5
 
 		bulletEnergy = Math.max( bulletEnergy, robocode.Rules.MIN_BULLET_POWER );
+		double energySurplus = myBot.getEnergy() - mostEnergeticEnemy.getEnergy();
+		if ( myBot.getEnemyBots().size() == 1 ) {
+			// if we below enemy energy we need to shoot to survive 
+			// since smart one will stop firing and we are screwed
+			// but we need to fire lower energy in a hope to get even
+			if ( energySurplus < 0 ) {
+				logger.dbg("tic " + myBot.getTime() + ": under cutting energy");
+				bulletEnergy = robocode.Rules.MIN_BULLET_POWER;
+			}
+		}
+		long numEnemyWaveAtLeast = 0;
+		for ( fighterBot eBot: myBot.getEnemyBots() ) {
+			numEnemyWaveAtLeast += myBot.getGameInfo().getWavesManager().getWavesOfBot(eBot).size();
+			if ( numEnemyWaveAtLeast > 0 ) { break; };
+		}
+		// now if enemy is not firing and I am more energetic let's try to stay
+		// that way, otherwise if we miss we go below and it is no good
+		// if my hit probability low, we might not recover
+		if ( 
+				numEnemyWaveAtLeast == 0 // enemies stop firing
+				&& ( (myBot.getTime() - physics.getRoundStartTime(myBot.getTime())) > 35 ) 
+				&& energySurplus > 0
+		) {
+			// enemy is not firing
+			energySurplus = myBot.getEnergy() - 5*robocode.Rules.MIN_BULLET_POWER - mostEnergeticEnemy.getEnergy() - bulletEnergy;
+			if ( energySurplus < 0 ) {
+				logger.dbg("tic " + myBot.getTime() + ": enemy is not firing and we have more energy, stopped firing to not mess it up");
+				bulletEnergy = -1;
+			} else {
+				bulletEnergy = Math.min( bulletEnergy, energySurplus );
+				bulletEnergy = Math.max( bulletEnergy, robocode.Rules.MIN_BULLET_POWER );
+			}
+		}
 		if ( bulletEnergy >= (myBot.getEnergy() - 1e-4) ) {
 			// do not fire or we will get ourself disabled
 			bulletEnergy = -1; // negative = no fire
