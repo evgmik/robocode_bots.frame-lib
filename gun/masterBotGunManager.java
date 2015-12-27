@@ -216,6 +216,12 @@ public class masterBotGunManager extends gunManager {
 
 		//bulletEnergy = 500/targetDistance;
 		bulletEnergy = 3*(300*300)/(targetDistance*targetDistance);
+		if ( mostEnergeticEnemy != null ) {
+			if ( myBot.getEnergy() > (mostEnergeticEnemy.getEnergy()+20) ) {
+				// we have some energy to spare
+				bulletEnergy *=2;
+			}
+		}
 		bulletEnergy = Math.min( bulletEnergy, robocode.Rules.MAX_BULLET_POWER);
 		// attempting to use the  wiki BasicSurfer x.x5 power detection bug
 		// the bug was present in the old wiki version, presumably used 
