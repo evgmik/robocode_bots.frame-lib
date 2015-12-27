@@ -69,6 +69,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v4.7
+
+Energy management:
+-   increase fire power if we have significant surplus of energy, 
+-   decrease fire to minimum if we are below enemy (in 1on1 situations),
+-   do not fire into non firing enemy, if it brings my power below the enemy
+
 ## v4.6
 
 Weight due to gun performance redone/increased.
