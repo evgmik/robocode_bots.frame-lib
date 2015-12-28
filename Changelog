@@ -69,6 +69,17 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v4.8
+
+Do not lock radar if no firing solutions are present.
+
+Disable 
+-   decrease fire to minimum if we are below enemy (in 1on1 situations),
+from the  previous version. This gave significant drop in 1on1 APS.
+
+Redone logic of do not fire. Essentially, I try to decrease bullet power ( to 0
+if needed) to keep my energy above enemy if I am on 1on1 or no bullets in the air.
+
 ## v4.7
 
 Energy management:
