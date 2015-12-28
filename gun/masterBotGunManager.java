@@ -235,6 +235,7 @@ public class masterBotGunManager extends gunManager {
 
 		bulletEnergy = Math.max( bulletEnergy, robocode.Rules.MIN_BULLET_POWER );
 		double energySurplus = myBot.getEnergy() - mostEnergeticEnemy.getEnergy();
+		if ( false ) { // looks like below is bad idea 1on1 performance drops a lot
 		if ( myBot.getEnemyBots().size() == 1 ) {
 			// if we below enemy energy we need to shoot to survive 
 			// since smart one will stop firing and we are screwed
@@ -243,6 +244,7 @@ public class masterBotGunManager extends gunManager {
 				logger.dbg("tic " + myBot.getTime() + ": under cutting energy");
 				bulletEnergy = robocode.Rules.MIN_BULLET_POWER;
 			}
+		}
 		}
 		long numEnemyWaveAtLeast = 0;
 		for ( fighterBot eBot: myBot.getEnemyBots() ) {
