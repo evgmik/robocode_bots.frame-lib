@@ -259,12 +259,13 @@ public class masterBotGunManager extends gunManager {
 		// that way, otherwise if we miss we go below and it is no good
 		// if my hit probability low, we might not recover
 		if ( 
-				numEnemyWaveAtLeast == 0 // enemies stop firing
+				//numEnemyWaveAtLeast <= 1 // enemies stopped or about to stop firing
+				( myBot.getEnemyBots().size() == 1 || numEnemyWaveAtLeast == 0 )
 				&& ( (myBot.getTime() - physics.getRoundStartTime(myBot.getTime())) > 35 ) 
 				&& energySurplus > 0
 		) {
 			// enemy is not firing
-			energySurplus = myBot.getEnergy() - 5*robocode.Rules.MIN_BULLET_POWER - mostEnergeticEnemy.getEnergy() - bulletEnergy;
+			energySurplus = myBot.getEnergy() - 5*robocode.Rules.MIN_BULLET_POWER - mostEnergeticEnemy.getEnergy();
 			if ( energySurplus < 0 ) {
 				logger.dbg("tic " + myBot.getTime() + ": enemy is not firing and we have more energy, stopped firing to not mess it up");
 				bulletEnergy = -1;
