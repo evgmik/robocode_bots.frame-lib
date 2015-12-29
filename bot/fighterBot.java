@@ -365,14 +365,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 
 	public void checkMyWaveForHits( waveWithBullets w ) {
 		for ( firingSolution fS : w.getFiringSolutions() ) {
-			String gunName = fS.getGunName();
-			String  enemyName = fS.getTargetBotName();
-			String2D key = new String2D( gunName, enemyName );
 			if ( fS.isMyWavePassedOverTargetFlag() ) {
-				_gunManager.incrFiredAtEnemyByGun( fS );
-				if ( !fS.isActive() ) {
-					_gunManager.hitByMyGun.incrHashCounter( key );
-				}
+				_gunManager.logHitOrMissForMyFS( fS );
 			}
 		}
 	}

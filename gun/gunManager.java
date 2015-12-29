@@ -78,6 +78,19 @@ public class gunManager implements gunManagerInterface {
 	public void manage() {
 	}
 
+	public void logHitOrMissForMyFS( firingSolution fS ) {
+		String gunName = fS.getGunName();
+		String  enemyName = fS.getTargetBotName();
+		String2D key = new String2D( gunName, enemyName );
+		incrFiredAtEnemyByGun( fS );
+		if ( !fS.isActive() ) {
+			hitByMyGun.incrHashCounter( key );
+			logger.dbg(myBot.getName() + " hit enemy: " + fS.getTargetBotName() + " with gun: " + fS.getGunName() + " fired at dist: " + fS.getDistanceAtLastAim() );
+		} else {
+			logger.dbg(myBot.getName() + " missed enemy: " + fS.getTargetBotName() + " with gun: " + fS.getGunName() + " fired at dist: " + fS.getDistanceAtLastAim() );
+		}
+	}
+
 	// someone hit the master bot
 	public void onHitByBullet(HitByBulletEvent e) {
 		// target is actually master bot
@@ -116,6 +129,7 @@ public class gunManager implements gunManagerInterface {
 								//logger.dbg("masterBot is hit by " + gunName + " from bot " + fireBotName );
 								key = new String2D( gunName, trgtBotName );
 								hitByMyGun.incrHashCounter( key );
+								logger.dbg(myBot.getName() + " hit enemy: " + fS.getTargetBotName() + " with gun: " + fS.getGunName() + " fired at dist: " + fS.getDistanceAtLastAim() );
 							}
 						}
 
