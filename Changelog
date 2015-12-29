@@ -69,6 +69,10 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v4.9
+
+Slightly decreased gun performance weight.
+
 ## v4.8
 
 Do not lock radar if no firing solutions are present.
