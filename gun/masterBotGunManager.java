@@ -317,17 +317,18 @@ public class masterBotGunManager extends gunManager {
 			return null;
 		}
 		bestTargetBot = findTheBestTargetBotWise();
-		reportBestTargetBot( bestTargetBot );
+		//reportBestTargetBot( bestTargetBot );
 		if ( aimAtEveryone ) {
 			fighterBot bestTargetBotFSWise = findTheBestTargetFSWise( bestTargetBot );
 			if ( bestTargetBot == null || bestTargetBotFSWise == null ) {
 				return null;
 			}
 			if ( !bestTargetBot.getName().equals( bestTargetBotFSWise.getName() ) ) {
-				logger.dbg("FS overrides target: " + bestTargetBot.getName() + " ==> " + bestTargetBotFSWise.getName() );
+				//logger.dbg("FS overrides target: " + bestTargetBot.getName() + " ==> " + bestTargetBotFSWise.getName() );
 				bestTargetBot = bestTargetBotFSWise;
 			}
 		}
+		reportBestTargetBot( bestTargetBot );
 		return bestTargetBot;
 	}
 
