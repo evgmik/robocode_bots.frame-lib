@@ -90,7 +90,8 @@ public class masterBotGunManager extends gunManager {
 			if ( cnt == 0 ) {
 				cnt=1;
 			}
-			weightsPerFS.put( fS1, sumWa/cnt );
+			double w = fS1.getQualityOfSolution();
+			weightsPerFS.put( fS1, w*sumWa/cnt );
 		}
 		double angleDistrW = 0.2;
 		for ( firingSolution fS1 : fSols ) {
