@@ -11,7 +11,6 @@ import java.awt.Color;
 
 
 public class guessFactorGun extends baseGun {
-	int neigborsNum = 1000;
 	double[] treePointCoord;
 
 	protected double binsSumThreshold = 30; // some heuristic to estimate gun quality
