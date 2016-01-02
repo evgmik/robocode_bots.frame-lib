@@ -3,8 +3,10 @@
 package eem.frame.gun;
 
 import java.awt.geom.Point2D;
-import robocode.*;
+import eem.frame.bot.*;
 import eem.frame.misc.*;
+
+import robocode.*;
 
 public class misc  {
 
@@ -54,4 +56,32 @@ public class misc  {
 		return tFpos;
 	}
 
+	public static double[] calcTreePointCoord( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy, int coordVecSize ) {
+		// time is time at fire
+		double[] coord = new double[coordVecSize];
+
+		Point2D.Double fPos = fBot.getInfoBot().getPositionAtTime( time );
+		if ( fPos == null ) {
+			fPos = fBot.getMotion().getPositionAtTime( time );
+		}
+		if ( fPos == null) {
+			logger.error( "error: unable to find fPos for bot " + fBot.getName() + "at time " + (time) );
+			return coord;
+		}
+		// the latest time, when target stats are known, is at 'time-1'
+		botStatPoint tBStat = tBot.getStatClosestToTime( time - 1 );
+		if (tBStat == null) {
+			logger.error( "error: unable to find tBStat at time " + (time-1) );
+		}
+		Point2D.Double tPos = tBStat.getPosition();
+
+		double distAtLastAim = fPos.distance( tPos );
+		double latteralSpeed = Math.abs( tBStat.getLateralSpeed( fPos ) );
+
+		// assign normilized coordinates
+		coord[0] = distAtLastAim/physics.BattleField.distance(0,0);
+		coord[1] = bulletEnergy/robocode.Rules.MAX_BULLET_POWER;
+		coord[2] = latteralSpeed/robocode.Rules.MAX_VELOCITY;
+		return coord;
+	}
 }
