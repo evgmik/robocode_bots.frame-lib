@@ -48,7 +48,7 @@ public class gunManager implements gunManagerInterface {
 	protected HashMap<String, double[]> decayingGuessFactorMap = new HashMap<String, double[]>();
 	protected HashMap<String, double[][]> assistedGFactorsMap = new HashMap<String, double[][]>();
 
-	protected int kdTreeDims = 3; // dist, bulletEnergy
+	protected int kdTreeDims = 4; // dist, bulletEnergy, abs(latVel), accel 
 	protected int kdTreeSizeLimit = 10000;
 	protected HashMap<String, KdTree<gfHit>> guessFactorsKDTreeMap = new HashMap<String, KdTree<gfHit>>();
 
