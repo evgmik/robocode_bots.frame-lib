@@ -309,7 +309,6 @@ public class gunManager implements gunManagerInterface {
 
 		KdTree<gfHit> tree = getTreeKDTreeMap( bot.getName() );
 		double [] pntCoord =  misc.calcTreePointCoord( myBot, bot, w.getFiredTime(), w.getBulletEnergy(), kdTreeDims );
-		pntCoord[0] = distAtLastAim;
 
 		double[] gfBins = getGuessFactors( bot.getName() );
 		double[] gfBinsDecaying = getDecayingGuessFactors( bot.getName() );
