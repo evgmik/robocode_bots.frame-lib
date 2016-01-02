@@ -7,6 +7,7 @@ import eem.frame.misc.*;
 import eem.frame.external.trees.secondGenKD.KdTree;
 
 import java.util.List;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.awt.geom.Point2D;
 import java.awt.Graphics2D;
@@ -43,6 +44,21 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 
 		for ( KdTree.Entry<gfHit> neigbor : cluster ) {
 			gfBins[neigbor.value.gfBin] += neigbor.value.weight; // fixme do gf  weights  and distances
+		}
+
+		if ( false ) { // enable for debugging
+			int bestIndex = 0;
+			double maxW = Double.NEGATIVE_INFINITY;
+			int sum = 0;
+			for ( int i=0; i < gfBins.length; i++ ) {
+				double w = gfBins[i];
+				if ( w > maxW ) {
+					maxW = w;
+					bestIndex = i;
+				}
+				sum += w;
+			}
+			logger.dbg( "gfIndex = " + bestIndex + " hit prob = " + maxW/sum );
 		}
 
 		return gfBins;
