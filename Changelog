@@ -69,6 +69,11 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v5.0
+
+Added KdTree gun with distance, bulletSpeed, lateral speed, and acceleration
+coordinates.
+
 ## v4.9
 
 Slightly decreased gun performance weight.
