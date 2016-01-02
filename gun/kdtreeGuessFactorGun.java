@@ -19,20 +19,12 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 	public kdtreeGuessFactorGun() {
 		gunName = "kdtreeGuessFactorGun";
 		color = new Color(0x66, 0xAA, 0x66, 0xff);
-		binsSumThreshold=30;
+		binsSumThreshold=3;
 	}
 
 	@Override
 	protected double[] calcTreePointCoord( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
-		double[] coord = new double[fBot.getGunManager().kdTreeDims];
-		Point2D.Double fPos = fBot.getMotion().getPositionAtTime( time );
-		botStatPoint tBStat = tBot.getStatClosestToTime( time - 1 );
-		if (tBStat == null) {
-			logger.error("empty tree point coordinates should not happen");
-			return coord;
-		}
-		double dist = fPos.distance( tBStat.getPosition() );
-		coord[0] = dist;
+		double[] coord = misc.calcTreePointCoord( fBot, tBot, time, bulletEnergy, fBot.getGunManager().getKdTreeDims() );
 		return coord;
 	}
 

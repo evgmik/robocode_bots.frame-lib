@@ -48,7 +48,7 @@ public class gunManager implements gunManagerInterface {
 	protected HashMap<String, double[]> decayingGuessFactorMap = new HashMap<String, double[]>();
 	protected HashMap<String, double[][]> assistedGFactorsMap = new HashMap<String, double[][]>();
 
-	protected int kdTreeDims = 1;
+	protected int kdTreeDims = 3; // dist, bulletEnergy
 	protected int kdTreeSizeLimit = 10000;
 	protected HashMap<String, KdTree<gfHit>> guessFactorsKDTreeMap = new HashMap<String, KdTree<gfHit>>();
 
@@ -58,6 +58,10 @@ public class gunManager implements gunManagerInterface {
 	public	gunManager(fighterBot bot) {
 		this();
 		myBot = bot;
+	}
+
+	public int getKdTreeDims() {
+		return kdTreeDims;
 	}
 
 	public	void setGunsMap(HashMap<String, LinkedList<baseGun>> gMap) {
@@ -304,7 +308,7 @@ public class gunManager implements gunManagerInterface {
 		int iCenter = (int)math.gf2bin( gf, numGuessFactorBins );
 
 		KdTree<gfHit> tree = getTreeKDTreeMap( bot.getName() );
-		double [] pntCoord =  new double[ kdTreeDims ];
+		double [] pntCoord =  misc.calcTreePointCoord( myBot, bot, w.getFiredTime(), w.getBulletEnergy(), kdTreeDims );
 		pntCoord[0] = distAtLastAim;
 
 		double[] gfBins = getGuessFactors( bot.getName() );
