@@ -11,6 +11,9 @@ import java.awt.Color;
 
 
 public class guessFactorGun extends baseGun {
+	int neigborsNum = 1000;
+	double[] treePointCoord;
+
 	protected double binsSumThreshold = 30; // some heuristic to estimate gun quality
 	public guessFactorGun() {
 		gunName = "guessFactorGun";
@@ -25,6 +28,8 @@ public class guessFactorGun extends baseGun {
 		botStatPoint tBStat = tBot.getStatClosestToTime( time - 1 );
 		if (tBStat == null)
 			return fSols;
+
+		setTreePointCoord( calcTreePointCoord( fBot, tBot, time, bulletEnergy ) );
 
 		double latteralSpeed = tBStat.getLateralSpeed( fPos );
 		double[] gfBins = getRelevantGF( fBot, tBot );
@@ -112,5 +117,20 @@ public class guessFactorGun extends baseGun {
 		LinkedList<firingSolution> fSolultions = new LinkedList<firingSolution>();
 		return fSolultions;
 	}
+
+	// to be overwritten by child guns
+	protected double[] calcTreePointCoord( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
+		double[] coord = null;
+		return null;
+	}
+
+	public double[] getTreePointCoord() {
+		return treePointCoord;
+	}
+
+	public void setTreePointCoord(double[] coord) {
+		treePointCoord = coord;
+	}
 }
+
 
