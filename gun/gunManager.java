@@ -7,6 +7,8 @@ import eem.frame.wave.*;
 import eem.frame.bot.*;
 import eem.frame.misc.*;
 
+import eem.frame.external.trees.secondGenKD.KdTree;
+
 import java.util.LinkedList;
 import java.util.*;
 import java.awt.geom.Point2D;
@@ -45,6 +47,10 @@ public class gunManager implements gunManagerInterface {
 	protected double decayRate = .8;
 	protected HashMap<String, double[]> decayingGuessFactorMap = new HashMap<String, double[]>();
 	protected HashMap<String, double[][]> assistedGFactorsMap = new HashMap<String, double[][]>();
+
+	protected int kdTreeDims = 1;
+	protected int kdTreeSizeLimit = 10000;
+	protected HashMap<String, KdTree<gfHit>> guessFactorsKDTreeMap = new HashMap<String, KdTree<gfHit>>();
 
 	public	gunManager() {
 	}
@@ -277,6 +283,14 @@ public class gunManager implements gunManagerInterface {
 		return gfBins;
 	}
 
+	public KdTree<gfHit> getTreeKDTreeMap( String  botName ) {
+                if ( !guessFactorsKDTreeMap.containsKey( botName ) ) {
+			KdTree<gfHit> tree = new KdTree.Manhattan<gfHit>( kdTreeDims, kdTreeSizeLimit );
+			guessFactorsKDTreeMap.put( botName, tree );
+                }
+		KdTree<gfHit> tree = guessFactorsKDTreeMap.get( botName );
+		return tree;
+	}
 
 	public int getGuessFactosrBinNum() {
 		return numGuessFactorBins;
@@ -286,6 +300,10 @@ public class gunManager implements gunManagerInterface {
 		//logger.routine("hitGF" +  " target:" + bot.getName() + " gf:" + gf + " cgf:" +circularGF + " distance:" + distAtLastAim );
 		int di0 = (int)Math.round( gfRange/2*numGuessFactorBins );
 		int iCenter = (int)math.gf2bin( gf, numGuessFactorBins );
+
+		KdTree<gfHit> tree = getTreeKDTreeMap( bot.getName() );
+		double [] pntCoord =  new double[ kdTreeDims ];
+		pntCoord[0] = distAtLastAim;
 
 		double[] gfBins = getGuessFactors( bot.getName() );
 		double[] gfBinsDecaying = getDecayingGuessFactors( bot.getName() );
@@ -302,6 +320,10 @@ public class gunManager implements gunManagerInterface {
 
 			double di = i-iCenter; // bin displacement from the center
 			double binW = Math.exp( - Math.pow( 6*di/di0 , 2 ) );
+
+			// update guess factors tree
+			tree.addPoint( pntCoord, new gfHit(i, binW) );
+
 			// update accumulating map
 			gfBins[i]+= binW;
 
