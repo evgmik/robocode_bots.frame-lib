@@ -230,19 +230,7 @@ public class gunManager implements gunManagerInterface {
 		String  enemyName = bot.getName();
 		Point2D.Double botPos = bot.getPositionClosestToTime( time );
 
-		// calculate myBot targeting GF
-		double gf = w.getFiringGuessFactor(bot, time);
-		double gfRange = w.getFiringGuessFactorRange( bot, time );
-		double distAtLastAim = w.getDistanceAtLastAimTime( bot );
-		// get circular gun guess factor
-		double circGF = Double.NaN;
-		circularGun circGun = new circularAccelGun();
-		LinkedList<firingSolution> fSs = circGun.getFiringSolutions( w.getFiredPosition(), bot, w.getFiredTime(), w.getBulletEnergy() );
-		if ( fSs.size() >= 1 ) {
-			double cAngle = fSs.getFirst().getFiringAngle();
-			circGF = w.getFiringGuessFactor( bot, cAngle );
-		}
-		updateHitGuessFactor( bot, gf, gfRange, circGF, distAtLastAim, w.getCount() );
+		updateHitGuessFactor( bot, w );
 
 		// count the wave with bullets
 		for ( waveWithBullets wB: myBot.myWaves ) {
@@ -296,7 +284,21 @@ public class gunManager implements gunManagerInterface {
 		return numGuessFactorBins;
 	}
 
-	public void updateHitGuessFactor( InfoBot bot, double gf, double gfRange, double circularGF, double distAtLastAim, int wave_count ) {
+	public void updateHitGuessFactor( InfoBot bot, wave w ) {
+		// calculate myBot targeting GF
+		long time = myBot.getTime();
+		double gf = w.getFiringGuessFactor(bot, time);
+		double gfRange = w.getFiringGuessFactorRange( bot, time );
+		double distAtLastAim = w.getDistanceAtLastAimTime( bot );
+		// get circular gun guess factor
+		double circularGF = Double.NaN;
+		circularGun circGun = new circularAccelGun();
+		LinkedList<firingSolution> fSs = circGun.getFiringSolutions( w.getFiredPosition(), bot, w.getFiredTime(), w.getBulletEnergy() );
+		if ( fSs.size() >= 1 ) {
+			double cAngle = fSs.getFirst().getFiringAngle();
+			circularGF = w.getFiringGuessFactor( bot, cAngle );
+		}
+
 		//logger.routine("hitGF" +  " target:" + bot.getName() + " gf:" + gf + " cgf:" +circularGF + " distance:" + distAtLastAim );
 		int di0 = (int)Math.round( gfRange/2*numGuessFactorBins );
 		int iCenter = (int)math.gf2bin( gf, numGuessFactorBins );
