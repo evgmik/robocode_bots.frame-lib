@@ -86,12 +86,15 @@ public class misc  {
 			accel = 0;
 		}
 
+		double distToWallAhead = tBStat.getDistanceToWallAhead();
 
 		// assign normilized coordinates
-		coord[0] = distAtLastAim/physics.BattleField.distance(0,0);
+		coord[0] = distAtLastAim*10/physics.MaxSeparationOnBattleField;
 		coord[1] = bulletEnergy/robocode.Rules.MAX_BULLET_POWER;
-		coord[2] = Math.abs(latteralSpeed)/robocode.Rules.MAX_VELOCITY;
-		coord[3] = accel;
+		coord[2] = Math.abs(latteralSpeed)*10/robocode.Rules.MAX_VELOCITY;
+		coord[3] = math.signNoZero( latteralSpeedPrev)*accel;
+		coord[4] = distToWallAhead*10/physics.MaxSeparationOnBattleField;
+		coord[5] = fBot.getEnemyBots().size()*2;
 		return coord;
 	}
 }
