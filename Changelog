@@ -69,6 +69,15 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v5.1
+
+v5.0 was better in roborumble but I lost in meleerumble. So some
+readjustments:
+
+-  Reduced number of neighbors in kdtreeGuessFactorGun 1000->100.
+-  kdtree has new dimentions distance to wall ahead and enemies number.
+
+
 ## v5.0
 
 Added KdTree gun with distance, bulletSpeed, lateral speed, and acceleration
