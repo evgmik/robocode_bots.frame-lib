@@ -15,7 +15,7 @@ import java.awt.Color;
 
 
 public class kdtreeGuessFactorGun extends guessFactorGun {
-	int neigborsNum = 1000;
+	int neigborsNum = 100;
 
 	public kdtreeGuessFactorGun() {
 		gunName = "kdtreeGuessFactorGun";
