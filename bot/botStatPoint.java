@@ -21,6 +21,7 @@ public class botStatPoint {
 	private double energy;
 	private double gunHeat;
 	private double dist2WallAhead;
+	private long timeSinceVelocityChange;
 
 	public botStatPoint() {
 		pos = new Point2D.Double(0,0);
@@ -30,6 +31,7 @@ public class botStatPoint {
 		energy =0;
 		gunHeat =0;
 		dist2WallAhead=0;
+		timeSinceVelocityChange = 0;
 	}
 
 	public botStatPoint(AdvancedRobot bot, ScannedRobotEvent e ) {
@@ -47,6 +49,7 @@ public class botStatPoint {
 		energy = e.getEnergy();
 
 		dist2WallAhead = distanceToWallAhead(this);
+		timeSinceVelocityChange = 0; // no way to know it with in this class
 
 		//logger.dbg("bot stat = " + this.format() );
 	}
@@ -60,6 +63,7 @@ public class botStatPoint {
 		speed = bot.getVelocity();
 		energy = bot.getEnergy();
 		dist2WallAhead = distanceToWallAhead();
+		timeSinceVelocityChange = 0; // no way to know it with in this class
 		//logger.dbg("Master bot stat = " + this.format() );
 	}
 
@@ -71,6 +75,14 @@ public class botStatPoint {
 
 	public Double getDistanceToWallAhead() {
 		return dist2WallAhead;
+	}
+
+	public void setTimeSinceVelocityChange(long t) {
+		timeSinceVelocityChange = t;
+	}
+
+	public long getTimeSinceVelocityChange() {
+		return timeSinceVelocityChange;
 	}
 
 	public Double getDistance(Point2D.Double p) {
