@@ -88,6 +88,8 @@ public class misc  {
 
 		double distToWallAhead = tBStat.getDistanceToWallAhead();
 
+		long timeSinceVelocityChange = tBStat.getTimeSinceVelocityChange();
+
 		// assign normilized coordinates
 		coord[0] = distAtLastAim*10/physics.MaxSeparationOnBattleField;
 		coord[1] = bulletEnergy/robocode.Rules.MAX_BULLET_POWER;
@@ -95,6 +97,7 @@ public class misc  {
 		coord[3] = math.signNoZero( latteralSpeedPrev)*accel;
 		coord[4] = distToWallAhead*10/physics.MaxSeparationOnBattleField;
 		coord[5] = fBot.getEnemyBots().size()*2;
+		coord[6] = math.putWithinRange( Math.sqrt( timeSinceVelocityChange ), 0, 10 )/10;
 		return coord;
 	}
 }
