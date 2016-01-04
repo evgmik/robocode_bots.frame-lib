@@ -69,6 +69,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v5.2
+
+bug fix: distance to the wall ahead was not assigned for enemy bots stat points
+
+-  botStatPoint now contains timeSinceVelocityChange
+-  KdTree has new dimention: timeSinceVelocityChange
+
 ## v5.1
 
 v5.0 was better in roborumble but I lost in meleerumble. So some
