@@ -46,6 +46,8 @@ public class botStatPoint {
 		speed = e.getVelocity();
 		energy = e.getEnergy();
 
+		dist2WallAhead = distanceToWallAhead(this);
+
 		//logger.dbg("bot stat = " + this.format() );
 	}
 
