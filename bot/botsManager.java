@@ -115,7 +115,19 @@ public class  botsManager {
 		       	// this is newly discovered bot
 			iBot = new InfoBot(botName);
 		}
-		iBot.update( new botStatPoint(myBot) );
+		botStatPoint bStatLast = iBot.getLast();
+		botStatPoint bStatNow  = new botStatPoint( myBot );
+		long t = 0;
+		if ( bStatLast != null ) {
+			double speedLast = Math.abs( bStatLast.getSpeed() );
+			double speedNow  = Math.abs( bStatNow.getSpeed() );
+			if ( Utils.isNear(  speedLast, speedNow ) ) {
+				t = bStatLast.getTimeSinceVelocityChange();
+				t++;
+			}
+		}
+		bStatNow.setTimeSinceVelocityChange( t );
+		iBot.update( bStatNow );
 		liveBots.put(botName, iBot);
 		_gameinfo.specialOnScannedRobot(iBot);
 		callListenersOnScannedRobot( iBot );
@@ -138,7 +150,19 @@ public class  botsManager {
 		       	// this is newly discovered bot
 			iBot = new InfoBot(botName);
 		}
-		iBot.update( new botStatPoint(myBot, e) );
+		botStatPoint bStatLast = iBot.getLast();
+		botStatPoint bStatNow  = new botStatPoint( myBot, e );
+		long t = 0;
+		if ( bStatLast != null ) {
+			double speedLast = Math.abs( bStatLast.getSpeed() );
+			double speedNow  = Math.abs( bStatNow.getSpeed() );
+			if ( Utils.isNear(  speedLast, speedNow ) ) {
+				t = bStatLast.getTimeSinceVelocityChange();
+				t++;
+			}
+		}
+		bStatNow.setTimeSinceVelocityChange( t );
+		iBot.update( bStatNow );
 		_gameinfo.specialOnScannedRobot(iBot);
 		liveBots.put(botName, iBot);
 		callListenersOnScannedRobot( iBot );
