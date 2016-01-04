@@ -268,7 +268,7 @@ public class masterBotGunManager extends gunManager {
 			// enemy is not firing
 			energySurplus = myBot.getEnergy() - 5*robocode.Rules.MIN_BULLET_POWER - mostEnergeticEnemy.getEnergy();
 			if ( energySurplus < 0 ) {
-				logger.dbg("tic " + myBot.getTime() + ": enemy is not firing and we have more energy, stopped firing to not mess it up");
+				// stop firing to maintain energy surplus
 				bulletEnergy = -1;
 			} else {
 				bulletEnergy = Math.min( bulletEnergy, energySurplus );
