@@ -69,6 +69,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v5.3
+
+master bot takes gun performance from the KdTree, i.e., it does not use
+overall gun performance but it is more adaptive. Rationale, some gun a better
+at certain distances/situations.
+
+
 ## v5.2
 
 bug fix: distance to the wall ahead was not assigned for enemy bots stat points
