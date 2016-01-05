@@ -482,7 +482,29 @@ public class gunManager implements gunManagerInterface {
 			// note getTime()+1, the fire command is executed at next tic
 			LinkedList<firingSolution> gunfSols =  g.getFiringSolutions( myBot, targetBot.getInfoBot(), firingTime, bulletEnergy );
 			String2D key = new String2D( g.getName(), targetBot.getName() );
+			double[] treeCoord = misc.calcTreePointCoord( 
+					myBot,
+					targetBot.getInfoBot(),
+					firingTime, bulletEnergy, getKdTreeDims()
+					);
+			KdTree<gunHitMissLog> tree = getGunHitMissKDTree( key );
+			boolean isSequentialSorting = false;
+			List<KdTree.Entry<gunHitMissLog>> cluster = tree.nearestNeighbor( treeCoord, hitProbEstimateNeighborsNum, isSequentialSorting );
+			int fireCnt = 0;
+			int hitCnt  = 0;
+			for ( KdTree.Entry<gunHitMissLog> hmLog : cluster ) {
+				fireCnt++;
+				if ( hmLog.value.hitStat ) {
+					hitCnt++;
+				}
+			}
+			double gunHitKdTreeProb = math.perfRate( hitCnt, fireCnt );
+
 			double gunPerfRate = math.perfRate( hitByMyGun.getHashCounter(key) , firedAtEnemyByGun.getHashCounter(key) );
+			if ( myBot.isItMasterBotDriver() ) {
+				// overwriting global gun performance
+				gunPerfRate = gunHitKdTreeProb;
+			}
 			for ( firingSolution fS: gunfSols ) {
 				double solQ = fS.getQualityOfSolution();
 				fS.setQualityOfSolution( solQ * gunPerfRate );
