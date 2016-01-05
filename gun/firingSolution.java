@@ -110,6 +110,10 @@ public class firingSolution {
 		return physics.bulletSpeed( bulletEnergy );
 	}
 
+	public double getBulletEnergy() {
+		return bulletEnergy;
+	}
+
 	public void setDistanceAtLastAim( double d ) {
 		distanceAtLastAim = d;
 	}
