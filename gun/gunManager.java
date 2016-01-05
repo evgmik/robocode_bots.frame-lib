@@ -51,6 +51,8 @@ public class gunManager implements gunManagerInterface {
 	protected int kdTreeDims = 7; // dist, bulletEnergy, abs(latVel), accel, dist to wall, enemy num, timeSinceVelocityChange
 	protected int kdTreeSizeLimit = 10000;
 	protected HashMap<String, KdTree<gfHit>> guessFactorsKDTreeMap = new HashMap<String, KdTree<gfHit>>();
+	int hitProbEstimateNeighborsNum = 100;
+	protected HashMap<String2D, KdTree<gunHitMissLog>> gunHitMissKDTreeMap = new HashMap<String2D, KdTree<gunHitMissLog>>();
 
 	public	gunManager() {
 	}
@@ -93,12 +95,21 @@ public class gunManager implements gunManagerInterface {
 		String  enemyName = fS.getTargetBotName();
 		String2D key = new String2D( gunName, enemyName );
 		incrFiredAtEnemyByGun( fS );
+		gunHitMissLog hmLog = new gunHitMissLog(false, 1);
 		if ( !fS.isActive() ) {
 			hitByMyGun.incrHashCounter( key );
+			hmLog.hitStat = true;
 			//logger.dbg(myBot.getName() + " hit enemy: " + fS.getTargetBotName() + " with gun: " + fS.getGunName() + " fired at dist: " + fS.getDistanceAtLastAim() );
 		} else {
 			//logger.dbg(myBot.getName() + " missed enemy: " + fS.getTargetBotName() + " with gun: " + fS.getGunName() + " fired at dist: " + fS.getDistanceAtLastAim() );
 		}
+		double[] treeCoord = misc.calcTreePointCoord( 
+				myBot,
+				myBot.getGameInfo().getFighterBot( enemyName ).getInfoBot(),
+				fS.getFiredTime(), fS.getBulletEnergy(), getKdTreeDims()
+				);
+		KdTree<gunHitMissLog> tree = getGunHitMissKDTree( key );
+		tree.addPoint( treeCoord, hmLog );
 	}
 
 	// someone hit the master bot
@@ -281,6 +292,15 @@ public class gunManager implements gunManagerInterface {
 			guessFactorsKDTreeMap.put( botName, tree );
                 }
 		KdTree<gfHit> tree = guessFactorsKDTreeMap.get( botName );
+		return tree;
+	}
+
+	public KdTree<gunHitMissLog> getGunHitMissKDTree( String2D  key ) {
+                if ( !gunHitMissKDTreeMap.containsKey( key ) ) {
+			KdTree<gunHitMissLog> tree = new KdTree.Manhattan<gunHitMissLog>( kdTreeDims, kdTreeSizeLimit );
+			gunHitMissKDTreeMap.put( key, tree );
+                }
+		KdTree<gunHitMissLog> tree = gunHitMissKDTreeMap.get( key );
 		return tree;
 	}
 
