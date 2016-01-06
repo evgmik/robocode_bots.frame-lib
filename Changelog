@@ -69,6 +69,16 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v5.4
+
+Some simplification of the KdTree coordinate code. It is more general and
+located in one place now.
+
+Modified bulletEnergy logic to pick 1.95 unless enemy is closer than 140.
+This energy selection was spotted in Chase's cs.Nene 1.05 bot.
+Test shows that it drastically improve score against stronger bots.
+
+
 ## v5.3
 
 master bot takes gun performance from the KdTree, i.e., it does not use
