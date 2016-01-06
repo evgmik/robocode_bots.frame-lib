@@ -48,7 +48,6 @@ public class gunManager implements gunManagerInterface {
 	protected HashMap<String, double[]> decayingGuessFactorMap = new HashMap<String, double[]>();
 	protected HashMap<String, double[][]> assistedGFactorsMap = new HashMap<String, double[][]>();
 
-	protected int kdTreeDims = 7; // dist, bulletEnergy, abs(latVel), accel, dist to wall, enemy num, timeSinceVelocityChange
 	protected int kdTreeSizeLimit = 10000;
 	protected HashMap<String, KdTree<gfHit>> guessFactorsKDTreeMap = new HashMap<String, KdTree<gfHit>>();
 	int hitProbEstimateNeighborsNum = 100;
@@ -60,10 +59,6 @@ public class gunManager implements gunManagerInterface {
 	public	gunManager(fighterBot bot) {
 		this();
 		myBot = bot;
-	}
-
-	public int getKdTreeDims() {
-		return kdTreeDims;
 	}
 
 	public	void setGunsMap(HashMap<String, LinkedList<baseGun>> gMap) {
@@ -103,13 +98,13 @@ public class gunManager implements gunManagerInterface {
 		} else {
 			//logger.dbg(myBot.getName() + " missed enemy: " + fS.getTargetBotName() + " with gun: " + fS.getGunName() + " fired at dist: " + fS.getDistanceAtLastAim() );
 		}
-		double[] treeCoord = misc.calcTreePointCoord( 
+		gunTreePoint gTP = new gunTreePoint(
 				myBot,
 				myBot.getGameInfo().getFighterBot( enemyName ).getInfoBot(),
-				fS.getFiredTime(), fS.getBulletEnergy(), getKdTreeDims()
+				fS.getFiredTime(), fS.getBulletEnergy()
 				);
 		KdTree<gunHitMissLog> tree = getGunHitMissKDTree( key );
-		tree.addPoint( treeCoord, hmLog );
+		tree.addPoint( gTP.getPosition(), hmLog );
 	}
 
 	// someone hit the master bot
@@ -288,7 +283,8 @@ public class gunManager implements gunManagerInterface {
 
 	public KdTree<gfHit> getTreeKDTreeMap( String  botName ) {
                 if ( !guessFactorsKDTreeMap.containsKey( botName ) ) {
-			KdTree<gfHit> tree = new KdTree.Manhattan<gfHit>( kdTreeDims, kdTreeSizeLimit );
+			gunTreePoint gTP = new gunTreePoint();
+			KdTree<gfHit> tree = new KdTree.Manhattan<gfHit>( gTP.getKdTreeDims(), kdTreeSizeLimit );
 			guessFactorsKDTreeMap.put( botName, tree );
                 }
 		KdTree<gfHit> tree = guessFactorsKDTreeMap.get( botName );
@@ -297,7 +293,8 @@ public class gunManager implements gunManagerInterface {
 
 	public KdTree<gunHitMissLog> getGunHitMissKDTree( String2D  key ) {
                 if ( !gunHitMissKDTreeMap.containsKey( key ) ) {
-			KdTree<gunHitMissLog> tree = new KdTree.Manhattan<gunHitMissLog>( kdTreeDims, kdTreeSizeLimit );
+			gunTreePoint gTP = new gunTreePoint();
+			KdTree<gunHitMissLog> tree = new KdTree.Manhattan<gunHitMissLog>( gTP.getKdTreeDims(), kdTreeSizeLimit );
 			gunHitMissKDTreeMap.put( key, tree );
                 }
 		KdTree<gunHitMissLog> tree = gunHitMissKDTreeMap.get( key );
@@ -328,7 +325,8 @@ public class gunManager implements gunManagerInterface {
 		int iCenter = (int)math.gf2bin( gf, numGuessFactorBins );
 
 		KdTree<gfHit> tree = getTreeKDTreeMap( bot.getName() );
-		double [] pntCoord =  misc.calcTreePointCoord( myBot, bot, w.getFiredTime(), w.getBulletEnergy(), kdTreeDims );
+		gunTreePoint gTP = new gunTreePoint( myBot, bot, w.getFiredTime(), w.getBulletEnergy() );
+		double [] pntCoord =  gTP.getPosition();
 
 		double[] gfBins = getGuessFactors( bot.getName() );
 		double[] gfBinsDecaying = getDecayingGuessFactors( bot.getName() );
@@ -482,11 +480,12 @@ public class gunManager implements gunManagerInterface {
 			// note getTime()+1, the fire command is executed at next tic
 			LinkedList<firingSolution> gunfSols =  g.getFiringSolutions( myBot, targetBot.getInfoBot(), firingTime, bulletEnergy );
 			String2D key = new String2D( g.getName(), targetBot.getName() );
-			double[] treeCoord = misc.calcTreePointCoord( 
+			gunTreePoint gTP = new gunTreePoint(
 					myBot,
 					targetBot.getInfoBot(),
-					firingTime, bulletEnergy, getKdTreeDims()
+					firingTime, bulletEnergy
 					);
+			double [] treeCoord =  gTP.getPosition();
 			KdTree<gunHitMissLog> tree = getGunHitMissKDTree( key );
 			boolean isSequentialSorting = false;
 			List<KdTree.Entry<gunHitMissLog>> cluster = tree.nearestNeighbor( treeCoord, hitProbEstimateNeighborsNum, isSequentialSorting );

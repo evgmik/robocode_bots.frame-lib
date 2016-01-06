@@ -25,8 +25,8 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 
 	@Override
 	protected double[] calcTreePointCoord( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
-		double[] coord = misc.calcTreePointCoord( fBot, tBot, time, bulletEnergy, fBot.getGunManager().getKdTreeDims() );
-		return coord;
+		gunTreePoint gTP = new gunTreePoint( fBot, tBot, time, bulletEnergy );
+		return gTP.getPosition();
 	}
 
 	@Override
