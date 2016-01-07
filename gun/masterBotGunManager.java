@@ -220,12 +220,14 @@ public class masterBotGunManager extends gunManager {
 		//logger.dbg( "dist = " + targetDistance + " bE = " + bulletEnergy );
 
 		//bulletEnergy = 500/targetDistance;
-		bulletEnergy = 3*(300*300)/(targetDistance*targetDistance);
-		// below 3 lines were noticed in cs.Nene logic
-		// strangely fixed bulletEnergy = 1.95 helps a lot against strong bots
-		bulletEnergy = 1.95;
-		if(targetDistance < 140)
-			bulletEnergy = 2.95;
+		if ( myBot.getGameInfo().fightType().equals("1on1") ) { // below 3 lines were noticed in cs.Nene logic
+			// strangely fixed bulletEnergy = 1.95 helps a lot against strong bots
+			bulletEnergy = 1.95;
+			if(targetDistance < 140)
+				bulletEnergy = 2.95;
+		} else {
+			bulletEnergy = 3*(300*300)/(targetDistance*targetDistance);
+		}
 		if ( mostEnergeticEnemy != null ) {
 			if ( myBot.getEnergy() > (mostEnergeticEnemy.getEnergy()+20) ) {
 				// we have some energy to spare
