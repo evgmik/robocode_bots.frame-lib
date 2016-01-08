@@ -69,6 +69,10 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v5.5
+
+Revert bullet energy back for the case of melee, 1on1 stays the same as in v5.4.
+
 ## v5.4
 
 Some simplification of the KdTree coordinate code. It is more general and
