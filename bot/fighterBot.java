@@ -42,6 +42,9 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	protected int  firedCount = 0;
 	protected int  hitCount = 0;
 
+	public double myScore = 0, myScoreTotal = 0;
+	public double enemyScore = 0, enemyScoreTotal = 0;;
+
 	public LinkedList<waveWithBullets> enemyWaves = new LinkedList<waveWithBullets>();
 	public LinkedList<waveWithBullets> myWaves    = new LinkedList<waveWithBullets>();
 
@@ -199,6 +202,11 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		_motion.initTic();
 	}
 
+	public void initBattle() {
+		myScore = 0;
+		enemyScore = 0;
+	}
+
 	protected void processScheduledEnergyDrop() {
 		double eDrop = scheduledEdrop;
 		if ( !isItMasterBotDriver() ) {
@@ -211,6 +219,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				eDrop = Math.min( eDrop, robocode.Rules.MAX_BULLET_POWER );
 				wave w = new wave( getInfoBot(), getTime()-1, eDrop );
 				_gameinfo._wavesManager.add( w );
+				//logger.dbg(getName() + " fired bullet with energy = " + eDrop );
 			}
 		}
 		scheduledEdrop = 0;
@@ -455,6 +464,14 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	// someone hit the master bot
 	public void onHitByBullet(HitByBulletEvent e) {
 		_gunManager.onHitByBullet(e);
+		if ( isItMasterBotDriver() ) {
+			Bullet b = e.getBullet();
+			double bulletEnergy = b.getPower();
+			double bDamage = Rules.getBulletDamage(bulletEnergy);
+			double bHitEnergyBonus = Rules.getBulletHitBonus(bulletEnergy);
+			enemyScore += physics.bulletScoreBonusEnergy( bulletEnergy);
+		}
+
 	}
 
 	// master bot bullet hit someone
@@ -467,6 +484,11 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			// subtract from potential fired bullet energy
 			// bullet damage for this bot
 			scheduledEdrop -= physics.bulletDamageByEnergy( bulletEnergy );
+		}
+		if ( isItMasterBotDriver() ) {
+			double bulletEnergy = e.getBullet().getPower();
+			myScore += physics.bulletScoreBonusEnergy( bulletEnergy);
+
 		}
 		_gunManager.onBulletHit(e);
 	}

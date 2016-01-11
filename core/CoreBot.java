@@ -307,6 +307,29 @@ public class CoreBot extends AdvancedRobot
 		logger.routine("Bullet hit bullet stats:: " + logger.hitRateFormat( bulletHitEnemyBulletCnt, bulletFiredCnt ) );
 		logger.routine("Rounds ratio of win/lose = " + roundsWon + "/" + roundsLost );
 		logger.routine("Finishing places stats: " + Arrays.toString( finishingPlacesStats ) );
+		fighterBot b = _gameinfo.getFighterBot( getName() );
+		// unfortunately BulletHitEvent has quite low priority compared to  WinEvent
+		// so in case of victory out last bullet is often is not counted in
+		// as result master bot score is a bit underestimated
+		double winnerBulletDamageBonus = 0.2;
+		double survivalBonus = 60;
+		// this calc is good only for 1on1
+		logger.dbg("myWinLosePlace = " + myWinLosePlace );
+		if ( myWinLosePlace == 0 ) {
+		       // my bot won	
+		       b.myScore *= 1 + winnerBulletDamageBonus;
+		       b.myScore += survivalBonus;
+		} else {
+			// enemy won
+		       b.enemyScore *= 1 + winnerBulletDamageBonus;
+		       b.enemyScore += survivalBonus;
+		}
+		b.myScoreTotal += b.myScore;
+		b.enemyScoreTotal += b.enemyScore;
+		       
+
+		logger.routine("My score in this round = " + b.myScore + " enemy score = " + b.enemyScore );
+		logger.routine("My total score = " + b.myScoreTotal + " enemy score = " + b.enemyScoreTotal );
 	}
 
 	public void winOrLoseRoundEnd() {

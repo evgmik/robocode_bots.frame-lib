@@ -56,6 +56,11 @@ public class gameInfo implements botListener {
 
 	public void initBattle( CoreBot b) {
 		setMasterBot( b );
+		HashMap<String,fighterBot> allBots = getAllFighterBots(); 
+		for ( fighterBot fB: allBots.values() ) {
+			fB.initBattle();
+		}
+
 	}
 
 	public void initTic() {
