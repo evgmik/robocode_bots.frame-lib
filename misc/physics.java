@@ -76,6 +76,11 @@ public class physics {
 		return bDamage;
 	}
 
+	public static double  bulletScoreBonusEnergy( double bEnergy ) {
+		// so far it is the same as Rules.getBulletDamage
+		return Rules.getBulletDamage(bEnergy);
+	}
+
 	public static double minReqBulEnergyToKillTarget(double target_energy) {
 		double tinyBity = 0.1; // in case if there were rounding in energy report
 		target_energy = target_energy + tinyBity;
