@@ -49,6 +49,7 @@ public class CoreBot extends AdvancedRobot
 	public static int roundsLost = 0;
 	public static int  finishingPlacesStats[] = null;
 	public static int  skippedTurnStats[] = null;
+	public static double  roundAPS[] = null;
 	public static int  hitWallStats[] = null;
 	public static int  hitByBulletStats[] = null;
 	public static int bulletFiredCnt = 0;
@@ -330,6 +331,15 @@ public class CoreBot extends AdvancedRobot
 
 		logger.routine("My score in this round = " + b.myScore + " enemy score = " + b.enemyScore );
 		logger.routine("My total score = " + b.myScoreTotal + " enemy score = " + b.enemyScoreTotal );
+		double aps = 100*b.myScore/(b.myScore + b.enemyScore);
+		if ( roundAPS == null ) {
+			roundAPS = new double[getNumRounds()];
+		}
+		roundAPS[getRoundNum()] = aps;
+		double accumulatedAPS = 100 * b.myScoreTotal/(b.myScoreTotal+b.enemyScoreTotal);
+		logger.routine("Round APS stats: " + Arrays.toString(roundAPS) );
+		logger.routine("Accumulated APS = " + logger.shortFormatDouble(accumulatedAPS) + "%" );
+
 	}
 
 	public void winOrLoseRoundEnd() {
