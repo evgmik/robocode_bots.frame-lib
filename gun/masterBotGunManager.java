@@ -271,7 +271,7 @@ public class masterBotGunManager extends gunManager {
 			if(targetDistance < 140)
 				bulletEnergy = 2.95;
 		} else {
-			bulletEnergy = 3*(300*300)/(targetDistance*targetDistance);
+			bulletEnergy = (idealBulletEnergy/1.95)*3*(300*300)/(targetDistance*targetDistance);
 		}
 		if ( mostEnergeticEnemy != null ) {
 			if ( myBot.getEnergy() > (mostEnergeticEnemy.getEnergy()+20) ) {
