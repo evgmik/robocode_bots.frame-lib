@@ -6,6 +6,7 @@ import eem.frame.gun.*;
 import eem.frame.bot.*;
 import eem.frame.misc.*;
 import eem.frame.wave.*;
+import eem.frame.core.*;
 
 import robocode.Rules.*;
 import robocode.BattleRules.*;
@@ -21,6 +22,11 @@ public class masterBotGunManager extends gunManager {
 	boolean useAngleDistribution = false;
 	protected HashMap<String, Double> weightsBotWise = new HashMap<String, Double>();
 	protected fighterBot mostEnergeticEnemy = null;
+	protected double idealBulletEnergy = 1.95;
+	protected int bestRoundsStart = 0;
+	protected double bestAPS = 0;
+	protected int idealBulletEnergyIncrDir = 1;
+	protected double bEdiff = 0.5;
 
 	public	masterBotGunManager() {
 	}
@@ -28,6 +34,45 @@ public class masterBotGunManager extends gunManager {
 	public	masterBotGunManager(fighterBot bot) {
 		this();
 		myBot = bot;
+	}
+
+	public void initBattle() {
+		super.initBattle();
+		idealBulletEnergy = calcIdealBulletEnergy();
+		logger.routine("Probing new bullet energy " + idealBulletEnergy );
+	}
+
+	public double calcIdealBulletEnergy() {
+		CoreBot cB = myBot.getGameInfo().getMasterBot();
+		int roundNum = cB.getRoundNum();
+		int roundsToAver = 5;
+		double bE = idealBulletEnergy;
+		logger.dbg("Old bE = " + bE );
+		if ( (roundNum % roundsToAver) == 0 && roundNum > 0 ) {
+			double curAPS = 0;
+			for ( int i=roundNum - roundsToAver; i < roundNum; i++ ) {
+				curAPS += cB.roundAPS[i];
+			}
+			curAPS /= roundsToAver;
+			logger.dbg("Round # " + roundNum + " looking for better bullet");
+			logger.dbg("bestAPS " + bestAPS + " curAPS " + curAPS );
+			if ( curAPS > bestAPS ) {
+				bestAPS = curAPS;
+				bestRoundsStart = roundNum - roundsToAver;
+				bE += idealBulletEnergyIncrDir * bEdiff;
+			} else {
+				idealBulletEnergyIncrDir *= -1;
+				// if we are going back we want to jump over prev point
+				bE += idealBulletEnergyIncrDir * 1.5*bEdiff;
+				// and decrease step size
+				bEdiff /= 2;
+			}
+			bE = math.putWithinRange( bE, robocode.Rules.MIN_BULLET_POWER , robocode.Rules.MAX_BULLET_POWER );
+		} else {
+			// no energy change
+		}
+		logger.dbg("New bE = " + bE );
+		return bE;
 	}
 
 	public void askRadarToTrack() {
@@ -222,7 +267,7 @@ public class masterBotGunManager extends gunManager {
 		//bulletEnergy = 500/targetDistance;
 		if ( myBot.getGameInfo().fightType().equals("1on1") ) { // below 3 lines were noticed in cs.Nene logic
 			// strangely fixed bulletEnergy = 1.95 helps a lot against strong bots
-			bulletEnergy = 1.95;
+			bulletEnergy = idealBulletEnergy;
 			if(targetDistance < 140)
 				bulletEnergy = 2.95;
 		} else {
