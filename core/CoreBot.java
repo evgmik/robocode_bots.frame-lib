@@ -313,30 +313,42 @@ public class CoreBot extends AdvancedRobot
 		// so in case of victory out last bullet is often is not counted in
 		// as result master bot score is a bit underestimated
 		double winnerBulletDamageBonus = 0.2;
-		double survivalBonus = 60;
+		double winnerBonus = 50;
+		double survivalBonusPerBot = 10;
 		// this calc is good only for 1on1
 		logger.dbg("myWinLosePlace = " + myWinLosePlace );
 		if ( myWinLosePlace == 0 ) {
-		       // my bot won	
+		       // my bot won and out survived everyone	
 		       b.myScore *= 1 + winnerBulletDamageBonus;
-		       b.myScore += survivalBonus;
+		       b.myScore += winnerBonus;
 		} else {
 			// enemy won
 		       b.enemyScore *= 1 + winnerBulletDamageBonus;
-		       b.enemyScore += survivalBonus;
+		       b.enemyScore += winnerBonus;
 		}
+		b.myScore += (totalNumOfEnemiesAtStart - myWinLosePlace) * survivalBonusPerBot;
 		b.myScoreTotal += b.myScore;
 		b.enemyScoreTotal += b.enemyScore;
 		       
 
 		logger.routine("My score in this round = " + b.myScore + " enemy score = " + b.enemyScore );
 		logger.routine("My total score = " + b.myScoreTotal + " enemy score = " + b.enemyScoreTotal );
-		double aps = 100*b.myScore/(b.myScore + b.enemyScore);
 		if ( roundAPS == null ) {
 			roundAPS = new double[getNumRounds()];
 		}
+		double aps = 0;
+		double accumulatedAPS = 0;
+		if ( totalNumOfEnemiesAtStart == 1 ) {
+			// 1 on 1 game
+			aps = 100*b.myScore/(b.myScore + b.enemyScore);
+			accumulatedAPS = 100 * b.myScoreTotal/(b.myScoreTotal+b.enemyScoreTotal);
+		} else {
+			// melee
+			// its hard to calculate APS in melee
+			aps = b.myScore;
+			accumulatedAPS = b.myScoreTotal;
+		}
 		roundAPS[getRoundNum()] = aps;
-		double accumulatedAPS = 100 * b.myScoreTotal/(b.myScoreTotal+b.enemyScoreTotal);
 		logger.routine("Round APS stats: " + Arrays.toString(roundAPS) );
 		logger.routine("Accumulated APS = " + logger.shortFormatDouble(accumulatedAPS) + "%" );
 
