@@ -82,6 +82,9 @@ public class gunManager implements gunManagerInterface {
 		}
 	}
 
+	public void initBattle() {
+	}
+
 	public void manage() {
 	}
 

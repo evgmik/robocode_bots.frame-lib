@@ -205,6 +205,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	public void initBattle() {
 		myScore = 0;
 		enemyScore = 0;
+		_gunManager.initBattle();
 	}
 
 	protected void processScheduledEnergyDrop() {
