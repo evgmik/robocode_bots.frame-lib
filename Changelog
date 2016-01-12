@@ -69,6 +69,12 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v6.0
+
+Added track of my score (all game types) and enemy (for 1on1 only). Using it
+trying to optimize APS by changing "ideal bullet energy", this works only for
+1on1 since melee does not use ideal bullet energy.
+
 ## v5.5
 
 Revert bullet energy back for the case of melee, 1on1 stays the same as in v5.4.
