@@ -45,34 +45,8 @@ public class masterBotGunManager extends gunManager {
 	public double calcIdealBulletEnergy() {
 		CoreBot cB = myBot.getGameInfo().getMasterBot();
 		int roundNum = cB.getRoundNum();
-		int roundsToAver = 5;
-		double bE = idealBulletEnergy;
-		logger.dbg("Old bE = " + bE );
-		if ( (roundNum % roundsToAver) == 0 && roundNum > 0 ) {
-			double curAPS = 0;
-			for ( int i=roundNum - roundsToAver; i < roundNum; i++ ) {
-				curAPS += cB.roundAPS[i];
-			}
-			curAPS /= roundsToAver;
-			logger.dbg("Round # " + roundNum + " looking for better bullet");
-			logger.dbg("bestAPS " + bestAPS + " curAPS " + curAPS );
-			if ( curAPS > bestAPS ) {
-				bestAPS = curAPS;
-				bestRoundsStart = roundNum - roundsToAver;
-				bE += idealBulletEnergyIncrDir * bEdiff;
-			} else {
-				idealBulletEnergyIncrDir *= -1;
-				// if we are going back we want to jump over prev point
-				bE += idealBulletEnergyIncrDir * 1.5*bEdiff;
-				// and decrease step size
-				bEdiff /= 2;
-			}
-			bE = math.putWithinRange( bE, robocode.Rules.MIN_BULLET_POWER , robocode.Rules.MAX_BULLET_POWER );
-		} else {
-			// no energy change
-		}
-		logger.dbg("New bE = " + bE );
-		return bE;
+		// nothing fancy here
+		return 1.95;
 	}
 
 	public void askRadarToTrack() {
