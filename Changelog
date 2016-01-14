@@ -69,6 +69,10 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v6.1
+
+Disable fancy bullet energy search. I.e. back to v5.5 bullet logic.
+
 ## v6.0
 
 Added track of my score (all game types) and enemy (for 1on1 only). Using it,
