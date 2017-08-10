@@ -30,7 +30,7 @@ public class physics {
 		robotHalfDiagonal = robotHalfSize*Math.sqrt(2);
 		BattleField = new Point2D.Double(myBot.getBattleFieldWidth(), myBot.getBattleFieldHeight());
 		MaxSeparationOnBattleField = BattleField.distance(0,0);
-		double pos_eps = 0; // uncertanty in the bot wall hit detection
+		double pos_eps = 0.00001; // uncertanty in the bot wall hit detection
 		botReacheableBattleField = new Rectangle2D.Double(robotHalfSize - pos_eps, robotHalfSize-pos_eps, myBot.getBattleFieldWidth() - 2*(robotHalfSize-pos_eps), myBot.getBattleFieldHeight() - 2*(robotHalfSize-pos_eps));
 		gunCoolingRate = myBot.getGunCoolingRate(); // this sits inside robocode.BattleRules
 		minimalAllowedBulletEnergy = Rules.MIN_BULLET_POWER;
