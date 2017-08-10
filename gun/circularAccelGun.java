@@ -62,6 +62,11 @@ public class circularAccelGun extends circularGun {
 				double speedLast = vTvec.distance(0,0);
 				double speedPrev = vTvecPrev.distance(0,0);
 				accel = (speedLast - speedPrev)/dt;
+				if  ( (accel < -robocode.Rules.DECELERATION) && (speedLast == 0) ) {
+					// collision with wall or other bot detected
+					//logger.routine("Collision detected dropping acceleration");
+					accel = 0;
+				}
 				accel = math.putWithinRange( accel, -robocode.Rules.DECELERATION,  robocode.Rules.ACCELERATION );
 			}
 		}

@@ -96,6 +96,7 @@ public class circularGun extends baseGun {
 	public Point2D.Double getProjectedMotionMeetsBulletPosition( botStatPoint lastSeenStatPoint, double botBodyRotationSpeed, double botAcceleration, Point2D.Double firingPosition, long timeAtFiring , double bSpeed ) {
 
 		Point2D.Double posFut = (Point2D.Double) lastSeenStatPoint.getPosition().clone();
+		posFut = physics.putBotWithinBorders( posFut); // fix rounding error
 		Point2D.Double vTvec = (Point2D.Double) lastSeenStatPoint.getVelocity().clone();
 		double vx = vTvec.x;
 		double vy = vTvec.y;
@@ -108,7 +109,22 @@ public class circularGun extends baseGun {
 		long strtTime = lastSeenStatPoint.getTime();
 
 		long tMaxCnt = 100; // maximum calculation depth
+		//logger.routine( "speed = " + speed + " acceleration = " + botAcceleration + " rot speed = " + botBodyRotationSpeed);
+		if ( Math.abs( botBodyRotationSpeed ) >  robocode.Rules.MAX_TURN_RATE_RADIANS ) {
+			// Most likely our speed was zero and now we start moving
+			// in quite different direction from previous one.
+			// Alternatively, we just hit a wall, which looks like velocity flip
+			// Forcing rotation to 0.
+			logger.error("Something wrong: rotation rate is to high forcing it to 0");
+			botBodyRotationSpeed = 0;
+
+		}
+		//logger.routine( "Current point " + posFut );
 		for ( long t = strtTime + 1; t < strtTime+tMaxCnt ; t++) {
+			if ( (speed == 0) && (botAcceleration == 0) ) {
+				//logger.routine("Acceleration and speed equal to zero, this gun is as good as head on gun");
+				break;
+			}
 			speed = speed + botAcceleration;
 			if ( speed >= robocode.Rules.MAX_VELOCITY ) {
 				// we reached maximum allowed speed
@@ -127,13 +143,31 @@ public class circularGun extends baseGun {
 			vy = vyNew;
 			posFut.x = posFut.x + vx;
 			posFut.y = posFut.y + vy;
-			// now we now bot position at time t
+			// now we know bot position at time t
 			if ( !physics.botReacheableBattleField.contains( posFut ) ) {
-				// count one step back when we were on battlefield
-				posFut.x = posFut.x - vx;
-				posFut.y = posFut.y - vy;
+				// if we end up outside of battlefield
+				Point2D.Double fixPnt = physics.putBotWithinBorders( posFut );
+				double adjustX = posFut.x - fixPnt.x;
+				double adjustY = posFut.y - fixPnt.y;
+				double timeBackX = 0;
+				double timeBackY = 0;
+				double timeBack =0;
+				if ( Math.abs(adjustX) != 0 ) {
+					timeBackX = adjustX / vx;
+				}
+				if ( Math.abs(adjustY) != 0 ) {
+					timeBackY = adjustY / vy;
+				}
+				timeBack = Math.max( timeBackX, timeBackY );
+
+
+				posFut.x = posFut.x - vx*timeBack;
+				posFut.y = posFut.y - vy*timeBack;
+				posFut = physics.putBotWithinBorders( posFut);
+				//logger.routine( "Wall hit point " + posFut );
 				break;
 			}
+			//logger.routine( "Future point " + posFut );
 			if ( (t - timeAtFiring) >= 0 ) {
 				// finally we now bot position at timeAtFiring+1
 				// at firing time bullet already moved
@@ -143,6 +177,7 @@ public class circularGun extends baseGun {
 				}
 			}
 		}
+		//logger.routine( "Final Future point " + posFut );
 		return posFut;
 	}
 }
