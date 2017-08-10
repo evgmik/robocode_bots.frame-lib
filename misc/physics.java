@@ -101,6 +101,8 @@ public class physics {
         }
 
 	public static boolean isBotOutOfBorders( Point2D.Double pnt ) {
+		// fixme: it should be sufficient to do
+		// return !physics.botReacheableBattleField.contains( posFut ) );
 		if ( ( pnt.x < robotHalfSize ) || ( pnt.x > (BattleField.x - robotHalfSize) ) )
 			return true;
 		if ( ( pnt.y < robotHalfSize ) || ( pnt.y > (BattleField.y - robotHalfSize) ) )
