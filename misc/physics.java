@@ -245,6 +245,15 @@ public class physics {
 		return dist;
 	}
 
+	public static Point2D.Double putBotWithinBorders( Point2D.Double pnt) {
+		// some calculations put bot outside game borders
+		// here we calculate "corrected" position
+		Point2D.Double fixPnt = new Point2D.Double( pnt.x, pnt.y );
+		fixPnt.x = math.putWithinRange(pnt.x, botReacheableBattleField.x, botReacheableBattleField.width + botReacheableBattleField.x);
+		fixPnt.y = math.putWithinRange(pnt.y, botReacheableBattleField.y, botReacheableBattleField.height + botReacheableBattleField.y);
+		return fixPnt;
+	}
+
 	public static double stopDistance( double velocity ) {
 		double speed = Math.abs(velocity);
 		int dist =0;
