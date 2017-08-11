@@ -110,15 +110,6 @@ public class circularGun extends baseGun {
 
 		long tMaxCnt = 100; // maximum calculation depth
 		//logger.routine( "speed = " + speed + " acceleration = " + botAcceleration + " rot speed = " + botBodyRotationSpeed);
-		if ( Math.abs( botBodyRotationSpeed ) >  robocode.Rules.MAX_TURN_RATE_RADIANS ) {
-			// Most likely our speed was zero and now we start moving
-			// in quite different direction from previous one.
-			// Alternatively, we just hit a wall, which looks like velocity flip
-			// Forcing rotation to 0.
-			logger.error("Something wrong: rotation rate is to high forcing it to 0");
-			botBodyRotationSpeed = 0;
-
-		}
 		//logger.routine( "Current point " + posFut );
 		for ( long t = strtTime + 1; t < strtTime+tMaxCnt ; t++) {
 			if ( (speed == 0) && (botAcceleration == 0) ) {
