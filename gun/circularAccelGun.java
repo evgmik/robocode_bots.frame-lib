@@ -32,6 +32,7 @@ public class circularAccelGun extends circularGun {
 		// OK we know fire point and at least one target position
 		Point2D.Double tPos = (Point2D.Double) tBStat.getPosition().clone();
 		Point2D.Double vTvec = (Point2D.Double) tBStat.getVelocity().clone();
+		//logger.routine(tBot.getName() + " heading in rads " + tBStat.getHeadingRadians() + " speed " + tBStat.getSpeed() + " velocity " + vTvec);
 
 		double bSpeed = physics.bulletSpeed( bulletEnergy );
 
@@ -49,8 +50,21 @@ public class circularAccelGun extends circularGun {
 			//return fSolultions; // circular gun is not applicable
 		} else {
 			vTvecPrev = bStatPrev.getVelocity();
-			double phiLast = Math.atan2( vTvec.y, vTvec.x);
-			double phiPrev = Math.atan2( vTvecPrev.y, vTvecPrev.x);
+			double phiLast=0, phiPrev=0;
+			if ( tBStat.getSpeed() != 0 ) {
+				phiLast = Math.atan2( vTvec.y, vTvec.x);
+				phiLast = Math.toDegrees( phiLast );
+			} else {
+				phiLast = math.game_angles2cortesian( tBStat.getHeadingDegrees() );
+				phiLast = math.shortest_arc( phiLast );
+			}
+			if ( bStatPrev.getSpeed() != 0 ) {
+				phiPrev = Math.atan2( vTvecPrev.y, vTvecPrev.x);
+				phiPrev = Math.toDegrees( phiPrev );
+			} else {
+				phiPrev = math.game_angles2cortesian( bStatPrev.getHeadingDegrees() );
+				phiPrev = math.shortest_arc( phiPrev );
+			}
 			double dt =  tBStat.getTime() - bStatPrev.getTime();
 			if ( dt == 0 ) {
 				// previous point is the same as current
@@ -58,7 +72,28 @@ public class circularAccelGun extends circularGun {
 				accel = 0; // no way to know acceleration
 				//return fSolultions; // circular gun is not applicable
 			} else {
-				phi = (phiLast - phiPrev)/dt;
+				phi = (phiLast - phiPrev)/dt; // it is actually angular velocity
+				phi = math.shortest_arc( phi );
+				if ( Math.abs( phi) > 90 ) {
+					// probably we had a direction flip
+					// let's convert the angle to take it in account
+					if ( phi > 0 ) {
+						phi = - (180 - phi);
+					} else {
+						phi = 180 + phi;
+					}
+				}
+				double eps=1e-6;
+				if ( Math.abs( phi ) >  (robocode.Rules.MAX_TURN_RATE+eps) ) {
+					// Most likely our speed was zero and now we start moving
+					// in quite different direction from previous one.
+					// Alternatively, we just hit a wall, which looks like velocity flip
+					// Forcing rotation to 0.
+					logger.error("Something wrong: rotation rate " + phi + "  is to high forcing it to 0. phiLast=" + phiLast + " phiPrev=" + phiPrev);
+					phi = 0;
+
+				}
+				phi = Math.toRadians( phi );
 				double speedLast = vTvec.distance(0,0);
 				double speedPrev = vTvecPrev.distance(0,0);
 				accel = (speedLast - speedPrev)/dt;
