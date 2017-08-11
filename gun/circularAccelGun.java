@@ -51,20 +51,10 @@ public class circularAccelGun extends circularGun {
 		} else {
 			vTvecPrev = bStatPrev.getVelocity();
 			double phiLast=0, phiPrev=0;
-			if ( tBStat.getSpeed() != 0 ) {
-				phiLast = Math.atan2( vTvec.y, vTvec.x);
-				phiLast = Math.toDegrees( phiLast );
-			} else {
-				phiLast = math.game_angles2cortesian( tBStat.getHeadingDegrees() );
-				phiLast = math.shortest_arc( phiLast );
-			}
-			if ( bStatPrev.getSpeed() != 0 ) {
-				phiPrev = Math.atan2( vTvecPrev.y, vTvecPrev.x);
-				phiPrev = Math.toDegrees( phiPrev );
-			} else {
-				phiPrev = math.game_angles2cortesian( bStatPrev.getHeadingDegrees() );
-				phiPrev = math.shortest_arc( phiPrev );
-			}
+			phiLast = math.game_angles2cortesian( tBStat.getHeadingDegrees() );
+			phiLast = math.angleNorm360( phiLast );
+			phiPrev = math.game_angles2cortesian( bStatPrev.getHeadingDegrees() );
+			phiPrev = math.angleNorm360( phiPrev );
 			double dt =  tBStat.getTime() - bStatPrev.getTime();
 			if ( dt == 0 ) {
 				// previous point is the same as current
@@ -72,7 +62,7 @@ public class circularAccelGun extends circularGun {
 				accel = 0; // no way to know acceleration
 				//return fSolultions; // circular gun is not applicable
 			} else {
-				phi = (phiLast - phiPrev)/dt; // it is actually angular velocity
+				phi = math.shortest_arc(phiLast - phiPrev)/dt; // it is actually angular velocity
 				phi = math.shortest_arc( phi );
 				if ( Math.abs( phi) > 90 ) {
 					// probably we had a direction flip
@@ -89,7 +79,7 @@ public class circularAccelGun extends circularGun {
 					// in quite different direction from previous one.
 					// Alternatively, we just hit a wall, which looks like velocity flip
 					// Forcing rotation to 0.
-					logger.error("Something wrong: rotation rate " + phi + "  is to high forcing it to 0. phiLast=" + phiLast + " phiPrev=" + phiPrev);
+					logger.error("Something wrong with " + tBot.getName() + ": rotation rate " + phi + "  is to high forcing it to 0. " + "dt=" + dt + " phiLast=" + phiLast + " phiPrev=" + phiPrev);
 					phi = 0;
 
 				}
