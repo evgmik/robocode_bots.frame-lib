@@ -130,13 +130,18 @@ public class exactPathDangerMotion extends basicMotion {
 				// let's try to move mostly orthogonal to the path to target
 				
 				// angle orthogonal to the line to enemy
-				a = Math.toRadians( 90 + math.game_angles2cortesian(math.angle2pt( myPos, myBot.getGunManager().getTarget().getPosition() ) ) );
-				// random spread to it
-				double angleSpread = Math.PI/2;
-				a += angleSpread*(Math.random() - 0.5);
-				if ( Math.random() > 0.5 ) {
-					// shift angle 180 degree to flip direction
-					a += Math.PI;
+				fighterBot tmpEnemyBot = myBot.getGunManager().getTarget();
+				if ( tmpEnemyBot != null ) {
+					a = Math.toRadians( 90 + math.game_angles2cortesian(math.angle2pt( myPos, tmpEnemyBot.getPosition() ) ) );
+					// random spread to it
+					double angleSpread = Math.PI/2;
+					a += angleSpread*(Math.random() - 0.5);
+					if ( Math.random() > 0.5 ) {
+						// shift angle 180 degree to flip direction
+						a += Math.PI;
+					}
+				} else {
+					a = 2*Math.PI* Math.random();
 				}
 			} else {
 				// searching at any angle around us
