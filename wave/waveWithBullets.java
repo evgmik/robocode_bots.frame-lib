@@ -283,6 +283,8 @@ public class waveWithBullets extends wave {
 		double latteralSpeed = tBStat.getLateralSpeed( firedPosition );
 		double headOnAngle = math.angle2pt( firedPosition, tBStat.getPosition() );
 		Point2D.Double prevP = null;
+		double prevPointDanger=0;
+		// show danger probability distribution
 		for ( int i=0; i< numGuessFactorBins; i++ ) {
 			double gf =  math.bin2gf( i, numGuessFactorBins) * math.signNoZero( latteralSpeed );
 			double dL = gfDanger[i];
@@ -290,8 +292,17 @@ public class waveWithBullets extends wave {
 			double dist = (time - firedTime) * bulletSpeed;
 
 			Point2D.Double strtP = math.project( firedPosition, a, dist );
-			dist += dL*10;
-			Point2D.Double endP = math.project( firedPosition, a, dist );
+			Point2D.Double endP;
+			// show MEA range
+			double meaMarkerLenth = 10;
+			if ( i==0 || i==(numGuessFactorBins-1) ) {
+				math.project( firedPosition, a, dist );
+				endP = math.project( firedPosition, a, dist - meaMarkerLenth );
+				graphics.drawLine( g, strtP,  endP );
+			}
+			// show GF danger
+			double gfDangerMarkerLength = dL*10;
+			endP = math.project( firedPosition, a, dist + gfDangerMarkerLength );
 			graphics.drawLine( g, strtP,  endP );
 			if ( prevP != null ) {
 				// this plot envelope of GF dangers
