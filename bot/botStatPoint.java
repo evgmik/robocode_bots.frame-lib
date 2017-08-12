@@ -73,7 +73,7 @@ public class botStatPoint {
 		pos = p;
 	}
 
-	public Double getDistanceToWallAhead() {
+	public double getDistanceToWallAhead() {
 		return dist2WallAhead;
 	}
 
@@ -85,7 +85,7 @@ public class botStatPoint {
 		return timeSinceVelocityChange;
 	}
 
-	public Double getDistance(Point2D.Double p) {
+	public double getDistance(Point2D.Double p) {
 		return p.distance(pos);
 	}
 
@@ -170,7 +170,7 @@ public class botStatPoint {
 		 pos = (Point2D.Double) p.clone();
 	}
 
-	public Double getGunHeat() {
+	public double getGunHeat() {
 		return gunHeat;
 	}
 
