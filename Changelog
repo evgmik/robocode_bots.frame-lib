@@ -1,4 +1,8 @@
 # Changelog
+
+TODO: Do proper wave surfer, at least for 1on1. I.e. be smarter with point
+choice, some (weak) attempt done in v6.2
+
 TODO: try to increase melee bullet power, HawkOnFire often get more bullet
 damage bonus than me.
 
@@ -68,6 +72,16 @@ to avoid this.
 
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
+
+## v6.2
+
+- in 1 on 1 situation surf only the oldest (hopefully closest wave), this
+  seems to help against GF counting guns
+- 1on1 point to go calculation favors orthogonal to target motion
+- border uncertainty detection is almost 0 now, insetead of 1.1
+- Added proper circular acceleration gun
+- fixed rotation rate calculation
+- added MEA marker on enemy wave
 
 ## v6.1
 
