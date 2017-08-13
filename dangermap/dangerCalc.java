@@ -21,6 +21,9 @@ public class dangerCalc {
 		double dL = 0;
 		for ( waveWithBullets eW : myBot.getEnemyWaves() ) {
 			dL += eW.getDanger( time, dP );
+			if ( ( myBot.getGameInfo().fightType().equals("1on1") || myBot.getGameInfo().fightType().equals("melee1on1") ) ) {
+				break; // dbg do danger only from earliest wave
+			}
 		}
 		return dL;
 	}
