@@ -124,8 +124,8 @@ public class exactPathDangerMotion extends basicMotion {
 			// see difference between v1.6 and v1.8
 			// so we are back to search for good destination
 			// within a circle surrounding the  bot
-			//if ( ( myBot.getGameInfo().fightType().equals("1on1") || myBot.getGameInfo().fightType().equals("melee1on1") ) && (myBot.getGunManager().getTarget() != null ) ) {
-			if ( false ) {
+			if ( ( myBot.getGameInfo().fightType().equals("1on1") || myBot.getGameInfo().fightType().equals("melee1on1") ) && (myBot.getGunManager().getTarget() != null ) ) {
+			//if ( false ) {
 				// 1on1 game type and I have target
 				// let's try to move mostly orthogonal to the path to target
 				
@@ -134,7 +134,7 @@ public class exactPathDangerMotion extends basicMotion {
 				if ( tmpEnemyBot != null ) {
 					a = Math.toRadians( 90 + math.game_angles2cortesian(math.angle2pt( myPos, tmpEnemyBot.getPosition() ) ) );
 					// random spread to it
-					double angleSpread = Math.PI/2;
+					double angleSpread = Math.PI/4;
 					a += angleSpread*(Math.random() - 0.5);
 					if ( Math.random() > 0.5 ) {
 						// shift angle 180 degree to flip direction
