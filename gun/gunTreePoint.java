@@ -65,5 +65,14 @@ public class gunTreePoint  {
 		coord[4] = distToWallAhead*10/physics.MaxSeparationOnBattleField;
 		coord[5] = fBot.getEnemyBots().size()*2;
 		coord[6] = math.putWithinRange( Math.sqrt( timeSinceVelocityChange ), 0, 10 )/10;
+		// dbg output
+		if ( true ) {
+			String sout = "Tree coords: ";
+			for(int i=0; i< kdTreeDims; i++) {
+				sout += Math.round(coord[i]);
+				sout += ", ";
+			}
+			logger.dbg( sout);
+		}
 	}
 }
