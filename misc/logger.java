@@ -102,5 +102,37 @@ public class logger {
 		return strOut;
 	}
 
+	public static String arrayToTextPlot( double[] bins) {
+		// outputs text style/plot histograms
+		// inspired by https://github.com/holman/spark
+		String ticks = "▁▂▃▄▅▆▇█";
+		int ticksNum = 8;
+		double bMax = Double.NEGATIVE_INFINITY;
+		double bMin = Double.POSITIVE_INFINITY;
+		int ind;
+		double b;
+		for (int i=0; i < bins.length; i++) {
+			// find stats
+			b=bins[i];
+			if ( b > bMax)
+				bMax = b;
+			if ( b < bMin)
+				bMin = b;
+		}
+		String sout = "";
+		double range = bMax - bMin;
+		if ( range==0 )
+			range = 1;
+		for (int i=0; i < bins.length; i++) {
+			// normalize
+			b=(bins[i]-bMin)/range;
+			ind = (int) Math.floor( b*ticksNum );
+			if ( ind == ticksNum )
+				ind = ticksNum - 1;
+			sout += ticks.charAt(ind);
+		}
+		sout += " With range from " + bMin + " to " + bMax;
+		return sout;
+	}
 }
 
