@@ -59,14 +59,14 @@ public class gunTreePoint  {
 
 		// assign normilized coordinates
 		coord[0] = distAtLastAim*10/physics.MaxSeparationOnBattleField;
-		coord[1] = bulletEnergy/robocode.Rules.MAX_BULLET_POWER;
+		coord[1] = 10*bulletEnergy/robocode.Rules.MAX_BULLET_POWER;
 		coord[2] = Math.abs(latteralSpeed)*10/robocode.Rules.MAX_VELOCITY;
 		coord[3] = math.signNoZero( latteralSpeedPrev)*accel;
 		coord[4] = distToWallAhead*10/physics.MaxSeparationOnBattleField;
 		coord[5] = fBot.getEnemyBots().size()*2;
-		coord[6] = math.putWithinRange( Math.sqrt( timeSinceVelocityChange ), 0, 10 )/10;
+		coord[6] = math.putWithinRange( Math.sqrt( timeSinceVelocityChange ), 0, 10 );
 		// dbg output
-		if ( true ) {
+		if ( false ) {
 			String sout = "Tree coords: ";
 			for(int i=0; i< kdTreeDims; i++) {
 				sout += Math.round(coord[i]);
