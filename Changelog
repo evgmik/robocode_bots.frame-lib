@@ -73,6 +73,15 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v6.5
+
+Skipping v6.3 and v6.4. Only EvBotNG was changing but framework was not.
+This synchronizes framework and EvBotNG versions.
+
+- added nice textual plots/histograms for arrays. Very handy for debugging.
+- reworked logic of kdTree nodes calculations
+- guess factors are smoother now
+
 ## v6.2
 
 - in 1 on 1 situation surf only the oldest (hopefully closest wave), this
