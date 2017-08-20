@@ -57,19 +57,25 @@ public class gunTreePoint  {
 
 		long timeSinceVelocityChange = tBStat.getTimeSinceVelocityChange();
 
-		// assign normilized coordinates
-		coord[0] = distAtLastAim*10/physics.MaxSeparationOnBattleField;
-		coord[1] = 10*bulletEnergy/robocode.Rules.MAX_BULLET_POWER;
-		coord[2] = Math.abs(latteralSpeed)*10/robocode.Rules.MAX_VELOCITY;
-		coord[3] = math.signNoZero( latteralSpeedPrev)*accel;
-		coord[4] = distToWallAhead*10/physics.MaxSeparationOnBattleField;
-		coord[5] = fBot.getEnemyBots().size()*2;
-		coord[6] = math.putWithinRange( Math.sqrt( timeSinceVelocityChange ), 0, 10 );
-		// dbg output
-		if ( false ) {
-			String sout = "Tree coords: ";
+		// assign normalized coordinates
+		double x; // dummy variable
+		x = 10*( 1 - distAtLastAim/physics.MaxSeparationOnBattleField);
+		coord[0] = 1/(1 + x );
+		coord[1] = bulletEnergy/robocode.Rules.MAX_BULLET_POWER;
+		coord[2] = Math.abs(latteralSpeed)/robocode.Rules.MAX_VELOCITY;
+		x = math.signNoZero( latteralSpeed )*(accel/2); // -1 to 1
+		coord[3] = 1/2. + 1/2.*x;
+		x = distToWallAhead/robocode.Rules.MAX_VELOCITY;
+		coord[4] = 1/(1+x);
+		coord[5] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
+		x = timeSinceVelocityChange;
+		coord[6] = 1/(1+x);
+
+		if ( false ) { // enable for debugging
+			String sout = fBot.getName() + " Tree coords: ";
+			sout += logger.arrayToTextPlot( coord ) + " --> ";
 			for(int i=0; i< kdTreeDims; i++) {
-				sout += Math.round(coord[i]);
+				sout += Math.round(100*coord[i]);
 				sout += ", ";
 			}
 			logger.dbg( sout);
