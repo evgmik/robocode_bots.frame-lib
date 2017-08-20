@@ -68,6 +68,12 @@ public class guessFactorGun extends baseGun {
 		int nonZeroBinsN = 0;
 		double maxCnt =  Double.NEGATIVE_INFINITY;
 		double minCnt =  Double.POSITIVE_INFINITY;
+		if ( false ) { // enable for dbg
+			String sout="";
+			sout = logger.arrayToTextPlot( guessFactorBins );
+			sout += " for gun " + getName();
+			logger.dbg( sout);
+		}
 		for (int i=0; i < numBins; i++ ) {
 			b = guessFactorBins[i];
 			binsSum += b; // calculates total count
@@ -102,6 +108,7 @@ public class guessFactorGun extends baseGun {
 		} else {
 			gf =  math.bin2gf( indMax, numBins );
 		}
+		//logger.dbg( getName() + " best gf = " + gf);
 		return gf;
 	}
 
