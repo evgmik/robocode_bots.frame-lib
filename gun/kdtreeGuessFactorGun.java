@@ -42,6 +42,7 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 		boolean isSequentialSorting = false;
 		List<KdTree.Entry<gfHit>> cluster = tree.nearestNeighbor( coord, neigborsNum, isSequentialSorting );
 
+		//logger.dbg(getName() + " kdTree has " + tree.size() + " nodes");
 		for ( KdTree.Entry<gfHit> neigbor : cluster ) {
 			gfBins[neigbor.value.gfBin] += neigbor.value.weight; // fixme do gf  weights  and distances
 		}
