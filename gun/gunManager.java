@@ -339,13 +339,16 @@ public class gunManager implements gunManagerInterface {
 			gfBinsDecaying[k] *= decayRate;	
 		}
 
-		int minI = (int)math.putWithinRange( iCenter - di0, 0, (numGuessFactorBins-1) );
-		int maxI = (int)math.putWithinRange( iCenter + di0, 0, (numGuessFactorBins-1) );
+		//logger.dbg( "iCenter = " + iCenter + " di0 = " + di0 );
+		int minI = (int)math.putWithinRange( iCenter - 2*di0, 0, (numGuessFactorBins-1) );
+		int maxI = (int)math.putWithinRange( iCenter + 2*di0, 0, (numGuessFactorBins-1) );
 		for ( int i = minI; i <= maxI; i++ ) {
 			i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
 
 			double di = i-iCenter; // bin displacement from the center
-			double binW = Math.exp( - Math.pow( 6*di/di0 , 2 ) );
+			// every gf within (+/-)gfRange=di0 is a hit, so it should have
+			// a weight close to 1. at 2*di0 we should have weight close to 1
+			double binW = Math.exp( - Math.pow( di/(1*di0) , 4 ) );
 
 			// update guess factors tree
 			tree.addPoint( pntCoord, new gfHit(i, binW) );
