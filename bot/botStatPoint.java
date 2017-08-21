@@ -162,6 +162,14 @@ public class botStatPoint {
 		return lateralSpeed;
 	}
 
+	public double getAdvancingSpeed( Point2D.Double p) {
+		// lateral speed with respect to point p
+		double absoluteBearing = math.angle2pt( p, pos );
+		double advancingSpeed = -speed * Math.cos( Math.toRadians(headingDegrees - absoluteBearing) );
+		// positive means: enemy is moving to the point p
+		return advancingSpeed;
+	}
+
 	public Point2D.Double getPosition() {
 		return (Point2D.Double) pos.clone();
 	}
