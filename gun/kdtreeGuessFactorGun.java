@@ -16,11 +16,21 @@ import java.awt.Color;
 
 public class kdtreeGuessFactorGun extends guessFactorGun {
 	int neigborsNum = 400;
+	String kdTreeGunBaseName = "kdtGF";
 
 	public kdtreeGuessFactorGun() {
-		gunName = "kdtreeGuessFactorGun";
+		this( 400, 3 ); //default
+	}
+
+	public kdtreeGuessFactorGun( int neigborsNum ) {
+		this( neigborsNum, 3 ); //default
+	}
+
+	public kdtreeGuessFactorGun( int neigborsNum, int binsSumThreshold ) {
 		color = new Color(0x66, 0xAA, 0x66, 0xff);
-		binsSumThreshold=3;
+		this.neigborsNum = neigborsNum;
+		this.binsSumThreshold = binsSumThreshold;
+		this.gunName = kdTreeGunBaseName + neigborsNum;
 	}
 
 	@Override
