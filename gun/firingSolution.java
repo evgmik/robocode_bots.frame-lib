@@ -7,6 +7,7 @@ import eem.frame.wave.*;
 import eem.frame.gameInfo.*;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Line2D;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
@@ -240,12 +241,17 @@ public class firingSolution {
 	}
 
 	public boolean didItHitBotAtPos( Point2D.Double p, long time ) {
+		// attempting to do precise bot intersection
+		// see http://robowiki.net/wiki/Waves/Precise_Intersection
+		// and http://robowiki.net/wiki/Talk:Waves/Precise_Intersection#Smashing_it_down_to_bins
+		// It boils down to: Each tick, the bullet moves forward, forming a line segment,
+		// and it is checked if this line segment intersects the bot bounding box,
+		// then the enemy bot moves.
 		Point2D.Double bulletPos = getLocationAt( time );
-		if ( p.distance( bulletPos ) <= physics.robotHalfDiagonal ) {
-			return true;
-		} else {
-			return false;
-		}
+		Point2D.Double bulletPosPrev = getLocationAt( time-1 );
+		Line2D.Double  bulletPath = new Line2D.Double( bulletPosPrev, bulletPos );
+		boolean status = bulletPath.intersects( p.x - physics.robotHalfSize, p.y - physics.robotHalfSize, 2*physics.robotHalfSize, 2*physics.robotHalfSize);
+		return status;
 	}
 
 	public boolean isItInCoridor( safetyCorridor sC ) {
