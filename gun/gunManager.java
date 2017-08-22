@@ -75,7 +75,7 @@ public class gunManager implements gunManagerInterface {
 		if ( myBot.proxy.getGunHeat()/physics.gunCoolingRate >  (180/robocode.Rules.GUN_TURN_RATE + 1) ) {
 			// trying to save CPU cycles, when gun is hot
 			// fixme: be smarter about it, may be use MEA
-			logger.dbg("Tic: " + myBot.getTime() + " gunHeat = " + myBot.proxy.getGunHeat() + " aiming only HeadOnGun gun");
+			//logger.dbg("Tic: " + myBot.getTime() + " gunHeat = " + myBot.proxy.getGunHeat() + " aiming only HeadOnGun gun");
 			gunList = new LinkedList<baseGun>();
 			gunList.add( new headOnGun() );
 		}
