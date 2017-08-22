@@ -59,8 +59,8 @@ public class gunTreePoint  {
 
 		// assign normalized coordinates
 		double x; // dummy variable
-		x = 10*( 1 - distAtLastAim/physics.MaxSeparationOnBattleField);
-		coord[0] = 1/(1 + x );
+		x = distAtLastAim/physics.MaxSeparationOnBattleField;
+		coord[0] = x*x;
 		coord[1] = bulletEnergy/robocode.Rules.MAX_BULLET_POWER;
 		coord[2] = Math.abs(latteralSpeed)/robocode.Rules.MAX_VELOCITY;
 		x = math.signNoZero( latteralSpeed )*(accel/2); // -1 to 1
