@@ -9,7 +9,7 @@ import eem.frame.misc.*;
 import robocode.*;
 
 public class gunTreePoint  {
-	protected int kdTreeDims = 7; // dist, bulletEnergy, abs(latVel), accel, dist to wall, enemy num, timeSinceVelocityChange
+	protected int kdTreeDims = 8; // dist, bulletEnergy, abs(latVel), accel, dist to wall, enemy num, timeSinceVelocityChange, advancing speed
 	protected double[] coord = new double[kdTreeDims];
 
 	public int getKdTreeDims() {
@@ -45,6 +45,7 @@ public class gunTreePoint  {
 
 		double distAtLastAim = fPos.distance( tPos );
 		double bulletFlightTime = distAtLastAim/physics.bulletSpeed( bulletEnergy );
+		double advancingSpeed = tBStat.getAdvancingSpeed( fPos );
 		double latteralSpeed = tBStat.getLateralSpeed( fPos );
 		double latteralSpeedPrev = tBStatPrev.getLateralSpeed( fPos );
 
@@ -70,6 +71,7 @@ public class gunTreePoint  {
 		coord[5] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
 		x = timeSinceVelocityChange;
 		coord[6] = 1/(1+x);
+		coord[7] = 1/2. + 1/2.*advancingSpeed/robocode.Rules.MAX_VELOCITY;
 
 		if ( false ) { // enable for debugging
 			String sout = fBot.getName() + " Tree coords: ";
