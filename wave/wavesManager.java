@@ -126,7 +126,9 @@ public class  wavesManager {
 				// now we need to see if it the wave which hit
 				double distTraveled = w.getDistanceTraveledAtTime( timeNow );
 				double distToHitPos = Math.abs( distTraveled - posHit.distance( w.getFiredPosition() ) );
-				if ( distToHitPos  <= physics.robotHalfDiagonal ) {
+				// fixme: it's better to do bullet intersect since we know its direction
+				// and the hit position
+				if ( distToHitPos  <= w.getBulletSpeed() ) {
 					if ( distToHitPos < minDist ) {
 						// this is the wave which is over and thus hit the bot
 						wRet = w;
