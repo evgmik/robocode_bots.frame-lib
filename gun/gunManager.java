@@ -185,6 +185,9 @@ public class gunManager implements gunManagerInterface {
 		Bullet b = e.getBullet();
 		long time = myBot.getTime();
 		Point2D.Double posHit = new Point2D.Double( b.getX(), b.getY() );
+		InfoBot trgtBot = myBot.getGameInfo().getFighterBot( trgtBotName ).getInfoBot();
+		//see  http://robowiki.net/wiki/Talk:Waves/Precise_Intersection#Smashing_it_down_to_bins
+		Point2D.Double posBot = trgtBot.getPositionAtTime( time -1 );  // note time-1
 
 		wave w = myBot.getGameInfo().getWavesManager().getWaveMatching( fireBotName, trgtBotName, posHit, time );
 		if ( w == null) {
@@ -194,7 +197,7 @@ public class gunManager implements gunManagerInterface {
 		for ( waveWithBullets wB: myBot.myWaves ) {
 			if ( w.equals( wB) ) {
 				wB.setMyWavePassedOverTargetFlag( trgtBotName, true );
-				wB.markFiringSolutionWhichHitBotAt( posHit, trgtBotName, time);
+				wB.markFiringSolutionWhichHitBotAt( posBot, trgtBotName, time);
 			}
 		}
 	}
@@ -241,7 +244,11 @@ public class gunManager implements gunManagerInterface {
 		//        we count bullets directed to someone else
 		long time = myBot.getTime();
 		String  enemyName = bot.getName();
-		Point2D.Double botPos = bot.getPositionClosestToTime( time );
+		// and http://robowiki.net/wiki/Talk:Waves/Precise_Intersection#Smashing_it_down_to_bins
+		// It boils down to: Each tick, the bullet moves forward, forming a line segment,
+		// and it is checked if this line segment intersects the bot bounding box,
+		// then the enemy bot moves.
+		Point2D.Double botPos = bot.getPositionClosestToTime( time - 1 );
 
 		updateHitGuessFactor( bot, w );
 
