@@ -73,6 +73,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v6.6
+
+Improvement: Precise bullet intersection of bot body for bullet hit check.
+kdTree gun now takes arguments,
+kdTree uses advancing (to/from bot) velocity
+
+
 ## v6.5
 
 Skipping v6.3 and v6.4. Only EvBotNG was changing but framework was not.
