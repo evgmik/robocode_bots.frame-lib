@@ -247,6 +247,10 @@ public class firingSolution {
 		// It boils down to: Each tick, the bullet moves forward, forming a line segment,
 		// and it is checked if this line segment intersects the bot bounding box,
 		// then the enemy bot moves.
+		if ( p == null ) {
+			logger.error( "ERROR: empty bot position should not happen!" );
+			return false;
+		}
 		Point2D.Double bulletPos = getLocationAt( time );
 		Point2D.Double bulletPosPrev = getLocationAt( time-1 );
 		Line2D.Double  bulletPath = new Line2D.Double( bulletPosPrev, bulletPos );

@@ -188,6 +188,10 @@ public class gunManager implements gunManagerInterface {
 		InfoBot trgtBot = myBot.getGameInfo().getFighterBot( trgtBotName ).getInfoBot();
 		//see  http://robowiki.net/wiki/Talk:Waves/Precise_Intersection#Smashing_it_down_to_bins
 		Point2D.Double posBot = trgtBot.getPositionAtTime( time -1 );  // note time-1
+		if ( posBot == null ) // this is likely in melee
+			posBot = trgtBot.getPositionAtTime( time );
+		if ( posBot == null ) // this is likely in melee
+			posBot = posHit; // best guess
 
 		wave w = myBot.getGameInfo().getWavesManager().getWaveMatching( fireBotName, trgtBotName, posHit, time );
 		if ( w == null) {
