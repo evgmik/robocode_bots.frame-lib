@@ -166,10 +166,6 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public void aimTheGun() {
-		if ( myBot.proxy.getGunHeat()/physics.gunCoolingRate >  (180/robocode.Rules.GUN_TURN_RATE + 1) ) {
-			// do not waste CPU on aiming hot gun
-			return;
-		}
 		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
 		double bulletEnergy = -1000; // intentionally bad
 		if ( targetBot != null ) {
