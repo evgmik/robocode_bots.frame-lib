@@ -72,6 +72,13 @@ public class gunManager implements gunManagerInterface {
 	public void initTic() {
 		String fightType = myBot.getGameInfo().fightType();
 		gunList = gunListForGameType.get( fightType );
+		if ( myBot.proxy.getGunHeat()/physics.gunCoolingRate >  (180/robocode.Rules.GUN_TURN_RATE + 1) ) {
+			// trying to save CPU cycles, when gun is hot
+			// fixme: be smarter about it, may be use MEA
+			logger.dbg("Tic: " + myBot.getTime() + " gunHeat = " + myBot.proxy.getGunHeat() + " aiming only HeadOnGun gun");
+			gunList = new LinkedList<baseGun>();
+			gunList.add( new headOnGun() );
+		}
 		if ( gunList == null ) {
 			logger.dbg("no gun list for the fight type: " + fightType  + ", choosing default");
 			gunList = gunListForGameType.get( "default" );
