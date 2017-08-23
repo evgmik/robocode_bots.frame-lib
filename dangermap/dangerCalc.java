@@ -60,7 +60,7 @@ public class dangerCalc {
 	public static double calculateDangerFromCorners(long time, Point2D.Double dP, fighterBot myBot) {
 		Point2D.Double corner;
 		double cornerDanger = 1;
-		double cornerDangerRadius = 10;
+		double cornerDangerRadius = 30;
 		double dL = 0;
 		double dist = 0;
 
