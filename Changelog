@@ -73,6 +73,14 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+
+## v6.7
+
+- added ability to do anti guess factor kdTree guns
+- added helper class to do array statistics
+- increased corners danger radius in 1on1 situations
+- if gun is hot use simple head on gun to point the gun in enemy direction
+
 ## v6.6
 
 Improvement: Precise bullet intersection of bot body for bullet hit check.
