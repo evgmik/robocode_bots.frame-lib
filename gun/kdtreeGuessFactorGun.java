@@ -23,7 +23,21 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 	}
 
 	public kdtreeGuessFactorGun( int neigborsNum ) {
-		this( neigborsNum, 3 ); //default
+		this( neigborsNum, 3, false ); //default
+	}
+
+	public kdtreeGuessFactorGun( int neigborsNum, boolean antiGFavoider ) {
+		this( neigborsNum, 3, antiGFavoider );
+	}
+
+	public kdtreeGuessFactorGun( int neigborsNum, int binsSumThreshold, boolean antiGFavoider ) {
+		this( neigborsNum, binsSumThreshold );
+		this.antiGFavoider = antiGFavoider;
+		this.gunName ="";
+		if ( antiGFavoider ) 
+			this.gunName += "Anti-";
+
+		this.gunName +=  kdTreeGunBaseName + neigborsNum;
 	}
 
 	public kdtreeGuessFactorGun( int neigborsNum, int binsSumThreshold ) {

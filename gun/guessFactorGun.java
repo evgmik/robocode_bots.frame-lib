@@ -12,6 +12,7 @@ import java.awt.Color;
 
 public class guessFactorGun extends baseGun {
 	double[] treePointCoord;
+	boolean  antiGFavoider = false; // if bot tries to avoid known GF we do reverse weighting
 
 	protected double binsSumThreshold = 30; // some heuristic to estimate gun quality
 	public guessFactorGun() {
@@ -60,38 +61,54 @@ public class guessFactorGun extends baseGun {
 	protected double getMostProbableGF(double[] guessFactorBins ) {
 		int numBins = guessFactorBins.length;
 		double[] guessFactorWeighted = new double[ numBins ];
-		double b = 0;
-		double binsSum = 0;
-		double binsSqSum = 0;
-		int indMax = 0;
-		int indMin = 0;
-		int nonZeroBinsN = 0;
-		double maxCnt =  Double.NEGATIVE_INFINITY;
-		double minCnt =  Double.POSITIVE_INFINITY;
-		if ( false ) { // enable for dbg
+		ArrayStats stats = new ArrayStats( guessFactorBins );
+		if ( antiGFavoider ) {
+			double max = stats.max;
+			double[] guessFactorBinsFlipped = new double[ numBins ];
+			for (int i=0; i< numBins; i++) {
+				// flipping GFs
+				guessFactorBinsFlipped[i] = max - guessFactorBins[i];
+			}
+
+			double threshold = stats.mean*.5; // spill out weight into a GF bin
+			// Essentially GF < threshold were never visited 
+			// either we have too little stats  or it is unreachable GF.
+			// Unreachable GF should be at edges we set them to zero so
+			// they never checked
+			// Threshold is quite high and tune heuristically to avoid shooting
+			// extreme GFs.
+			for (int i=0; i< numBins; i++) {
+				// left edge search
+				if ( guessFactorBins[i] <= threshold ) {
+					guessFactorBinsFlipped[i] = 0;
+				} else {
+					break;
+				}
+			}
+			for (int i=numBins-1; i>=0; i--) {
+				// right edge search
+				if ( guessFactorBins[i] <= threshold ) {
+					guessFactorBinsFlipped[i] = 0;
+				} else {
+					break;
+				}
+			}
+			// reassigning everything back to guessFactorBins
+			for (int i=0; i< numBins; i++) {
+				guessFactorBins[i] = guessFactorBinsFlipped[i];
+			}
+			stats = new ArrayStats( guessFactorBins );
+		}
+		if ( !true ) { // enable for dbg
 			String sout="";
 			sout = logger.arrayToTextPlot( guessFactorBins );
 			sout += " for gun " + getName();
 			logger.dbg( sout);
 		}
-		for (int i=0; i < numBins; i++ ) {
-			b = guessFactorBins[i];
-			binsSum += b; // calculates total count
-			binsSqSum += b*b;
-			if ( b > maxCnt ) {
-				maxCnt = b;
-				indMax = i;
-			}
-			if ( b < minCnt ) {
-				minCnt = b;
-				indMin = i;
-			}
-			if ( b != 0 ) {
-				nonZeroBinsN++;
-			}
-		}
-		double mean = binsSum/numBins;
-		double std  = Math.sqrt( (binsSqSum - mean*mean)/ numBins );
+		int indMax = stats.indMax;
+		double mean = stats.mean;
+		double std  = stats.std;
+		double binsSum = stats.sum;
 		double gf;
 		if ( (binsSum == 0) ) {
 			// empty statistics
