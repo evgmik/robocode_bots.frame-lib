@@ -22,7 +22,7 @@ public class firingSolution {
 	public Point2D.Double targetPosition;
 	public String gunName = "";
 	public double distanceAtLastAim = 0;
-	public boolean activeFlag = true; // if this firing solution hit targer set to false
+	public boolean activeFlag = true; // if this firing solution hit target set to false
 	public boolean myWavePassedOverTargetFlag = false;
 	public Color color = new Color(0x00, 0x00, 0x00, 0xff); // default color
 	// Guns algorithm should set qualityOfSolution.
