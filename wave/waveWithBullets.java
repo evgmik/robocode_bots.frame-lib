@@ -37,11 +37,13 @@ public class waveWithBullets extends wave {
 
 	public void copyGFarray(double[] gfSrc ) {
 		numGuessFactorBins = gfSrc.length;
-		gfDanger = new double[numGuessFactorBins];
-		for ( int i=0; i< numGuessFactorBins; i++ ) {
-			gfDanger[i] = gfSrc[i];
-		}
+		//gfDanger = new double[numGuessFactorBins];
+		//for ( int i=0; i< numGuessFactorBins; i++ ) {
+			//gfDanger[i] = gfSrc[i];
+		//}
 		gfDanger = math.normArray( gfDanger );
+		ArrayStats  stats = new ArrayStats( gfSrc );
+		gfDanger = stats.getProbDensity();
 	}
 
 	public void addFiringSolution( firingSolution fS ) {
@@ -86,7 +88,7 @@ public class waveWithBullets extends wave {
 				cnt++;
 			}
 			// now we normalize it
-			gfCorridorSum /= gfDanger.length;
+			// gfCorridorSum /= gfDanger.length;
 			dL += gfCorridorSum;
 		}
 		return dL;
@@ -301,7 +303,7 @@ public class waveWithBullets extends wave {
 				graphics.drawLine( g, strtP,  endP );
 			}
 			// show GF danger
-			double gfDangerMarkerLength = dL*10;
+			double gfDangerMarkerLength = dL*10*numGuessFactorBins;
 			endP = math.project( firedPosition, a, dist + gfDangerMarkerLength );
 			graphics.drawLine( g, strtP,  endP );
 			if ( prevP != null ) {
@@ -318,6 +320,8 @@ public class waveWithBullets extends wave {
 		super.onPaint( g, time );
 		g.setColor(waveColor);
 
+		drawGFdanger(g, time);
+
 		// draw overall  wave
 		for ( firingSolution fS : firingSolutions ) {
 			fS.onPaint( g, time );
@@ -326,7 +330,5 @@ public class waveWithBullets extends wave {
 		for ( safetyCorridor sC : safetyCorridors ) {
 			drawSafetyCorridor(g, sC, time);
 		}
-
-		drawGFdanger(g, time);
 	}
 }
