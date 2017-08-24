@@ -73,6 +73,14 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v6.8
+
+- when normailizing enemy firing solutions, check against unknownGun
+performance. If unknownGun has high stats, we have no clue about enemy guns
+and should choose some other avoidance strategy. I.e. GF flattener, this part
+to be done.
+- some extra helper functions
+
 
 ## v6.7
 
