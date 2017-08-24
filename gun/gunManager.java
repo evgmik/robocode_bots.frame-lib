@@ -496,6 +496,11 @@ public class gunManager implements gunManagerInterface {
 		firedByEnemy.incrHashCounter( enemyName );
 	}
 
+	public double getUnknownGunPerformanceAgainstBot( fighterBot targetBot ) {
+		String2D keyUnknownGun = new String2D( "unknownGun", targetBot.getName() );
+		double unkownGunPerfRate = math.perfRate( hitByMyGun.getHashCounter(keyUnknownGun) , firedAtEnemyByGun.getHashCounter(keyUnknownGun) );
+		return unkownGunPerfRate;
+	}
 
 	public LinkedList<firingSolution> getFiringSolutions( fighterBot targetBot, long firingTime, double bulletEnergy ) {
 		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
