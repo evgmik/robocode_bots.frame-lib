@@ -158,7 +158,7 @@ public class waveWithBullets extends wave {
 			// wave is passing through a bot at point dP
 			for ( firingSolution fS : firingSolutions ) {
 				//dL += fS.getDanger( time, dP );
-				dL += fS.getDanger( time, botShadow );
+				dL += 4*fS.getDanger( time, botShadow );
 			}
 		}
 		profiler.stop("waveWithBullets.getFiringSolutionsDanger");
