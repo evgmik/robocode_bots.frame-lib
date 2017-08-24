@@ -268,6 +268,13 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		// renormalizing the danger of solutions
 		double maxQ = -1e6; 
 		double q;
+
+		// master bots solutions should be compared with unknownGun
+		// unknownGun performance shows if we are guessing enemy's guns right.
+		String2D keyUnknownGun = new String2D( "unknownGun", tBot.getName() );
+		if ( !isItMasterBotDriver() ) {
+			maxQ = _gunManager.getUnknownGunPerformanceAgainstBot( _gameinfo.getFighterBot(tBot.getName()) );
+		}
 		for ( firingSolution f: fSolutions) {
 			q = Math.abs( f.getQualityOfSolution() );
 			if ( q > maxQ ) {
