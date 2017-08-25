@@ -43,10 +43,12 @@ public class ArrayStats {
 		//assume that array is all positive
 		double[] probDensity = new double[length];
 		double tot = sum;
-		if (tot == 0)
-		       tot = 1; // to avoid division by zero
 		for (int i=0; i < length; i++ ) {
-			probDensity[i] = bins[i]/tot;
+			if (tot == 0) {
+				probDensity[i] = 1./length; // to avoid division by zero
+			} else {
+				probDensity[i] = bins[i]/tot;
+			}
 		}
 		return probDensity;
 	}
