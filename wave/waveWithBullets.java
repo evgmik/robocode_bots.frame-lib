@@ -284,7 +284,6 @@ public class waveWithBullets extends wave {
 		if ( targetBot == null ) {
 			return;
 		}
-		logger.dbg( logger.arrayToTextPlot( bins ) );
 		g.setColor(binsColor);
 		int Nbins = bins.length;
 		double MEA = physics.calculateMEA( bulletSpeed );
@@ -320,8 +319,33 @@ public class waveWithBullets extends wave {
 		}
 	}
 
+	public void drawTotalWaveDanger(Graphics2D g, long time,  Color binsColor) {
+		if ( targetBot == null ) {
+			return;
+		}
+		int Nbins = gfDanger.length;
+		double[] bins = new double[Nbins];
+		double MEA = physics.calculateMEA( bulletSpeed );
+		botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
+		double latteralSpeed = tBStat.getLateralSpeed( firedPosition );
+		double headOnAngle = math.angle2pt( firedPosition, tBStat.getPosition() );
+		for ( int i=0; i< Nbins; i++ ) {
+			double gf =  math.bin2gf( i, Nbins) * math.signNoZero( latteralSpeed );
+			double dL = bins[i];
+			double a = headOnAngle + gf * MEA;
+			double dist = (time - firedTime) * bulletSpeed;
+			Point2D.Double strtP = math.project( firedPosition, a, dist );
+			bins[i] = getDanger( time, strtP );
+		}
+		ArrayStats  stats = new ArrayStats( bins );
+		bins = stats.getProbDensity();
+		Color waveDangerColor = new Color(0xff, 0xff, 0x00, 0x80);
+		drawGFArrayDanger(g, time, bins, waveDangerColor);
+	}
+
 	public void drawGFdanger(Graphics2D g, long time) {
 		drawGFArrayDanger(g, time, gfDanger, gfColor);
+		drawTotalWaveDanger( g, time,  gfColor) ;
 	}
 
 	public void onPaint(Graphics2D g, long time) {
