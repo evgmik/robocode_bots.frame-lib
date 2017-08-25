@@ -144,7 +144,9 @@ public class waveWithBullets extends wave {
 				// but it is time/CPU expensive.
 				//
 				// TODO: for now I disable it
-				//dL += getGFDanger( time, botShadow );
+				dL += getGFDanger( time, botShadow );
+				// FIXME: we already counted overall danger here
+				// it would be better to do GF danger and then do safety corridors
 			}
 		}
 		profiler.stop("waveWithBullets.getWaveDanger");
@@ -168,6 +170,11 @@ public class waveWithBullets extends wave {
 	}
 
 	public double getDanger( long time, Point2D.Double dP ) {
+		// FIXME: 2017/08/24 after many years I notice the CPU hog
+		// FIXME: GFs array danger should be recalculated every tick
+		// FIXME: then wave danger will take no time to calculate
+		// FIXME: and we need many of such calculations when I search for best path
+		// TODO:  high priority, fix according to the above message!!!
 		profiler.start("waveWithBullets.getDanger");
 		double waveDangerRadius = 100;
 		double dL = 0;
