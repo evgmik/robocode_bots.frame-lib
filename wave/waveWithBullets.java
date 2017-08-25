@@ -25,7 +25,7 @@ public class waveWithBullets extends wave {
 	public waveWithBullets( wave w ) {
 		super( w.getFiredBot(), w.getFiredTime(), w.getBulletEnergy() );
 		for ( int i=0; i< numGuessFactorBins; i++ ) {
-			gfDanger[i] = 1;
+			gfDanger[i] = 1./numGuessFactorBins;
 		}
 	}
 
@@ -310,7 +310,6 @@ public class waveWithBullets extends wave {
 			}
 			// show GF danger
 			double gfDangerMarkerLength = dL*gfDangerMarkerScale;
-			logger.dbg( "m=" + gfDangerMarkerLength + " dl=" + dL );
 			endP = math.project( firedPosition, a, dist + gfDangerMarkerLength );
 			graphics.drawLine( g, strtP,  endP );
 			if ( prevP != null ) {
