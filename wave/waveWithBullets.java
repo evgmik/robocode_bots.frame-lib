@@ -19,6 +19,8 @@ public class waveWithBullets extends wave {
 	protected Color gfColor = new Color(0xff, 0x00, 0x00, 0x80);
 	protected int numGuessFactorBins = 31;
 	protected double[] gfDanger = new double[numGuessFactorBins];
+	protected double meaMarkerLenth = 10;
+	protected double gfDangerMarkerScale = 300; // unity probability gives this length
 
 	public waveWithBullets( wave w ) {
 		super( w.getFiredBot(), w.getFiredTime(), w.getBulletEnergy() );
@@ -275,11 +277,16 @@ public class waveWithBullets extends wave {
 		}
 	}
 
-	public void drawGFdanger(Graphics2D g, long time) {
+	public void drawGFArrayDanger(Graphics2D g, long time, double[] bins, Color binsColor) {
+		if ( bins == null ) {
+			return;
+		}
 		if ( targetBot == null ) {
 			return;
 		}
-		g.setColor(gfColor);
+		logger.dbg( logger.arrayToTextPlot( bins ) );
+		g.setColor(binsColor);
+		int Nbins = bins.length;
 		double MEA = physics.calculateMEA( bulletSpeed );
 		botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
 		double latteralSpeed = tBStat.getLateralSpeed( firedPosition );
@@ -287,23 +294,23 @@ public class waveWithBullets extends wave {
 		Point2D.Double prevP = null;
 		double prevPointDanger=0;
 		// show danger probability distribution
-		for ( int i=0; i< numGuessFactorBins; i++ ) {
-			double gf =  math.bin2gf( i, numGuessFactorBins) * math.signNoZero( latteralSpeed );
-			double dL = gfDanger[i];
+		for ( int i=0; i< Nbins; i++ ) {
+			double gf =  math.bin2gf( i, Nbins) * math.signNoZero( latteralSpeed );
+			double dL = bins[i];
 			double a = headOnAngle + gf * MEA;
 			double dist = (time - firedTime) * bulletSpeed;
 
 			Point2D.Double strtP = math.project( firedPosition, a, dist );
 			Point2D.Double endP;
 			// show MEA range
-			double meaMarkerLenth = 10;
-			if ( i==0 || i==(numGuessFactorBins-1) ) {
+			if ( i==0 || i==(Nbins-1) ) {
 				math.project( firedPosition, a, dist );
 				endP = math.project( firedPosition, a, dist - meaMarkerLenth );
 				graphics.drawLine( g, strtP,  endP );
 			}
 			// show GF danger
-			double gfDangerMarkerLength = dL*10*numGuessFactorBins;
+			double gfDangerMarkerLength = dL*gfDangerMarkerScale;
+			logger.dbg( "m=" + gfDangerMarkerLength + " dl=" + dL );
 			endP = math.project( firedPosition, a, dist + gfDangerMarkerLength );
 			graphics.drawLine( g, strtP,  endP );
 			if ( prevP != null ) {
@@ -311,9 +318,11 @@ public class waveWithBullets extends wave {
 				graphics.drawLine( g, prevP,  endP );
 			}
 			prevP = endP;
-
 		}
+	}
 
+	public void drawGFdanger(Graphics2D g, long time) {
+		drawGFArrayDanger(g, time, gfDanger, gfColor);
 	}
 
 	public void onPaint(Graphics2D g, long time) {
