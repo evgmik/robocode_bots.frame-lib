@@ -73,6 +73,11 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v6.9
+
+- redone wave danger weights, now it takes in account combined game GFs danger
+- redone probability density calculation for an array with 0 sum
+
 ## v6.8
 
 - when normailizing enemy firing solutions, check against unknownGun
