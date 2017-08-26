@@ -66,14 +66,23 @@ public class profiler {
 				str += "  " + methodName;
 			       	str += " was executed " + p.numExec;
 				str += " execution times:";
-			       	str += " min " + p.minExecTime + " nS";
-			       	str += ", average " + p.totalExecTime/p.numExec + " nS";
-			       	str += ", max " + p.maxExecTime + " nS";
+			       	str += " min " + profTimeString(p.minExecTime);
+			       	str += ", average " + profTimeString(p.totalExecTime/p.numExec);
+			       	str += ", max " + profTimeString(p.maxExecTime);
 			} else {
 				str += "Method " + methodName + " was never executed";
 			}
 		}
 		return str;
+	}
+
+	public static String profTimeString(long t) {
+		if (t > 1000*1000)
+			return "" + ((long) Math.round(t/(1000.*1000))) + " mS";
+		if (t > 1000)
+			return "" + ((long) Math.round(t/(1000.))) + " uS";
+
+		return "" + ((long) t) + " nS";
 	}
 
 	public static String formatAll( ) {
