@@ -312,8 +312,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				return;
 			}
 			waveWithBullets wB = new waveWithBullets( w );
-			wB.setTargetBot( this );
-			wB.copyGFarray( eBot.getGunManager().getGuessFactors( this.getName() ) );
+			wB.setTargetBotAndGFarray( this, eBot.getGunManager().getGuessFactors( this.getName() ) );
 			// debug flattener GF starts
 			// assigns a random "safety" within MEA
 			//double[] gfA = eBot.getGunManager().getGuessFactors( this.getName() );
