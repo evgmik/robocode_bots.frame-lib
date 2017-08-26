@@ -33,17 +33,22 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 
 	public double calculateDanger( fighterBot myBot ) {
 		double dL = 0;
+		double[] dangers = new double[5];
 		long time = botStat.getTime();
-		dL += dangerCalc.calculateDangerFromCorners(time, botStat.getPosition(), myBot);
-		dL += dangerCalc.calculateDangerFromWall(time, botStat.getPosition(), myBot);
+		dangers[0] = dangerCalc.calculateDangerFromCorners(time, botStat.getPosition(), myBot);
+		dangers[1] = dangerCalc.calculateDangerFromWall(time, botStat.getPosition(), myBot);
 		if ( myBot.getEnemyBots().size() == 4 ) {
 			// It is very bad to be in the center of crossfire of 4 enemies,
 			// where the master bot is the closest to all of them.
-			dL += dangerCalc.calculateDangerFromCenter(time, botStat.getPosition(), myBot);
+			dangers[2] = dangerCalc.calculateDangerFromCenter(time, botStat.getPosition(), myBot);
+		} else {
+			dangers[2] = 0;
 		}
-		dL += dangerCalc.calculateDangerFromEnemyBots(time, botStat.getPosition(), myBot);
-		// FIXME: we do not need precursors from waves
-		dL += dangerCalc.calculateDangerFromEnemyWaves(time, botStat.getPosition(), myBot);
+		dangers[3] = dangerCalc.calculateDangerFromEnemyBots(time, botStat.getPosition(), myBot);
+		dangers[4] = dangerCalc.calculateDangerFromEnemyWaves(time, botStat.getPosition(), myBot);
+		//logger.dbg( "dangers " + logger.arrayToTextPlot( dangers ) + " at time " + time + " at pos " + botStat.getPosition() );
+		ArrayStats stats = new ArrayStats(dangers);
+		dL = stats.sum;
 		setDanger(dL);
 		return dL;
 	}
