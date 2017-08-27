@@ -73,6 +73,12 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+
+## v7.1
+
+- retuned GF and Bullets weights for wave danger. GF has much smaller weights.
+  - looks like it is worse against rambots but otherwise higher scores
+
 ## v7.0
 
 - Calculations speed up: wave danger calculated based on GF arrays which calculated only once
