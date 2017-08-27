@@ -42,11 +42,11 @@ public class waveWithBullets extends wave {
 		double fsDangerWeight = 1.0 - gfDangerWeight;
 		for ( int i=0; i< combGFdanger.length; i++ ) {
 			combGFdanger[i] = 0;
-			if (shadows[i] != 1) {
-				// no shadow at this index
-				combGFdanger[i] +=  gfDangerWeight * gfDanger[i]
-						  + fsDangerWeight * fsDanger[i] ;
-			}
+			// shadow of 1 means that this GF is fully safe
+			combGFdanger[i] += (1 - shadows[i]) * (
+				       	gfDangerWeight * gfDanger[i]
+					+ fsDangerWeight * fsDanger[i]
+					);
 		}
 		ArrayStats  stats = new ArrayStats( combGFdanger );
 		combGFdanger = stats.getProbDensity();
@@ -95,6 +95,47 @@ public class waveWithBullets extends wave {
 
 		}
 		calcCombineDanger();
+	}
+
+	public void calcSafetyCorridorsShadowsGFpositions() {
+		shadows = new double[numGuessFactorBins];
+		if (targetBot == null ) {
+			return;
+		}
+		botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
+		long time = 0; // it is currently not used, better do dist relevant to current target position
+		double dist = Math.abs(tBStat.getPosition().distance( firedPosition ) );
+		double MEA = physics.calculateMEA( bulletSpeed );
+		for(int i=0; i < numGuessFactorBins; i++) {
+			double gf =  math.bin2gf( i, numGuessFactorBins);
+			double a = headOnAngle + gf * MEA;
+			Point2D.Double pnt = math.project( firedPosition, a, dist );
+			safetyCorridor botShadow = this.getSafetyCorridor( pnt );
+
+			double botShadowSize = botShadow.getCorridorSize();
+			double corridorsCoverage = 0;
+			int overlapCnt = 0;
+			for ( safetyCorridor sC: safetyCorridors ) {
+				safetyCorridor overlap = sC.getOverlap( botShadow );
+				if ( overlap != null ) {
+					corridorsCoverage += overlap.getCorridorSize();
+					overlapCnt++;
+				}
+			}
+			double eps = 0;
+			if ( corridorsCoverage > (botShadowSize+eps) ) {
+				logger.error("error: check safety corridors addition code, looks like there were some overlapping corridors by " + (corridorsCoverage - botShadowSize)/botShadowSize);
+				logger.error("error: corridors overlapping count = " + overlapCnt );
+				logger.error("error: coverage size = " + corridorsCoverage );
+				logger.error("error: shadow size = " + botShadowSize );
+				corridorsCoverage = botShadowSize;
+			}
+			if ( corridorsCoverage > 0 ) {
+				// shadows proportional to coverage:
+				// 1 means that a bot in this position fully covered by  safety corridors
+				shadows[i] = Math.max( corridorsCoverage/botShadowSize, 1);
+			}
+		}
 	}
 
 	public void calcFiringSolutionGFdangers() {
@@ -351,6 +392,8 @@ public class waveWithBullets extends wave {
 			}
 		}
 		firingSolutions.removeAll(fStoRemove);
+		calcFiringSolutionGFdangers();
+		calcCombineDanger();
 	}
 
 	public void addSafetyCorridor( fighterBot bot) {
@@ -367,6 +410,8 @@ public class waveWithBullets extends wave {
 		if ( sC != null ) {
 			removeFiringSolutionsInSafetyCorridor( sC );
 			addToSafetyCorridors(sC);
+			calcSafetyCorridorsShadowsGFpositions();
+			calcCombineDanger();
 		}
 	}
 
