@@ -16,9 +16,14 @@ import java.awt.geom.Point2D;
 public class waveWithBullets extends wave {
 	public LinkedList<firingSolution> firingSolutions = new LinkedList<firingSolution>();
 	protected fighterBot targetBot = null;
+	protected double targetLateralSpeedSignNoZero;
+	protected double headOnAngle = 0;
 	protected Color gfColor = new Color(0xff, 0x00, 0x00, 0x80);
 	protected int numGuessFactorBins = 31;
 	protected double[] gfDanger = new double[numGuessFactorBins];
+	protected double[] combGFdanger = new double[numGuessFactorBins];
+	protected double[] fsDanger = new double[numGuessFactorBins];
+	protected double[] shadows = new double[numGuessFactorBins];
 	protected double meaMarkerLenth = 10;
 	protected double gfDangerMarkerScale = 300; // unity probability gives this length
 
@@ -26,34 +31,102 @@ public class waveWithBullets extends wave {
 		super( w.getFiredBot(), w.getFiredTime(), w.getBulletEnergy() );
 		for ( int i=0; i< numGuessFactorBins; i++ ) {
 			gfDanger[i] = 1./numGuessFactorBins;
+			fsDanger[i] = 0;
+			shadows[i] = 0;
 		}
+		calcCombineDanger();
+	}
+	
+	public void calcCombineDanger() {
+		double gfDangerWeight = 0.90;
+		double fsDangerWeight = 1.0 - gfDangerWeight;
+		for ( int i=0; i< combGFdanger.length; i++ ) {
+			combGFdanger[i] = 0;
+			if (shadows[i] != 1) {
+				// no shadow at this index
+				combGFdanger[i] +=  gfDangerWeight * gfDanger[i]
+						  + fsDangerWeight * fsDanger[i] ;
+			}
+		}
+		ArrayStats  stats = new ArrayStats( combGFdanger );
+		combGFdanger = stats.getProbDensity();
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions() {
 		return firingSolutions;
 	}
 
+	public void setTargetBotAndGFarray(fighterBot tBot, double[] gfSrc ) {
+		// Order is important since we need lateral velocity!
+		setTargetBot( tBot );
+		copyGFarray( gfSrc );
+	}
+
 	public void setTargetBot(fighterBot tBot ) {
 		targetBot = tBot;
+		if ( tBot != null ) {
+			botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
+			double latteralSpeed = tBStat.getLateralSpeed( firedPosition );
+			targetLateralSpeedSignNoZero = math.signNoZero( latteralSpeed );
+			headOnAngle = math.angle2pt( firedPosition, tBStat.getPosition() );
+		} else {
+			targetLateralSpeedSignNoZero = 1;
+		}
 	}
 
 	public void copyGFarray(double[] gfSrc ) {
 		numGuessFactorBins = gfSrc.length;
-		//gfDanger = new double[numGuessFactorBins];
-		//for ( int i=0; i< numGuessFactorBins; i++ ) {
-			//gfDanger[i] = gfSrc[i];
-		//}
-		gfDanger = math.normArray( gfDanger );
+		gfDanger = new double[numGuessFactorBins];
+		fsDanger = new double[numGuessFactorBins];
+		shadows = new double[numGuessFactorBins];
+		combGFdanger = new double[numGuessFactorBins];
+
 		ArrayStats  stats = new ArrayStats( gfSrc );
 		gfDanger = stats.getProbDensity();
+		// fixme: do the flip in the caller, it is silly to do it here
+		if ( targetLateralSpeedSignNoZero < 0 && !true) {
+			// reflect GF array, we have some logic about symmetry
+			for(int i=0; i <= numGuessFactorBins/2; i++) {
+				// swap
+				double tmp = gfDanger[i];
+				gfDanger[i] = gfDanger[ numGuessFactorBins - 1 - i ];
+				gfDanger[ numGuessFactorBins - 1 - i ] = tmp;
+			}
+
+		}
+		calcCombineDanger();
+	}
+
+	public void calcFiringSolutionGFdangers() {
+		fsDanger = new double[numGuessFactorBins];
+		if (targetBot == null ) {
+			return;
+		}
+		botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
+		long time = 0; // it is currently not used, better do dist relevant to current target position
+		double dist = Math.abs(tBStat.getPosition().distance( firedPosition ) );
+		double MEA = physics.calculateMEA( bulletSpeed );
+		for(int i=0; i < numGuessFactorBins; i++) {
+			double gf =  math.bin2gf( i, numGuessFactorBins);
+			double a = headOnAngle + gf * MEA;
+			Point2D.Double pnt = math.project( firedPosition, a, dist );
+			safetyCorridor botShadow = this.getSafetyCorridor( pnt );
+			for ( firingSolution fS : firingSolutions ) {
+				fsDanger[i] += fS.getDanger( time, botShadow );
+			}
+		}
 	}
 
 	public void addFiringSolution( firingSolution fS ) {
 		firingSolutions.add(fS);
+		calcFiringSolutionGFdangers();
+		calcCombineDanger();
 	}
 
 	public void removeFiringSolution( firingSolution fS ) {
 		firingSolutions.remove(fS);
+		calcFiringSolutionGFdangers();
+		calcCombineDanger();
 	}
 
 	public double getFiringGuessFactor( double absFiringAngle ) {
@@ -97,18 +170,38 @@ public class waveWithBullets extends wave {
 	}
 
 	public double getWaveDanger( long time, Point2D.Double dP ) {
+		// use danger at the closest matching GF to the point
+		profiler.start("waveWithBullets.getWaveDanger");
+		double dL = 0;
+		double dist = Math.abs(dP.distance( firedPosition ) - getDistanceTraveledAtTime( time ) );
+		if ( dist <= physics.robotHalfDiagonal ) {
+			double hitAngle = math.angle2pt( firedPosition, dP );
+			double gf = getFiringGuessFactor( hitAngle );
+			long i = math.gf2bin( gf, combGFdanger.length );
+			dL += combGFdanger[ (int)i];
+		}
+		profiler.stop("waveWithBullets.getWaveDanger");
+		return dL;
+	}
+
+	public double _getWaveDanger( long time, Point2D.Double dP ) {
 		// this is essentially danger from a wave with no bullets
 		// but if there are safety corridors, than danger is decreased
 		double dL = 0;
-		profiler.start("waveWithBullets.getWaveDanger");
+		profiler.start("waveWithBullets._getWaveDanger");
 		double dist = Math.abs(dP.distance( firedPosition ) - getDistanceTraveledAtTime( time ) );
 		if ( dist <= physics.robotHalfDiagonal ) {
 			safetyCorridor botShadow = this.getSafetyCorridor( dP );
 			double shadowSize = botShadow.getCorridorSize();
 
 			// random hit probability if enemy aims with in MEA
-			double waveDanger= shadowSize/physics.calculateMEA( bulletSpeed )/2;
-			dL = waveDanger;
+			//double waveDanger= shadowSize/physics.calculateMEA( bulletSpeed )/2;
+			double waveDanger = 0;
+			
+			// This part uses provided GF danger
+			// but it is time/CPU expensive.
+			waveDanger += getGFDanger( time, botShadow );
+			dL += waveDanger;
 
 			double corridorsCoverage = 0;
 			int overlapCnt = 0;
@@ -133,23 +226,15 @@ public class waveWithBullets extends wave {
 				corridorsCoverage = shadowSize;
 			}
 			if ( corridorsCoverage >= 0 ) {
+				//FIXME: be smarter about it, check those GF which are in the corridor
 				dL -= waveDanger*corridorsCoverage/shadowSize;
 				if ( dL <= 0 ) {
+					logger.error("error: in Safety Corridors logic. Wave danger MUST NOT drop below zero");
 					dL = 0;
 				}
 			}
-			if ( dL > 0 ) {
-				// The bot/point is not completely covered by safety corridors
-				// This part helps with flattening of the bot GF
-				// but it is time/CPU expensive.
-				//
-				// TODO: for now I disable it
-				dL += getGFDanger( time, botShadow );
-				// FIXME: we already counted overall danger here
-				// it would be better to do GF danger and then do safety corridors
-			}
 		}
-		profiler.stop("waveWithBullets.getWaveDanger");
+		profiler.stop("waveWithBullets._getWaveDanger");
 		return dL;
 	}
 
@@ -184,11 +269,11 @@ public class waveWithBullets extends wave {
 			if ( dL == 0 ) {
 				// bot is fully covered by safety corridors
 			} else {
-				dL += getFiringSolutionsDanger( time, dP );
+				//dL += getFiringSolutionsDanger( time, dP );
 			}
 		}
 		profiler.stop("waveWithBullets.getDanger");
-		return dL;
+		return dL*10;
 	}
 
 	public void markFiringSolutionWhichHitBotAt( Point2D.Double botPos, String enemyName, long time ) {
@@ -294,14 +379,11 @@ public class waveWithBullets extends wave {
 		g.setColor(binsColor);
 		int Nbins = bins.length;
 		double MEA = physics.calculateMEA( bulletSpeed );
-		botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
-		double latteralSpeed = tBStat.getLateralSpeed( firedPosition );
-		double headOnAngle = math.angle2pt( firedPosition, tBStat.getPosition() );
 		Point2D.Double prevP = null;
 		double prevPointDanger=0;
 		// show danger probability distribution
 		for ( int i=0; i< Nbins; i++ ) {
-			double gf =  math.bin2gf( i, Nbins) * math.signNoZero( latteralSpeed );
+			double gf =  math.bin2gf( i, Nbins);
 			double dL = bins[i];
 			double a = headOnAngle + gf * MEA;
 			double dist = (time - firedTime) * bulletSpeed;
@@ -333,17 +415,15 @@ public class waveWithBullets extends wave {
 		int Nbins = gfDanger.length;
 		double[] bins = new double[Nbins];
 		double MEA = physics.calculateMEA( bulletSpeed );
-		botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
-		double latteralSpeed = tBStat.getLateralSpeed( firedPosition );
-		double headOnAngle = math.angle2pt( firedPosition, tBStat.getPosition() );
 		for ( int i=0; i< Nbins; i++ ) {
-			double gf =  math.bin2gf( i, Nbins) * math.signNoZero( latteralSpeed );
+			double gf =  math.bin2gf( i, Nbins);
 			double dL = bins[i];
 			double a = headOnAngle + gf * MEA;
 			double dist = (time - firedTime) * bulletSpeed;
 			Point2D.Double strtP = math.project( firedPosition, a, dist );
 			bins[i] = getDanger( time, strtP );
 		}
+		bins = combGFdanger;
 		ArrayStats  stats = new ArrayStats( bins );
 		bins = stats.getProbDensity();
 		Color waveDangerColor = new Color(0xff, 0xff, 0x00, 0x80);
