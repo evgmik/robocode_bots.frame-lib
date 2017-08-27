@@ -20,6 +20,8 @@ public class waveWithBullets extends wave {
 	protected double headOnAngle = 0;
 	protected Color gfColor = new Color(0xff, 0x00, 0x00, 0x80);
 	protected int numGuessFactorBins = 31;
+	protected double gfDangerWeight = 0.01; // 0 to 1, set high for GF flatteners or rambot avoidance
+	protected double fsDangerWeight = 1.0 - gfDangerWeight;
 	protected double[] gfDanger = new double[numGuessFactorBins];
 	protected double[] combGFdanger = new double[numGuessFactorBins];
 	protected double[] fsDanger = new double[numGuessFactorBins];
@@ -38,8 +40,6 @@ public class waveWithBullets extends wave {
 	}
 	
 	public void calcCombineDanger() {
-		double gfDangerWeight = 0.90;
-		double fsDangerWeight = 1.0 - gfDangerWeight;
 		for ( int i=0; i< combGFdanger.length; i++ ) {
 			combGFdanger[i] = 0;
 			// shadow of 1 means that this GF is fully safe
