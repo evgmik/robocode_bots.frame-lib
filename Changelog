@@ -73,6 +73,16 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v7.0
+
+- Calculations speed up: wave danger calculated based on GF arrays which calculated only once
+- wave danger logic redone, probably need to retune coefficients between
+  bullets and GF dangers in a wave
+- regression: removed lateral velocity logic for GF calculation.
+  - I need it back as well as to check logic
+- improved readability of profiler output
+
+
 ## v6.9
 
 - redone wave danger weights, now it takes in account combined game GFs danger
