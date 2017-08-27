@@ -355,14 +355,15 @@ public class waveWithBullets extends wave {
 
 	public void addSafetyCorridor( fighterBot bot) {
 		safetyCorridor sC = getSafetyCorridor( bot );
-		if ( sC != null ) {
-			removeFiringSolutionsInSafetyCorridor( sC );
-			addToSafetyCorridors(sC);
-		}
+		addSafetyCorridor ( sC );
 	}
 
 	public void addSafetyCorridor( firingSolution fS) {
 		safetyCorridor sC = getSafetyCorridor( fS );
+		addSafetyCorridor ( sC );
+	}
+
+	public void addSafetyCorridor( safetyCorridor sC ) {
 		if ( sC != null ) {
 			removeFiringSolutionsInSafetyCorridor( sC );
 			addToSafetyCorridors(sC);
