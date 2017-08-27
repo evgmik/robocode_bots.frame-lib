@@ -33,7 +33,8 @@ public class guessFactorGun extends baseGun {
 
 		double latteralSpeed = tBStat.getLateralSpeed( fPos );
 		double[] gfBins = getRelevantGF( fBot, tBot );
-		double gf = getMostProbableGF( gfBins ) * math.signNoZero( latteralSpeed );
+		//double gf = getMostProbableGF( gfBins ) * math.signNoZero( latteralSpeed );
+		double gf = getMostProbableGF( gfBins );
 		if ( Double.isNaN( gf ) ) {
 			// no enough stats
 			return fSols;

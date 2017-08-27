@@ -140,16 +140,18 @@ public class wave {
 	}
 
 	public double getFiringGuessFactor( InfoBot bot, long time ) {
-		double lateralSpeed = bot.getStatClosestToTime(firedTime).getLateralSpeed( firedPosition );
+		//double lateralSpeed = bot.getStatClosestToTime(firedTime).getLateralSpeed( firedPosition );
 		//logger.dbg("lat speed = " + lateralSpeed );
-		return math.signNoZero(lateralSpeed)*getFiringAngleOffset(bot, time)/physics.calculateMEA( bulletSpeed );
+		//return math.signNoZero(lateralSpeed)*getFiringAngleOffset(bot, time)/physics.calculateMEA( bulletSpeed );
+		return getFiringAngleOffset(bot, time)/physics.calculateMEA( bulletSpeed );
 	}
 
 	public double getFiringGuessFactor( InfoBot bot, double absFiringAngle ) {
-		double lateralSpeed = bot.getStatClosestToTime(firedTime).getLateralSpeed( firedPosition );
+		//double lateralSpeed = bot.getStatClosestToTime(firedTime).getLateralSpeed( firedPosition );
 		double firingAngleOffset = math.shortest_arc( absFiringAngle - getHeadOnAngle( bot ) );
 
-		return math.signNoZero(lateralSpeed)*firingAngleOffset/physics.calculateMEA( bulletSpeed );
+		//return math.signNoZero(lateralSpeed)*firingAngleOffset/physics.calculateMEA( bulletSpeed );
+		return firingAngleOffset/physics.calculateMEA( bulletSpeed );
 	}
 
 	public double getDistanceAtLastAimTime( InfoBot bot ) {
