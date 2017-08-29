@@ -73,6 +73,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v7.3
+
+- find a bug introduced somewhere around v7.0: the latteral velocity sign was
+  stripped off in the gun kdTree coordinates calculations.
+
+- note: APS wise v7.2 is about the same as v7.1
+
 ## v7.2
 
 - retuned GF and Bullets weights for wave danger. GF has a bit higher weights.
