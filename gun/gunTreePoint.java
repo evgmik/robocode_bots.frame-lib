@@ -63,8 +63,10 @@ public class gunTreePoint  {
 		x = distAtLastAim/physics.MaxSeparationOnBattleField;
 		coord[0] = x*x;
 		coord[1] = bulletEnergy/robocode.Rules.MAX_BULLET_POWER;
-		coord[2] = Math.abs(latteralSpeed)/robocode.Rules.MAX_VELOCITY;
+		coord[2] = (latteralSpeed)/robocode.Rules.MAX_VELOCITY;
 		x = math.signNoZero( latteralSpeed )*(accel/2); // -1 to 1
+		// positive means accelerates, negative - flipping direction
+		// slowing down is faster due to robocode physics
 		coord[3] = 1/2. + 1/2.*x;
 		x = distToWallAhead/robocode.Rules.MAX_VELOCITY;
 		coord[4] = 1/(1+x);
