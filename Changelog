@@ -73,6 +73,12 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v7.5
+
+- Improved search of final destination: points outside of battlefield use to
+  be thrown and that counted as an attempt. Now such displacement rotated into
+  battlefield. So attempts does real search.
+
 ## v7.4
 
 - Added ability to track at which GF enemy hits my bot, consequently I can avoid
