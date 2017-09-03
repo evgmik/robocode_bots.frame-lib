@@ -116,6 +116,9 @@ public class exactPathDangerMotion extends basicMotion {
 		//path.setDanger(superDanger); // crazy dangerous for initial sorting
 
 		double a = 0; // angle to new target candidate
+		double headOnAngle = 0;
+		Point2D.Double pivotPnt = new Point2D.Double(physics.BattleField.getX()/2, physics.BattleField.getY()/2);
+		headOnAngle = Math.toRadians( math.game_angles2cortesian(math.angle2pt( myPos, pivotPnt ) ) );
 		for ( long i = 0; i < nTrials; i++ ) {
 			pp = new Point2D.Double(0,0);
 			// FIXME make final decision
@@ -132,9 +135,11 @@ public class exactPathDangerMotion extends basicMotion {
 				// angle orthogonal to the line to enemy
 				fighterBot tmpEnemyBot = myBot.getGunManager().getTarget();
 				if ( tmpEnemyBot != null ) {
-					a = Math.toRadians( 90 + math.game_angles2cortesian(math.angle2pt( myPos, tmpEnemyBot.getPosition() ) ) );
+					pivotPnt = tmpEnemyBot.getPosition();
+					headOnAngle = Math.toRadians( math.game_angles2cortesian(math.angle2pt( myPos, pivotPnt ) ) );
+					a = headOnAngle + Math.PI/2.;
 					// random spread to it
-					double angleSpread = Math.PI/4;
+					double angleSpread = Math.PI/4.;
 					a += angleSpread*(Math.random() - 0.5);
 					if ( Math.random() > 0.5 ) {
 						// shift angle 180 degree to flip direction
@@ -147,13 +152,13 @@ public class exactPathDangerMotion extends basicMotion {
 				// searching at any angle around us
 				a= 2*Math.PI * Math.random();
 			}
+			double da = Math.PI/180.*math.signNoZero( math.shortest_arc( Math.toDegrees( headOnAngle - a ) ) );
 			double R = pathLength*robocode.Rules.MAX_VELOCITY * Math.random();
-			pp.x = myPos.x + R*Math.cos( a ); 
-			pp.y = myPos.y + R*Math.sin( a ); 
-			if ( !physics.botReacheableBattleField.contains( pp ) ) {
-				//logger.noise("unphysical future position");
-				continue;
-			}
+			do {
+				pp.x = myPos.x + R*Math.cos( a ); 
+				pp.y = myPos.y + R*Math.sin( a ); 
+				a += da; // we will move final point into battlefield
+			} while ( !physics.botReacheableBattleField.contains( pp ) );
 			pathTrial = new dangerPath( pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength ) );
 			pathTrial.calculateDanger( myBot, path.getDanger() );
 			if ( path.getDanger() > pathTrial.getDanger() ) {
