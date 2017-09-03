@@ -47,6 +47,10 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 		this.gunName = kdTreeGunBaseName + neigborsNum;
 	}
 
+	protected KdTree<gfHit> getKdTree( fighterBot fBot, InfoBot tBot ) {
+		return fBot.getGunManager().getTreeKDTreeMap( tBot.getName() );
+	}
+
 	@Override
 	protected double[] calcTreePointCoord( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		gunTreePoint gTP = new gunTreePoint( fBot, tBot, time, bulletEnergy );
@@ -55,7 +59,7 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 
 	@Override
 	protected double[] getRelevantGF( fighterBot fBot, InfoBot tBot ) {
-		KdTree<gfHit> tree = fBot.getGunManager().getTreeKDTreeMap( tBot.getName() );
+		KdTree<gfHit> tree = getKdTree( fBot, tBot );
 		double[] gfBins = new double[ fBot.getGunManager().getGuessFactosrBinNum() ];
 		double[] coord = getTreePointCoord();
 		if ( coord == null ) {
