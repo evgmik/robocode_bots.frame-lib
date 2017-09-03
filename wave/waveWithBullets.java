@@ -138,6 +138,12 @@ public class waveWithBullets extends wave {
 		}
 	}
 
+	public double getPointGF( Point2D.Double p ) {
+		double hitAngle    = math.angle2pt( firedPosition, p);
+		double MEA = physics.calculateMEA( bulletSpeed );
+		return math.shortest_arc(hitAngle - headOnAngle)/MEA;
+	}
+
 	public void calcFiringSolutionGFdangers() {
 		fsDanger = new double[numGuessFactorBins];
 		if (targetBot == null ) {
