@@ -50,6 +50,7 @@ public class gunManager implements gunManagerInterface {
 
 	protected int kdTreeSizeLimit = 10000;
 	protected HashMap<String, KdTree<gfHit>> guessFactorsKDTreeMap = new HashMap<String, KdTree<gfHit>>();
+	protected HashMap<String, KdTree<gfHit>> realHitsGFKDTreeMap = new HashMap<String, KdTree<gfHit>>();
 	int hitProbEstimateNeighborsNum = 100;
 	protected HashMap<String2D, KdTree<gunHitMissLog>> gunHitMissKDTreeMap = new HashMap<String2D, KdTree<gunHitMissLog>>();
 
@@ -139,11 +140,29 @@ public class gunManager implements gunManagerInterface {
 				// which of my waves with bullet it is
 				for (waveWithBullets wB : myWaves ) {
 					if ( wB.equals( w ) ) {
-						Bullet b = e.getBullet();
-						Point2D.Double posHit = new Point2D.Double( b.getX(), b.getY() );
-						LinkedList<firingSolution> fSwhichHit =  wB.getFiringSolutionsWhichHitBotAt( posHit, myBot.getTime() );
 						String gunName;
 						String2D key;
+						Bullet b = e.getBullet();
+						Point2D.Double posHit = new Point2D.Double( b.getX(), b.getY() );
+						// registering real hit
+						double gf = wB.getPointGF( posHit );
+						logger.dbg(myBot.getTime() + ": " + fireBotName + " hit " + trgtBotName + " at GF = " +gf + " with real bullet");
+						if ( gf < -1 || gf > 1) {
+							logger.error("error: GF out of range. It should be with in -1..1 but we got " + gf);
+						}
+						gunName = "realHitsGun";
+						key = new String2D( gunName, trgtBotName );
+						hitByMyGun.incrHashCounter( key );
+						// below part would be better in special function
+						KdTree<gfHit> tree = getRealHitsGFKDTreeMap( trgtBotName );
+						gunTreePoint gTP = new gunTreePoint( myBot, myBot.getGameInfo().getFighterBot( trgtBotName ).getInfoBot(), w.getFiredTime(), w.getBulletEnergy() );
+						double [] pntCoord =  gTP.getPosition();
+						int i = (int)math.gf2bin( gf, numGuessFactorBins );
+						double binW = 1.0;
+						tree.addPoint( pntCoord, new gfHit(i, binW) );
+
+
+						LinkedList<firingSolution> fSwhichHit =  wB.getFiringSolutionsWhichHitBotAt( posHit, myBot.getTime() );
 						if ( fSwhichHit.size() == 0 ) {
 							gunName = "unknownGun";
 							//logger.dbg("masterBot is hit by " + gunName + " from bot " + fireBotName );
@@ -311,6 +330,17 @@ public class gunManager implements gunManagerInterface {
 		KdTree<gfHit> tree = guessFactorsKDTreeMap.get( botName );
 		return tree;
 	}
+
+	public KdTree<gfHit> getRealHitsGFKDTreeMap( String  botName ) {
+                if ( !realHitsGFKDTreeMap.containsKey( botName ) ) {
+			gunTreePoint gTP = new gunTreePoint();
+			KdTree<gfHit> tree = new KdTree.Manhattan<gfHit>( gTP.getKdTreeDims(), kdTreeSizeLimit );
+			realHitsGFKDTreeMap.put( botName, tree );
+                }
+		KdTree<gfHit> tree = realHitsGFKDTreeMap.get( botName );
+		return tree;
+	}
+
 
 	public KdTree<gunHitMissLog> getGunHitMissKDTree( String2D  key ) {
                 if ( !gunHitMissKDTreeMap.containsKey( key ) ) {
