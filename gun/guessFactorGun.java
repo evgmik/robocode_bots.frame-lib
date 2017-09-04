@@ -105,7 +105,7 @@ public class guessFactorGun extends baseGun {
 			}
 			stats = new ArrayStats( guessFactorBins );
 		}
-		if ( !true ) { // enable for dbg
+		if ( !true && getName().equals("realHitsGun") ) { // enable for dbg
 			String sout="";
 			sout = logger.arrayToTextPlot( guessFactorBins );
 			sout += " for gun " + getName();
