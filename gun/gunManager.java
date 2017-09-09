@@ -388,6 +388,7 @@ public class gunManager implements gunManagerInterface {
 		}
 
 		//logger.dbg( "iCenter = " + iCenter + " di0 = " + di0 );
+		di0  = 0; // disable spill out to nearby bins
 		int minI = (int)math.putWithinRange( iCenter - 2*di0, 0, (numGuessFactorBins-1) );
 		int maxI = (int)math.putWithinRange( iCenter + 2*di0, 0, (numGuessFactorBins-1) );
 		for ( int i = minI; i <= maxI; i++ ) {
