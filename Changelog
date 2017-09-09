@@ -73,7 +73,16 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v7.8
+
+- gf guns now smoothed as it was in v7.6, kdTree is still not
+- gfHit now has gfCoverage parameter related to the hit bot shadow size,
+  currently it is unused, but intended for kdTree smoothing
+
 ## v7.7
+
+In retrospect: in this version 1on1 performance dropped, melee improved (i
+think because of the reduced cpu load of kdTree search)
 
 - disabled hit GF spill to nearby bins, i.e. no smoothing
 
