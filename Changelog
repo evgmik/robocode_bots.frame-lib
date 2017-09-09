@@ -73,7 +73,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v7.7
+
+- disabled hit GF spill to nearby bins, i.e. no smoothing
+
 ## v7.6
+
+In retrospect v7.6 is so far the best of mine in 1on1 with APS 78.7.
 
 - Wave now have danger from real hits as GF danger values. This replaces old
   virtual GF hits danger.
