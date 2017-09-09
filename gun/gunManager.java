@@ -388,7 +388,10 @@ public class gunManager implements gunManagerInterface {
 		}
 
 		//logger.dbg( "iCenter = " + iCenter + " di0 = " + di0 );
-		di0  = 0; // disable spill out to nearby bins
+		// update guess factors tree
+		double binW = 1;
+		tree.addPoint( pntCoord, new gfHit(iCenter, binW) );
+
 		int minI = (int)math.putWithinRange( iCenter - 2*di0, 0, (numGuessFactorBins-1) );
 		int maxI = (int)math.putWithinRange( iCenter + 2*di0, 0, (numGuessFactorBins-1) );
 		for ( int i = minI; i <= maxI; i++ ) {
@@ -397,10 +400,7 @@ public class gunManager implements gunManagerInterface {
 			double di = i-iCenter; // bin displacement from the center
 			// every gf within (+/-)gfRange=di0 is a hit, so it should have
 			// a weight close to 1. at 2*di0 we should have weight close to 1
-			double binW = Math.exp( - Math.pow( di/(1*di0) , 4 ) );
-
-			// update guess factors tree
-			tree.addPoint( pntCoord, new gfHit(i, binW) );
+			binW = Math.exp( - Math.pow( di/(1*di0) , 4 ) );
 
 			// update accumulating map
 			gfBins[i]+= binW;
