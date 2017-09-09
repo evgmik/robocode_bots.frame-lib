@@ -73,7 +73,17 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v7.9
+
+- kdTree gun is smoothed too now, logically it is the same v7.6 but I hope
+  that CPU load is smaller. I am using gfCoverage from gfHit now.
+
 ## v7.8
+
+In retrospect: in this version 1on1 APS performance is on pair with v7.6 (just a
+bit smaller). Melee APS performance is a bit better than in v7.7,
+but survival is 3% worse. Most likely it is the same as v7.7
+within errorbars.
 
 - gf guns now smoothed as it was in v7.6, kdTree is still not
 - gfHit now has gfCoverage parameter related to the hit bot shadow size,
