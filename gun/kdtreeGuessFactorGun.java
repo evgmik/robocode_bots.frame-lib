@@ -71,8 +71,24 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 		List<KdTree.Entry<gfHit>> cluster = tree.nearestNeighbor( coord, neigborsNum, isSequentialSorting );
 
 		//logger.dbg(getName() + " kdTree has " + tree.size() + " nodes");
+		int numGuessFactorBins = gfBins.length;
 		for ( KdTree.Entry<gfHit> neigbor : cluster ) {
-			gfBins[neigbor.value.gfBin] += neigbor.value.weight; // fixme do gf  weights  and distances
+			double binW0 = neigbor.value.weight; // fixme do gf  weights  and distances
+			int iCenter = neigbor.value.gfBin;
+			double di0 =     neigbor.value.gfCoverage;
+
+			// smooth GF to neighbors
+			int minI = (int)math.putWithinRange( iCenter - 2*di0, 0, (numGuessFactorBins-1) );
+			int maxI = (int)math.putWithinRange( iCenter + 2*di0, 0, (numGuessFactorBins-1) );
+			for ( int i = minI; i <= maxI; i++ ) {
+				i = (int)math.putWithinRange( i, 0, (numGuessFactorBins-1) );
+
+				double di = i-iCenter; // bin displacement from the center
+				// every gf within (+/-)gfRange=di0 is a hit, so it should have
+				// a weight close to 1. at 2*di0 we should have weight close to 1
+				double binW = binW0 * Math.exp( - Math.pow( di/(1*di0) , 4 ) );
+				gfBins[i]+= binW;
+			}
 		}
 
 		if ( false ) { // enable for debugging
