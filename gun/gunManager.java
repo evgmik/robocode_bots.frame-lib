@@ -152,7 +152,7 @@ public class gunManager implements gunManagerInterface {
 						}
 						gunName = "realHitsGun";
 						key = new String2D( gunName, trgtBotName );
-						hitByMyGun.incrHashCounter( key );
+						//hitByMyGun.incrHashCounter( key );
 						// below part would be better in special function
 						KdTree<gfHit> tree = getRealHitsGFKDTreeMap( trgtBotName );
 						gunTreePoint gTP = new gunTreePoint( myBot, myBot.getGameInfo().getFighterBot( trgtBotName ).getInfoBot(), w.getFiredTime(), w.getBulletEnergy() );
