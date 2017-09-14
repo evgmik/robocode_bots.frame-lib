@@ -73,12 +73,20 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v8.5
+
+- fixed double counting of realHits
+
 ## v8.4
 
 version bump to match EvBotNG progress
 
 - kdtreeGuessFactorGun weights points by distance
 - some code clean up, should not affect performance
+
+in retrospect: 
+- no performance change in 1on1 (slight enhancement)
+- performance boost in melee +1.2% APS
 
 ## v7.9
 
