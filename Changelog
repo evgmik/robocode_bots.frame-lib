@@ -73,6 +73,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v8.4
+
+version bump to match EvBotNG progress
+
+- kdtreeGuessFactorGun weights points by distance
+- some code clean up, should not affect performance
+
 ## v7.9
 
 - kdTree gun is smoothed too now, logically it is the same v7.6 but I hope
