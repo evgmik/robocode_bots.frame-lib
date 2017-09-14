@@ -67,13 +67,27 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 			return gfBins;
 		}
 
-		boolean isSequentialSorting = false;
+		boolean isSequentialSorting = true; // if true, sort results from best to worst neighbors
 		List<KdTree.Entry<gfHit>> cluster = tree.nearestNeighbor( coord, neigborsNum, isSequentialSorting );
 
 		//logger.dbg(getName() + " kdTree has " + tree.size() + " nodes");
 		int numGuessFactorBins = gfBins.length;
+		double bestDistance = Double.POSITIVE_INFINITY;
+		double distThreshold = 0.2;
+		double scale =  0; // if we get zero neighbors
 		for ( KdTree.Entry<gfHit> neigbor : cluster ) {
+			scale =  binsSumThreshold; // if we here, at least 1 neighbor is found
 			double binW0 = neigbor.value.weight; // fixme do gf  weights  and distances
+			double dist = neigbor.distance;
+			if (dist < distThreshold ) {
+				dist =  distThreshold;
+			}
+			if  ( dist < bestDistance ) {
+				bestDistance = dist;
+			}
+			binW0 *= scale;
+			binW0 *= bestDistance/dist;
+
 			int iCenter = neigbor.value.gfBin;
 			double di0 =     neigbor.value.gfCoverage;
 
