@@ -453,6 +453,10 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public void reportMyGunStats() {
+		String fightType = myBot.getGameInfo().fightType();
+		String2D bestGunKey = new String2D();
+		double bestHitRate = Double.NEGATIVE_INFINITY;
+	        gunList = gunListForGameType.get( fightType );
 		// FIXME: some wave are still flying and are not fully accounted
 		logger.routine("  My virtual gun hit rate stats stats");
 		String str = "  ";
@@ -469,9 +473,15 @@ public class gunManager implements gunManagerInterface {
 			for ( baseGun g: gunList ) {
 				String2D key = new String2D( g.getName(), enemyName );
 				str += String.format( "%25s", logger.hitRateFormat( hitByMyGun.getHashCounter( key ), firedAtEnemyByGun.getHashCounter( key ) ) );
+				double hR = math.eventRate( hitByMyGun.getHashCounter( key ), firedAtEnemyByGun.getHashCounter( key ) );
+				if  (hR > bestHitRate ) {
+					bestHitRate = hR;
+					bestGunKey = new String2D( g.getName(), enemyName );
+				}
 
 			}
 			logger.routine( str );
+			logger.routine ("Best gun against " +  enemyName + ": " + bestGunKey.getX() + " with hit rate " + logger.hitRateFormat( hitByMyGun.getHashCounter( bestGunKey ), firedAtEnemyByGun.getHashCounter( bestGunKey ) ));
 		}
 	}
 
