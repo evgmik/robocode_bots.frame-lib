@@ -102,6 +102,15 @@ public class logger {
 		return strOut;
 	}
 
+	public static String arrayToTextPlot( Double[] bins) {
+		int N = bins.length;
+		double[] unboxedBins = new double[N];
+		for (int i=0; i<N; i++) {
+			unboxedBins[i] = bins[i];
+		}
+		return arrayToTextPlot( unboxedBins );
+	}
+
 	public static String arrayToTextPlot( double[] bins) {
 		// outputs text style/plot histograms
 		// inspired by https://github.com/holman/spark
