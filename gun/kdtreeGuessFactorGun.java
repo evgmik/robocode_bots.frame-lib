@@ -59,6 +59,7 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 
 	@Override
 	protected double[] getRelevantGF( fighterBot fBot, InfoBot tBot ) {
+		profiler.start( "getRelevantGF_"+getName() );
 		KdTree<gfHit> tree = getKdTree( fBot, tBot );
 		double[] gfBins = new double[ fBot.getGunManager().getGuessFactosrBinNum() ];
 		double[] coord = getTreePointCoord();
@@ -120,6 +121,7 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 			logger.dbg( "gfIndex = " + bestIndex + " hit prob = " + maxW/sum );
 		}
 
+		profiler.stop( "getRelevantGF_"+getName() );
 		return gfBins;
 	}
 
