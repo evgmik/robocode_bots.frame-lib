@@ -57,19 +57,27 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 		return gTP.getPosition();
 	}
 
-	@Override
-	protected double[] getRelevantGF( fighterBot fBot, InfoBot tBot ) {
-		profiler.start( "getRelevantGF_"+getName() );
+	protected List<KdTree.Entry<gfHit>> getNearestNeighborsCluster( fighterBot fBot, InfoBot tBot ) {
 		KdTree<gfHit> tree = getKdTree( fBot, tBot );
-		double[] gfBins = new double[ fBot.getGunManager().getGuessFactosrBinNum() ];
 		double[] coord = getTreePointCoord();
 		if ( coord == null ) {
 			logger.error("error: this should not happen -  coord for KdTree is null");
-			return gfBins;
+			return null;
 		}
 
 		boolean isSequentialSorting = true; // if true, sort results from best to worst neighbors
 		List<KdTree.Entry<gfHit>> cluster = tree.nearestNeighbor( coord, neigborsNum, isSequentialSorting );
+		return cluster;
+	}
+
+	@Override
+	protected double[] getRelevantGF( fighterBot fBot, InfoBot tBot ) {
+		profiler.start( "getRelevantGF_"+getName() );
+		List<KdTree.Entry<gfHit>> cluster = getNearestNeighborsCluster( fBot, tBot);
+		double[] gfBins = new double[ fBot.getGunManager().getGuessFactosrBinNum() ];
+		if ( cluster == null ) {
+			return gfBins;
+		}
 
 		//logger.dbg(getName() + " kdTree has " + tree.size() + " nodes");
 		int numGuessFactorBins = gfBins.length;
