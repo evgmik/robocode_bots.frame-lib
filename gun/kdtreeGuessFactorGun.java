@@ -84,7 +84,10 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 		double bestDistance = Double.POSITIVE_INFINITY;
 		double distThreshold = 0.2;
 		double scale =  0; // if we get zero neighbors
+		int cnt=0;
 		for ( KdTree.Entry<gfHit> neigbor : cluster ) {
+			cnt++;
+			if ( cnt > neigborsNum ) break; // counted enough neighbors
 			scale =  binsSumThreshold; // if we here, at least 1 neighbor is found
 			double binW0 = neigbor.value.weight; // fixme do gf  weights  and distances
 			double dist = neigbor.distance;
