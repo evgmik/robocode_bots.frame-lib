@@ -47,33 +47,38 @@ public class gunTreePoint  {
 		double bulletFlightTime = distAtLastAim/physics.bulletSpeed( bulletEnergy );
 		double advancingSpeed = tBStat.getAdvancingSpeed( fPos );
 		double latteralSpeed = tBStat.getLateralSpeed( fPos );
+		double speed         = Math.abs( tBStat.getSpeed() );
 		double latteralSpeedPrev = tBStatPrev.getLateralSpeed( fPos );
 
 		double accel = (latteralSpeed - latteralSpeedPrev)/(tBStat.getTime() - tBStatPrev.getTime());
 		if ( Double.isNaN( accel) ) {
 			accel = 0;
 		}
+		accel = math.signNoZero( latteralSpeed )*accel; // speed up or slow down
 
 		double distToWallAhead = tBStat.getDistanceToWallAhead();
 
 		long timeSinceVelocityChange = tBStat.getTimeSinceVelocityChange();
 
+		double vBullet = physics.bulletSpeed( bulletEnergy ),
+		       vBulletMax=physics.bulletSpeed( robocode.Rules.MIN_BULLET_POWER );
+		double vBotMax = robocode.Rules.MAX_VELOCITY;
+		double tFlight = distAtLastAim/(vBullet+advancingSpeed);
+		double tWallHit = distToWallAhead;
+
 		// assign normalized coordinates
 		double x; // dummy variable
 		x = distAtLastAim/physics.MaxSeparationOnBattleField;
-		coord[0] = x*x;
-		coord[1] = bulletEnergy/robocode.Rules.MAX_BULLET_POWER;
-		coord[2] = (latteralSpeed)/robocode.Rules.MAX_VELOCITY;
-		x = math.signNoZero( latteralSpeed )*(accel/2); // -1 to 1
-		// positive means accelerates, negative - flipping direction
-		// slowing down is faster due to robocode physics
-		coord[3] = 1/2. + 1/2.*x;
-		x = distToWallAhead/robocode.Rules.MAX_VELOCITY;
-		coord[4] = 1/(1+x);
-		coord[5] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
+		coord[0] = advancingSpeed;
+		coord[1] = latteralSpeed;
+		coord[2] = 1.1*tFlight;
+		coord[3] = 1.0*1.0/(1+Math.min(distToWallAhead/vBotMax, tWallHit));
+		x = 0*distToWallAhead/robocode.Rules.MAX_VELOCITY;
+		coord[4] = 0*1/(1+x);
+		coord[5] = 0*1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
 		x = timeSinceVelocityChange;
-		coord[6] = 1/(1+x);
-		coord[7] = 1/2. + 1/2.*advancingSpeed/robocode.Rules.MAX_VELOCITY;
+		coord[6] = 0*1/(1+x);
+		coord[7] = 0*advancingSpeed/robocode.Rules.MAX_VELOCITY;
 
 		if ( false ) { // enable for debugging
 			String sout = fBot.getName() + " Tree coords: ";
