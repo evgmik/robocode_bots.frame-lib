@@ -55,7 +55,7 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 		gunTreePoint gTP = new gunTreePoint( fBot, tBot, time, bulletEnergy );
 		treePointCoord = gTP.getPosition();
 		HashMap<aimingConditions, List<KdTree.Entry<gfHit>> > kdClusterCache = fBot.getGunManager().getKdClusterCache();
-		aimingConditions aC = new aimingConditions( fBot, tBot, time, bulletEnergy );
+		aimingConditions aC = new aimingConditions( fBot, tBot, time, bulletEnergy, kdTreeGunBaseName);
 		List<KdTree.Entry<gfHit>> cluster = kdClusterCache.get( aC );
 		if ( cluster == null ) {
 			//logger.dbg(getName() + " did not find cluster");
@@ -81,14 +81,15 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 
 	@Override
 	protected double[] getRelevantGF( fighterBot fBot, InfoBot tBot ) {
-		profiler.start(  getName() + " getRelevantGF.getCluster" );
+		//profiler.start(  getName() + " getRelevantGF.getCluster" );
 		List<KdTree.Entry<gfHit>> cluster = getNearestNeighborsCluster( fBot, tBot);
-		profiler.stop(  getName() + " getRelevantGF.getCluster" );
-		profiler.start( getName() + " getRelevantGF.smoothGF" );
+		//profiler.stop(  getName() + " getRelevantGF.getCluster" );
+		//profiler.start( getName() + " getRelevantGF.smoothGF" );
 		double[] gfBins = new double[ fBot.getGunManager().getGuessFactosrBinNum() ];
 		if ( cluster == null ) {
 			return gfBins;
 		}
+		// FIXME: smoothing can be cached, high N neighbors gun already did it
 
 		//logger.dbg(getName() + " kdTree has " + tree.size() + " nodes");
 		int numGuessFactorBins = gfBins.length;
@@ -143,7 +144,7 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 			logger.dbg( "gfIndex = " + bestIndex + " hit prob = " + maxW/sum );
 		}
 
-		profiler.stop( getName() + " getRelevantGF.smoothGF" );
+		//profiler.stop( getName() + " getRelevantGF.smoothGF" );
 		return gfBins;
 	}
 
