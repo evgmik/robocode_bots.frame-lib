@@ -73,6 +73,11 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v8.6
+
+- kdTree type guns are using cache
+- guns report their hit names with histogram
+
 ## v8.5
 
 - fixed double counting of realHits
