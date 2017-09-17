@@ -6,9 +6,7 @@ import eem.frame.misc.*;
 
 import eem.frame.external.trees.secondGenKD.KdTree;
 
-import java.util.List;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.*;
 import java.awt.geom.Point2D;
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -16,6 +14,7 @@ import java.awt.Color;
 
 public class kdtreeGuessFactorGun extends guessFactorGun {
 	int neigborsNum = 400;
+	List<KdTree.Entry<gfHit>> cluster = null;
 	String kdTreeGunBaseName = "kdtGF";
 
 	public kdtreeGuessFactorGun() {
@@ -54,7 +53,17 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 	@Override
 	protected double[] calcTreePointCoord( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		gunTreePoint gTP = new gunTreePoint( fBot, tBot, time, bulletEnergy );
-		return gTP.getPosition();
+		treePointCoord = gTP.getPosition();
+		HashMap<aimingConditions, List<KdTree.Entry<gfHit>> > kdClusterCache = fBot.getGunManager().getKdClusterCache();
+		aimingConditions aC = new aimingConditions( fBot, tBot, time, bulletEnergy );
+		List<KdTree.Entry<gfHit>> cluster = kdClusterCache.get( aC );
+		if ( cluster == null ) {
+			//logger.dbg(getName() + " did not find cluster");
+			kdClusterCache.clear();
+			cluster = getNearestNeighborsCluster( fBot, tBot );
+			kdClusterCache.put( aC, cluster);
+		}
+		return treePointCoord;
 	}
 
 	protected List<KdTree.Entry<gfHit>> getNearestNeighborsCluster( fighterBot fBot, InfoBot tBot ) {
@@ -72,8 +81,10 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 
 	@Override
 	protected double[] getRelevantGF( fighterBot fBot, InfoBot tBot ) {
-		profiler.start( "getRelevantGF_"+getName() );
+		profiler.start(  getName() + " getRelevantGF.getCluster" );
 		List<KdTree.Entry<gfHit>> cluster = getNearestNeighborsCluster( fBot, tBot);
+		profiler.stop(  getName() + " getRelevantGF.getCluster" );
+		profiler.start( getName() + " getRelevantGF.smoothGF" );
 		double[] gfBins = new double[ fBot.getGunManager().getGuessFactosrBinNum() ];
 		if ( cluster == null ) {
 			return gfBins;
@@ -132,7 +143,7 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 			logger.dbg( "gfIndex = " + bestIndex + " hit prob = " + maxW/sum );
 		}
 
-		profiler.stop( "getRelevantGF_"+getName() );
+		profiler.stop( getName() + " getRelevantGF.smoothGF" );
 		return gfBins;
 	}
 
