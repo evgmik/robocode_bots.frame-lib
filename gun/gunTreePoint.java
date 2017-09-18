@@ -65,6 +65,11 @@ public class gunTreePoint  {
 		double vBotMax = robocode.Rules.MAX_VELOCITY;
 		double tFlight = distAtLastAim/(vBullet+advancingSpeed);
 		double tWallHit = distToWallAhead;
+		double MEA =    physics.calculateMEA( vBullet );
+		double posMEA = physics.calculateConstrainedMEA( vBullet, fPos, tPos, true);
+		double negMEA = physics.calculateConstrainedMEA( vBullet, fPos, tPos, false);
+
+		//logger.dbg( tBot.getName() + " has maxMEA = " + physics.calculateMEA(vBullet) + " negMEA = " + negMEA + " posMEA = " + posMEA + " and laterals speed = " + latteralSpeed );
 
 		// assign normalized coordinates
 		double x; // dummy variable
@@ -73,12 +78,11 @@ public class gunTreePoint  {
 		coord[1] = latteralSpeed;
 		coord[2] = 1.1*tFlight;
 		coord[3] = 1.0*1.0/(1+Math.min(distToWallAhead/vBotMax, tWallHit));
-		x = 0*distToWallAhead/robocode.Rules.MAX_VELOCITY;
-		coord[4] = 0*1/(1+x);
-		coord[5] = 0*1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
+		coord[4] = 100*posMEA/MEA;
+		coord[5] = 100*negMEA/MEA;
 		x = timeSinceVelocityChange;
-		coord[6] = 0*1/(1+x);
-		coord[7] = 0*advancingSpeed/robocode.Rules.MAX_VELOCITY;
+		coord[6] = Math.max(x,10);
+		coord[7] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
 
 		if ( false ) { // enable for debugging
 			String sout = fBot.getName() + " Tree coords: ";
