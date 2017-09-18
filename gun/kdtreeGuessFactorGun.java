@@ -16,6 +16,7 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 	int neigborsNum = 400;
 	List<KdTree.Entry<gfHit>> cluster = null;
 	String kdTreeGunBaseName = "kdtGF";
+	boolean useCachedKdCluster = true;
 
 	public kdtreeGuessFactorGun() {
 		this( 400, 3 ); //default
@@ -54,19 +55,21 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 	protected double[] calcTreePointCoord( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		gunTreePoint gTP = new gunTreePoint( fBot, tBot, time, bulletEnergy );
 		treePointCoord = gTP.getPosition();
+		if (!useCachedKdCluster) { cluster = null; return treePointCoord; } // exit here
+		// otherwise prepare cached cluster
 		HashMap<aimingConditions, List<KdTree.Entry<gfHit>> > kdClusterCache = fBot.getGunManager().getKdClusterCache();
 		aimingConditions aC = new aimingConditions( fBot, tBot, time, bulletEnergy, kdTreeGunBaseName);
-		List<KdTree.Entry<gfHit>> cluster = kdClusterCache.get( aC );
+		cluster = kdClusterCache.get( aC );
 		if ( cluster == null ) {
 			//logger.dbg(getName() + " did not find cluster");
 			kdClusterCache.clear();
-			cluster = getNearestNeighborsCluster( fBot, tBot );
+			cluster = calculateNearestNeighborsCluster( fBot, tBot );
 			kdClusterCache.put( aC, cluster);
 		}
 		return treePointCoord;
 	}
 
-	protected List<KdTree.Entry<gfHit>> getNearestNeighborsCluster( fighterBot fBot, InfoBot tBot ) {
+	protected List<KdTree.Entry<gfHit>> calculateNearestNeighborsCluster( fighterBot fBot, InfoBot tBot ) {
 		KdTree<gfHit> tree = getKdTree( fBot, tBot );
 		double[] coord = getTreePointCoord();
 		if ( coord == null ) {
@@ -75,14 +78,16 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 		}
 
 		boolean isSequentialSorting = true; // if true, sort results from best to worst neighbors
-		List<KdTree.Entry<gfHit>> cluster = tree.nearestNeighbor( coord, neigborsNum, isSequentialSorting );
+		cluster = tree.nearestNeighbor( coord, neigborsNum, isSequentialSorting );
 		return cluster;
 	}
 
 	@Override
 	protected double[] getRelevantGF( fighterBot fBot, InfoBot tBot ) {
 		//profiler.start(  getName() + " getRelevantGF.getCluster" );
-		List<KdTree.Entry<gfHit>> cluster = getNearestNeighborsCluster( fBot, tBot);
+		if ( !useCachedKdCluster ) {
+			cluster = calculateNearestNeighborsCluster( fBot, tBot);
+		}
 		//profiler.stop(  getName() + " getRelevantGF.getCluster" );
 		//profiler.start( getName() + " getRelevantGF.smoothGF" );
 		double[] gfBins = new double[ fBot.getGunManager().getGuessFactosrBinNum() ];
