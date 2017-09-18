@@ -96,9 +96,53 @@ public class physics {
 
         public static double calculateMEA( double bulletSpeed ) {
                         // Max escape angle in degree for a given bullet speed
+			// FIXME: am I carazy or WIKI is wrong and it should be atan not asin
                         double MEA = Math.toDegrees( Math.asin( robocode.Rules.MAX_VELOCITY/bulletSpeed ) );
                         return MEA;
         }
+
+        public static Point2D.Double calculateConstrainedMEAposition( double bulletSpeed, Point2D.Double fPos, Point2D.Double tPos, boolean clockwiseMEA ) {
+			if (fPos == null || tPos == null) return null;
+			double vBot = robocode.Rules.MAX_VELOCITY;
+			double MEA = 0;
+                        // battlefield constrained MEA
+			// clock wise means (to the right)
+			// of firing position to target position line
+			double dist = fPos.distance( tPos );
+			double aHot  = math.angle2pt( fPos, tPos ); // head on angle
+			Point2D.Double furthestPos = new Point2D.Double (-10,-10); // outside battefield
+			double t=0;
+			// exersise for the reader:
+			// prove that unconstrained kneeAngle = pi/2 - maxMEA
+			// where maxMEA = asin(vBot/bulletSpeed)
+			double kneeAngle = Math.PI/2 - Math.toRadians(calculateMEA(bulletSpeed)) ;
+			double da = kneeAngle/200; // angle change
+			int maxCnt = (int) (1.0 + Math.PI / da); // safety net, enough time unfold knee
+			double sign =1; if ( !clockwiseMEA ) sign=-1;
+			while ( !physics.botReacheableBattleField.contains( furthestPos ) ) {
+				if (maxCnt-- < 0) { // safety net
+					logger.error("ERROR: Max escape calculation was not done in allocated counts.");
+					break;
+				}
+				t = Math.sqrt( dist*dist / ( vBot*vBot + bulletSpeed*bulletSpeed  - 2*vBot*bulletSpeed * Math.cos(kneeAngle)) );
+				MEA = Math.asin( Math.sin( kneeAngle) *vBot*t/dist);
+				furthestPos = math.project( fPos, aHot + Math.toDegrees( sign*MEA), t*bulletSpeed );
+				kneeAngle += da;
+			}
+			//logger.dbg( "bulletSpeed = " + bulletSpeed + " MEA = " + Math.toDegrees(MEA) +  " time " + t + "  " + furthestPos );
+                        return furthestPos;
+        }
+
+        public static double calculateConstrainedMEA( double bulletSpeed, Point2D.Double fPos, Point2D.Double tPos, boolean clockwiseMEA ) {
+		Point2D.Double furthestPos = calculateConstrainedMEAposition( bulletSpeed, fPos, tPos, clockwiseMEA );
+
+		if (furthestPos == null) return 0;
+
+		double aHot  = math.angle2pt( fPos, tPos ); // head on angle
+		double MEA =   math.shortest_arc( math.angle2pt( fPos, furthestPos) - aHot );
+		return MEA;
+        }
+
 
 	public static boolean isBotOutOfBorders( Point2D.Double pnt ) {
 		// fixme: it should be sufficient to do
