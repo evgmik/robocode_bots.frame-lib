@@ -116,7 +116,7 @@ public class physics {
 			// prove that unconstrained kneeAngle = pi/2 - maxMEA
 			// where maxMEA = asin(vBot/bulletSpeed)
 			double kneeAngle = Math.PI/2 - Math.toRadians(calculateMEA(bulletSpeed)) ;
-			double da = kneeAngle/200; // angle change
+			double da = Math.PI/90; // angle change
 			int maxCnt = (int) (1.0 + Math.PI / da); // safety net, enough time unfold knee
 			double sign =1; if ( !clockwiseMEA ) sign=-1;
 			while ( !physics.botReacheableBattleField.contains( furthestPos ) ) {
