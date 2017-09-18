@@ -73,6 +73,12 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v8.8
+
+- Fixed caching bug introduced in 8.6. There were no cache use. Which led to
+  longer calculations.
+- Added option to bypass the cache for kdTree guns
+
 ## v8.7
 
 - added functions to calculate battle field constrained MEA
