@@ -73,6 +73,11 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v8.7
+
+- added functions to calculate battle field constrained MEA
+- kdTree coordinates calculated VERY different now
+
 ## v8.6
 
 - kdTree type guns are using cache (expect less skipped turns)
