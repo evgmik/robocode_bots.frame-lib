@@ -125,7 +125,7 @@ public class waveWithBullets extends wave {
 					overlapCnt++;
 				}
 			}
-			double eps = 0;
+			double eps = 2e-16;
 			if ( corridorsCoverage > (botShadowSize+eps) ) {
 				logger.error("error: check safety corridors addition code, looks like there were some overlapping corridors by " + (corridorsCoverage - botShadowSize)/botShadowSize);
 				logger.error("error: corridors overlapping count = " + overlapCnt );
