@@ -18,6 +18,7 @@ public class waveWithBullets extends wave {
 	protected fighterBot targetBot = null;
 	protected double targetLateralSpeedSignNoZero;
 	protected double headOnAngle = 0;
+	protected double MEA = 0, posMEA=0, negMEA=0;
 	protected Color gfColor = new Color(0xff, 0x00, 0x00, 0x80);
 	protected int numGuessFactorBins = 31;
 	protected double gfDangerWeight = 0.91; // 0 to 1, set high for GF flatteners or rambot avoidance
@@ -69,6 +70,9 @@ public class waveWithBullets extends wave {
 			double latteralSpeed = tBStat.getLateralSpeed( firedPosition );
 			targetLateralSpeedSignNoZero = math.signNoZero( latteralSpeed );
 			headOnAngle = math.angle2pt( firedPosition, tBStat.getPosition() );
+			MEA = physics.calculateMEA( bulletSpeed );
+			posMEA = physics.calculateConstrainedMEA( bulletSpeed, firedPosition, tBStat.getPosition(), true);
+			negMEA = physics.calculateConstrainedMEA( bulletSpeed, firedPosition, tBStat.getPosition(), false);
 		} else {
 			targetLateralSpeedSignNoZero = 1;
 		}
