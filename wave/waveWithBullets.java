@@ -447,7 +447,10 @@ public class waveWithBullets extends wave {
 			Point2D.Double strtP = math.project( firedPosition, a, dist );
 			Point2D.Double endP;
 			// show MEA range
-			if ( i==0 || i==(Nbins-1) ) {
+			if ( i==0 || i==(Nbins-1)
+			     || i==math.gf2bin(posMEA/MEA, Nbins)
+			     || i==math.gf2bin(negMEA/MEA, Nbins)
+			) {
 				math.project( firedPosition, a, dist );
 				endP = math.project( firedPosition, a, dist - meaMarkerLenth );
 				graphics.drawLine( g, strtP,  endP );
