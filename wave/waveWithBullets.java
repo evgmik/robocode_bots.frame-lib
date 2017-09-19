@@ -109,7 +109,6 @@ public class waveWithBullets extends wave {
 		botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
 		long time = 0; // it is currently not used, better do dist relevant to current target position
 		double dist = Math.abs(tBStat.getPosition().distance( firedPosition ) );
-		double MEA = physics.calculateMEA( bulletSpeed );
 		for(int i=0; i < numGuessFactorBins; i++) {
 			double gf =  math.bin2gf( i, numGuessFactorBins);
 			double a = headOnAngle + gf * MEA;
@@ -144,7 +143,6 @@ public class waveWithBullets extends wave {
 
 	public double getPointGF( Point2D.Double p ) {
 		double hitAngle    = math.angle2pt( firedPosition, p);
-		double MEA = physics.calculateMEA( bulletSpeed );
 		return math.shortest_arc(hitAngle - headOnAngle)/MEA;
 	}
 
@@ -156,7 +154,6 @@ public class waveWithBullets extends wave {
 		botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
 		long time = 0; // it is currently not used, better do dist relevant to current target position
 		double dist = Math.abs(tBStat.getPosition().distance( firedPosition ) );
-		double MEA = physics.calculateMEA( bulletSpeed );
 		for(int i=0; i < numGuessFactorBins; i++) {
 			double gf =  math.bin2gf( i, numGuessFactorBins);
 			double a = headOnAngle + gf * MEA;
@@ -434,7 +431,6 @@ public class waveWithBullets extends wave {
 		}
 		g.setColor(binsColor);
 		int Nbins = bins.length;
-		double MEA = physics.calculateMEA( bulletSpeed );
 		Point2D.Double prevP = null;
 		double prevPointDanger=0;
 		// show danger probability distribution
@@ -473,7 +469,6 @@ public class waveWithBullets extends wave {
 		}
 		int Nbins = gfDanger.length;
 		double[] bins = new double[Nbins];
-		double MEA = physics.calculateMEA( bulletSpeed );
 		for ( int i=0; i< Nbins; i++ ) {
 			double gf =  math.bin2gf( i, Nbins);
 			double dL = bins[i];
