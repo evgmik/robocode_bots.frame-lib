@@ -49,7 +49,13 @@ public class guessFactorGun extends baseGun {
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
 		fS.setQualityOfSolution( getLagTimePenalty( infoLagTime ) );
 		fS = correctForInWallFire(fS);
-		fSols.add(fS);
+		if ( fS.isWithinMEAforTarget( tBStat.getPosition() ) ) {
+			fSols.add(fS);
+		} else {
+			//logger.dbg(getName() + " produced unphysical solution for " + tBot.getName() );
+			//fS.setQualityOfSolution( fS.VERY_BAD_QUALITY );
+			//fSolultions.add(fS);
+		}
 		fSols = setFiringBotName( fBot.getName(), fSols );
 		fSols = setTargetBotName( tBot.getName(), fSols );
 		return fSols;
