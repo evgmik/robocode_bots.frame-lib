@@ -34,6 +34,7 @@ public class firingSolution {
 	// qualityOfSolution = 1 is the best
 	// qualityOfSolution = 0 is the worst
 	public double qualityOfSolution = 0; 
+	public double VERY_BAD_QUALITY = 0;  // const to indicate bad quality of solution
 
 	public firingSolution() {
 		firingAngle = Double.NaN;
@@ -81,6 +82,21 @@ public class firingSolution {
 
 	public String getFiringBotName() {
 		return firingBotName;
+	}
+
+	public boolean isWithinMEAforTarget( Point2D.Double targetPosAtFiringTime ) {
+		double vBullet = getBulletSpeed();
+		double posMEA = physics.calculateConstrainedMEA( vBullet, firingPosition, targetPosAtFiringTime, true);
+		double negMEA = physics.calculateConstrainedMEA( vBullet, firingPosition, targetPosAtFiringTime, false);
+		double headOnAngle = math.angle2pt( firingPosition, targetPosAtFiringTime);
+		double da = math.shortest_arc( firingAngle - headOnAngle );
+		double eps = 2; // how precisese are MEAs in degree
+		boolean stat =  ( (negMEA-eps) < da && da < (posMEA+eps) );
+		if (!stat) {
+			//logger.dbg( "negMEA = " + negMEA + " posMEA = " + posMEA + " da " + da);
+		}
+		return stat;
+
 	}
 
 	public boolean isRealBullet() {
