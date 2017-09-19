@@ -73,6 +73,14 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v8.9
+
+- guess factor type guns check if solution within physical MEA
+- firing solution can check if it within physical MEA
+- increase safety corridor overlap tolerance by just a bit
+- Wave draw physical MEA
+- speed up: Wave calculates MEA, posMEA, negMEA only once
+
 ## v8.8
 
 - Fixed caching bug introduced in 8.6. There were no cache use. Which led to
