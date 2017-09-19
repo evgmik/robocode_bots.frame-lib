@@ -87,7 +87,7 @@ public class circularGun extends baseGun {
 		long infoLagTime = time - tBStat.getTime(); // ideally should be 0
 		fS.setQualityOfSolution( getLagTimePenalty( infoLagTime ) );
 		fS = correctForInWallFire(fS);
-		fSolultions.add(fS);
+		fSolultions.add(fS); // circular gyns always produce physical solutions
 		fSolultions = setTargetBotName( tBot.getName(), fSolultions );
 		return fSolultions;
 	}
