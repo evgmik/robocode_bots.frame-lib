@@ -73,6 +73,11 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v9.0
+
+- added cached versions of MEA and gunTreePoint calculations
+- isWithinMEA moved to the base gun as isFiringSolutionWithinMEA
+
 ## v8.9
 
 - guess factor type guns check if solution within physical MEA
