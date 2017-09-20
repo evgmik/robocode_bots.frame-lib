@@ -84,21 +84,6 @@ public class firingSolution {
 		return firingBotName;
 	}
 
-	public boolean isWithinMEAforTarget( Point2D.Double targetPosAtFiringTime ) {
-		double vBullet = getBulletSpeed();
-		double posMEA = physics.calculateConstrainedMEA( vBullet, firingPosition, targetPosAtFiringTime, true);
-		double negMEA = physics.calculateConstrainedMEA( vBullet, firingPosition, targetPosAtFiringTime, false);
-		double headOnAngle = math.angle2pt( firingPosition, targetPosAtFiringTime);
-		double da = math.shortest_arc( firingAngle - headOnAngle );
-		double eps = 2; // how precisese are MEAs in degree
-		boolean stat =  ( (negMEA-eps) < da && da < (posMEA+eps) );
-		if (!stat) {
-			//logger.dbg( "negMEA = " + negMEA + " posMEA = " + posMEA + " da " + da);
-		}
-		return stat;
-
-	}
-
 	public boolean isRealBullet() {
 		return realBulletFlag;
 	}

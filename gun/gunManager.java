@@ -54,6 +54,7 @@ public class gunManager implements gunManagerInterface {
 	int hitProbEstimateNeighborsNum = 100;
 	protected HashMap<String2D, KdTree<gunHitMissLog>> gunHitMissKDTreeMap = new HashMap<String2D, KdTree<gunHitMissLog>>();
 	protected HashMap<aimingConditions, List<KdTree.Entry<gfHit>> > kdClusterCache = new HashMap<aimingConditions, List<KdTree.Entry<gfHit>> >();
+	protected HashMap<aimingConditions, double[] > cachedMEAs = new HashMap<aimingConditions, double[] >();
 
 	public	gunManager() {
 	}
@@ -99,6 +100,10 @@ public class gunManager implements gunManagerInterface {
 
 	public HashMap<aimingConditions, List<KdTree.Entry<gfHit>> > getKdClusterCache() {
 		return kdClusterCache;
+	}
+
+	public HashMap<aimingConditions, double[] > getMEAsCache() {
+		return cachedMEAs;
 	}
 
 	public void logHitOrMissForMyFS( firingSolution fS ) {

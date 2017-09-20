@@ -4,7 +4,7 @@ package eem.frame.gun;
 import eem.frame.bot.*;
 import eem.frame.misc.*;
 
-import java.util.LinkedList;
+import java.util.*;
 import java.awt.geom.Point2D;
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -133,6 +133,78 @@ public class baseGun {
 
 	public void setColor( Color c ) {
 		color = c;
+	}
+
+	public Point2D.Double getFiringPostionAtFiringTime( fighterBot fBot, long time ) {
+		Point2D.Double firingPosition = fBot.getMotion().getPositionAtTime( time );
+		return firingPosition;
+	}
+
+	public Point2D.Double getTargetPostionAtFiringTime( InfoBot tBot, long time ) {
+		// the latest time, when target stats are known, is at 'time-1'
+		botStatPoint tBStat = tBot.getStatClosestToTime( time - 1 );
+		if (tBStat == null)
+			return null;
+		Point2D.Double targetPosAtFiringTime = (Point2D.Double) tBStat.getPosition().clone();
+		return targetPosAtFiringTime;
+	}
+
+	public boolean isFiringSolutionWithinMEA( firingSolution fS, fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
+		profiler.start("isFiringSolutionWithinMEA");
+		profiler.start("getMEA");
+		String gunType = "any";
+		aimingConditions aC = new aimingConditions( fBot, tBot, time, bulletEnergy, gunType );
+		double[] MEAs = getTargetMEAs( fBot, tBot, time, bulletEnergy );
+		double negMEA = MEAs[0];
+		double posMEA = MEAs[1];
+		profiler.stop("getMEA");
+		// TODO: assign firingPosition and targetPosAtFiringTime to firingSolution
+		Point2D.Double targetPosAtFiringTime = getTargetPostionAtFiringTime( tBot, time );
+		if (targetPosAtFiringTime == null) {
+			profiler.stop("isFiringSolutionWithinMEA");
+			return false;
+		}
+		Point2D.Double firingPosition = getFiringPostionAtFiringTime( fBot, time );
+		double headOnAngle = math.angle2pt( firingPosition, targetPosAtFiringTime);
+		double da = math.shortest_arc( fS.getFiringAngle() - headOnAngle );
+		double eps = 2; // how precisese are MEAs in degree
+		boolean stat =  ( (negMEA-eps) < da && da < (posMEA+eps) );
+		if (!stat) {
+			//logger.dbg( "negMEA = " + negMEA + " posMEA = " + posMEA + " da " + da);
+		}
+		profiler.stop("isFiringSolutionWithinMEA");
+		return stat;
+
+	}
+
+	public double[] getTargetMEAs( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ){
+		String gunType = "any";
+		aimingConditions aC = new aimingConditions( fBot, tBot, time, bulletEnergy, gunType );
+		HashMap<aimingConditions, double[] > cachedMEAs = fBot.getGunManager().getMEAsCache();
+		double[] MEAs = cachedMEAs.get( aC );
+		if ( MEAs == null ) {
+			profiler.start("meaCalc");
+			// FIXME: move it to initTic
+			cachedMEAs.clear(); // if there is something, it is not applicable
+
+			Point2D.Double targetPosAtFiringTime = getTargetPostionAtFiringTime( tBot, time );
+			if (targetPosAtFiringTime == null) {
+				profiler.stop("meaCalc");
+				return MEAs;
+			}
+			Point2D.Double firingPosition = getFiringPostionAtFiringTime( fBot, time );
+			double vBullet = physics.bulletSpeed( bulletEnergy );
+			double MEA = physics.calculateMEA( vBullet );
+			double posMEA = physics.calculateConstrainedMEA( vBullet, firingPosition, targetPosAtFiringTime, true);
+			double negMEA = physics.calculateConstrainedMEA( vBullet, firingPosition, targetPosAtFiringTime, false);
+			MEAs = new double [3];
+			MEAs[0] = negMEA;
+			MEAs[1] = posMEA;
+			MEAs[2] = MEA;
+			cachedMEAs.put( aC, MEAs );
+			profiler.stop("meaCalc");
+		}
+		return MEAs;
 	}
 
 	public Color getColor() {
