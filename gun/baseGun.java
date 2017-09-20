@@ -150,18 +150,18 @@ public class baseGun {
 	}
 
 	public boolean isFiringSolutionWithinMEA( firingSolution fS, fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
-		profiler.start("isFiringSolutionWithinMEA");
-		profiler.start("getMEA");
+		//profiler.start("isFiringSolutionWithinMEA");
+		//profiler.start("getMEA");
 		String gunType = "any";
 		aimingConditions aC = new aimingConditions( fBot, tBot, time, bulletEnergy, gunType );
 		double[] MEAs = getTargetMEAs( fBot, tBot, time, bulletEnergy );
 		double negMEA = MEAs[0];
 		double posMEA = MEAs[1];
-		profiler.stop("getMEA");
+		//profiler.stop("getMEA");
 		// TODO: assign firingPosition and targetPosAtFiringTime to firingSolution
 		Point2D.Double targetPosAtFiringTime = getTargetPostionAtFiringTime( tBot, time );
 		if (targetPosAtFiringTime == null) {
-			profiler.stop("isFiringSolutionWithinMEA");
+			//profiler.stop("isFiringSolutionWithinMEA");
 			return false;
 		}
 		Point2D.Double firingPosition = getFiringPostionAtFiringTime( fBot, time );
@@ -172,7 +172,7 @@ public class baseGun {
 		if (!stat) {
 			//logger.dbg( "negMEA = " + negMEA + " posMEA = " + posMEA + " da " + da);
 		}
-		profiler.stop("isFiringSolutionWithinMEA");
+		//profiler.stop("isFiringSolutionWithinMEA");
 		return stat;
 
 	}
