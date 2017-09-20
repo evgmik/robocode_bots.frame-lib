@@ -2,6 +2,7 @@
 
 package eem.frame.gun;
 
+import java.util.*;
 import java.awt.geom.Point2D;
 import eem.frame.bot.*;
 import eem.frame.misc.*;
@@ -11,6 +12,8 @@ import robocode.*;
 public class gunTreePoint  {
 	protected int kdTreeDims = 8; // dist, bulletEnergy, abs(latVel), accel, dist to wall, enemy num, timeSinceVelocityChange, advancing speed
 	protected double[] coord = new double[kdTreeDims];
+
+	protected static HashMap<aimingConditions, gunTreePoint > cache = new HashMap<aimingConditions, gunTreePoint >();
 
 	public int getKdTreeDims() {
 		return kdTreeDims;
@@ -25,19 +28,37 @@ public class gunTreePoint  {
 
 	public gunTreePoint( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		// time is time at fire
+		profiler.start("gunTreePoint");
+		String gunType = "any";
+		aimingConditions aC = new aimingConditions( fBot, tBot, time, bulletEnergy, gunType );
+		gunTreePoint gTP = cache.get( aC );
+		if ( gTP != null ) {
+			this.coord = gTP.getPosition();
+		} else {
+			cache.clear();
+			this.coord = calcGunTreePointCoord( fBot, tBot, time, bulletEnergy );
+			cache.put( aC, this );
+		}
+		profiler.stop("gunTreePoint");
+	}
 
+	public double[] calcGunTreePointCoord( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
+		profiler.start("calcGunTreePoint");
+		double[] coord = new double[kdTreeDims];
+		
 		Point2D.Double fPos = fBot.getInfoBot().getPositionAtTime( time );
 		if ( fPos == null ) {
 			fPos = fBot.getMotion().getPositionAtTime( time );
 		}
 		if ( fPos == null) {
 			logger.error( "error: unable to find fPos for bot " + fBot.getName() + "at time " + (time) );
-			return;
+			return coord;
 		}
 		// the latest time, when target stats are known, is at 'time-1'
 		botStatPoint tBStat = tBot.getStatClosestToTime( time - 1 );
 		if (tBStat == null) {
 			logger.error( "error: unable to find tBStat at time " + (time-1) );
+			return coord;
 		}
 		Point2D.Double tPos = tBStat.getPosition();
 
@@ -65,9 +86,12 @@ public class gunTreePoint  {
 		double vBotMax = robocode.Rules.MAX_VELOCITY;
 		double tFlight = distAtLastAim/(vBullet+advancingSpeed);
 		double tWallHit = distToWallAhead;
-		double MEA =    physics.calculateMEA( vBullet );
-		double posMEA = physics.calculateConstrainedMEA( vBullet, fPos, tPos, true);
-		double negMEA = physics.calculateConstrainedMEA( vBullet, fPos, tPos, false);
+
+		baseGun g = new baseGun();
+		double[] MEAs = g.getTargetMEAs( fBot, tBot, time, bulletEnergy );
+		double negMEA = MEAs[0];
+		double posMEA = MEAs[1];
+		double MEA    = MEAs[2];
 
 		//logger.dbg( tBot.getName() + " has maxMEA = " + physics.calculateMEA(vBullet) + " negMEA = " + negMEA + " posMEA = " + posMEA + " and laterals speed = " + latteralSpeed );
 
@@ -93,5 +117,7 @@ public class gunTreePoint  {
 			}
 			logger.dbg( sout);
 		}
+		profiler.stop("calcGunTreePoint");
+		return coord;
 	}
 }
