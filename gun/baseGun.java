@@ -157,6 +157,7 @@ public class baseGun {
 		double[] MEAs = getTargetMEAs( fBot, tBot, time, bulletEnergy );
 		double negMEA = MEAs[0];
 		double posMEA = MEAs[1];
+		double MEA    = MEAs[2];
 		//profiler.stop("getMEA");
 		// TODO: assign firingPosition and targetPosAtFiringTime to firingSolution
 		Point2D.Double targetPosAtFiringTime = getTargetPostionAtFiringTime( tBot, time );
