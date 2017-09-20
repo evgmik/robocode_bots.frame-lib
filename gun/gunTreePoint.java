@@ -28,7 +28,7 @@ public class gunTreePoint  {
 
 	public gunTreePoint( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		// time is time at fire
-		profiler.start("gunTreePoint");
+		//profiler.start("gunTreePoint");
 		String gunType = "any";
 		aimingConditions aC = new aimingConditions( fBot, tBot, time, bulletEnergy, gunType );
 		gunTreePoint gTP = cache.get( aC );
@@ -39,11 +39,11 @@ public class gunTreePoint  {
 			this.coord = calcGunTreePointCoord( fBot, tBot, time, bulletEnergy );
 			cache.put( aC, this );
 		}
-		profiler.stop("gunTreePoint");
+		//profiler.stop("gunTreePoint");
 	}
 
 	public double[] calcGunTreePointCoord( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
-		profiler.start("calcGunTreePoint");
+		//profiler.start("calcGunTreePoint");
 		double[] coord = new double[kdTreeDims];
 		
 		Point2D.Double fPos = fBot.getInfoBot().getPositionAtTime( time );
@@ -52,6 +52,7 @@ public class gunTreePoint  {
 		}
 		if ( fPos == null) {
 			logger.error( "error: unable to find fPos for bot " + fBot.getName() + "at time " + (time) );
+			//profiler.stop("calcGunTreePoint");
 			return coord;
 		}
 		// the latest time, when target stats are known, is at 'time-1'
@@ -117,7 +118,7 @@ public class gunTreePoint  {
 			}
 			logger.dbg( sout);
 		}
-		profiler.stop("calcGunTreePoint");
+		//profiler.stop("calcGunTreePoint");
 		return coord;
 	}
 }
