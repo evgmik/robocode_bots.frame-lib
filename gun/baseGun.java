@@ -183,13 +183,13 @@ public class baseGun {
 		HashMap<aimingConditions, double[] > cachedMEAs = fBot.getGunManager().getMEAsCache();
 		double[] MEAs = cachedMEAs.get( aC );
 		if ( MEAs == null ) {
-			profiler.start("meaCalc");
+			//profiler.start("meaCalc");
 			// FIXME: move it to initTic
 			cachedMEAs.clear(); // if there is something, it is not applicable
 
 			Point2D.Double targetPosAtFiringTime = getTargetPostionAtFiringTime( tBot, time );
 			if (targetPosAtFiringTime == null) {
-				profiler.stop("meaCalc");
+				//profiler.stop("meaCalc");
 				return MEAs;
 			}
 			Point2D.Double firingPosition = getFiringPostionAtFiringTime( fBot, time );
@@ -202,7 +202,7 @@ public class baseGun {
 			MEAs[1] = posMEA;
 			MEAs[2] = MEA;
 			cachedMEAs.put( aC, MEAs );
-			profiler.stop("meaCalc");
+			//profiler.stop("meaCalc");
 		}
 		return MEAs;
 	}
