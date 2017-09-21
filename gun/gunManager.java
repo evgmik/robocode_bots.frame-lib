@@ -128,6 +128,20 @@ public class gunManager implements gunManagerInterface {
 		tree.addPoint( gTP.getPosition(), hmLog );
 	}
 
+	public void addRealHitGF( double gf,  InfoBot tBot, long firedTime, double bulletEnergy ) {
+		logger.dbg(myBot.getTime() + ": addRealHitGF to " + myBot.getName() + " for target " + tBot.getName() + " at GF = " + gf + " with bullet energy " + bulletEnergy );
+		String gunName = "realHitsGun";
+		String trgtBotName = tBot.getName();
+		String2D key = new String2D( gunName, trgtBotName );
+
+		KdTree<gfHit> tree = getRealHitsGFKDTreeMap( trgtBotName );
+		gunTreePoint gTP = new gunTreePoint( myBot, tBot, firedTime, bulletEnergy );
+		double [] pntCoord =  gTP.getPosition();
+		int i = (int)math.gf2bin( gf, numGuessFactorBins );
+		double binW = 1.0;
+		tree.addPoint( pntCoord, new gfHit(i, binW) );
+	}
+
 	// someone hit the master bot
 	public void onHitByBullet(HitByBulletEvent e) {
 		// target is actually master bot
@@ -156,21 +170,12 @@ public class gunManager implements gunManagerInterface {
 						Point2D.Double posHit = new Point2D.Double( b.getX(), b.getY() );
 						// registering real hit
 						double gf = wB.getPointGF( posHit );
-						logger.dbg(myBot.getTime() + ": " + fireBotName + " hit " + trgtBotName + " at GF = " +gf + " with real bullet");
+						//logger.dbg(myBot.getTime() + ": " + fireBotName + " hit " + trgtBotName + " at GF = " +gf + " with real bullet");
 						if ( gf < -1 || gf > 1) {
 							logger.error("error: GF out of range. It should be with in -1..1 but we got " + gf);
 						}
-						gunName = "realHitsGun";
-						key = new String2D( gunName, trgtBotName );
-						//hitByMyGun.incrHashCounter( key );
-						// below part would be better in special function
-						KdTree<gfHit> tree = getRealHitsGFKDTreeMap( trgtBotName );
-						gunTreePoint gTP = new gunTreePoint( myBot, myBot.getGameInfo().getFighterBot( trgtBotName ).getInfoBot(), w.getFiredTime(), w.getBulletEnergy() );
-						double [] pntCoord =  gTP.getPosition();
-						int i = (int)math.gf2bin( gf, numGuessFactorBins );
-						double binW = 1.0;
-						tree.addPoint( pntCoord, new gfHit(i, binW) );
-
+						addRealHitGF( gf,  myBot.getGameInfo().getFighterBot( trgtBotName ).getInfoBot(),  w.getFiredTime(), w.getBulletEnergy() );
+						// FIXME: it would be good idea to update all danger GF for already flying waves of this bot towards trgtBotName according to this new information
 
 						LinkedList<firingSolution> fSwhichHit =  wB.getFiringSolutionsWhichHitBotAt( posHit, myBot.getTime() );
 						if ( fSwhichHit.size() == 0 ) {
