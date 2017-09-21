@@ -73,6 +73,12 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v9.1
+
+- analyze bullet hit bullet to gain info which way enemy fires
+- clean up: gunManager use of  method addRealHitGF for hit by bullet cases
+- waveWithBullets new method getAngleGF
+
 ## v9.0
 
 - added cached versions of MEA and gunTreePoint calculations
