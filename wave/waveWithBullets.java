@@ -141,6 +141,10 @@ public class waveWithBullets extends wave {
 		}
 	}
 
+	public double getAngleGF( double a ) {
+		return math.shortest_arc(a - headOnAngle)/MEA;
+	}
+
 	public double getPointGF( Point2D.Double p ) {
 		double hitAngle    = math.angle2pt( firedPosition, p);
 		return math.shortest_arc(hitAngle - headOnAngle)/MEA;
