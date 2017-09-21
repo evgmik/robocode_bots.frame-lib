@@ -462,7 +462,18 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				if ( Math.abs( travelTime - interceptTime ) <=1.01 ) {
 					// 0.01 added to bypass rounding errors
 					// this is the wave which has eBullet
-					// and it carries no danger, so we remove it
+					
+					// now we know which way enemy fires!
+					// so we register it with realHitsGun kdTree
+					// so we can avoid it.
+					// streakly speaking it should be called realFireGF
+					// since it did not hit the bot but the bullet
+					double gf = eW.getAngleGF( eBullet.getHeading() ); 
+					//logger.dbg(this.getTime() + ": " + this.getName() + " hit bullet of " + eBot.getName() + " at its GF = " +gf + " with real bullet");
+					eBot.getGunManager().addRealHitGF( gf,  this.getInfoBot(), eW.getFiredTime(), eBullet.getPower() );
+					// FIXME: it would be good idea to update all danger GF for already flying waves towards thisBot of the enemy bot (eBot) according to this new information
+
+					// the wave  carries no danger, so we remove it
 					enemyWaves.remove(eW);
 					break;
 				}
