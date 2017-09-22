@@ -23,6 +23,26 @@ public class gunTreePoint  {
 		return coord;
 	}
 
+	public double[] calcFlipedLateralVelocityPositionFromCoord(double[] inCoord) {
+		int N=inCoord.length;
+		double[] flippedLatVelCoord = new double[N];
+		// rationale here that physics has mirror symmetry to lateral velocity
+		// to the first order if vLat --> gives gf
+		// than -vLat should produce -gf
+		// but there are other coords which should be flipped
+
+		// first clone coordinates
+		for (int i=1; i<N; i++) {
+			flippedLatVelCoord[i] = inCoord[i];
+		}
+
+		// make sure that you consult with calcGunTreePointCoord
+		flippedLatVelCoord[1] = -inCoord[1]; // flipping latteralSpeed
+		flippedLatVelCoord[4] = -inCoord[5]; // -negMea --> posMea
+		flippedLatVelCoord[5] = -inCoord[4]; // -posMea --> negMea
+		return flippedLatVelCoord;
+	}
+
 	public gunTreePoint() {
 	}
 
