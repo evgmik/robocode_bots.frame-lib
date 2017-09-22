@@ -140,6 +140,10 @@ public class gunManager implements gunManagerInterface {
 		int i = (int)math.gf2bin( gf, numGuessFactorBins );
 		double binW = 1.0;
 		tree.addPoint( pntCoord, new gfHit(i, binW) );
+
+		// this uses game symmetry
+		int iFlipped = (int)math.gf2bin( -gf, numGuessFactorBins );
+		tree.addPoint( gTP.calcFlipedLateralVelocityPositionFromCoord(pntCoord), new gfHit(iFlipped, binW) ); // shall I decrease binW?
 	}
 
 	// someone hit the master bot
@@ -406,6 +410,10 @@ public class gunManager implements gunManagerInterface {
 		// update guess factors tree
 		double binW = 1;
 		tree.addPoint( pntCoord, new gfHit(iCenter, binW) );
+
+		// this uses game symmetry
+		int iFlipped = (int)math.gf2bin( -gf, numGuessFactorBins );
+		tree.addPoint( gTP.calcFlipedLateralVelocityPositionFromCoord(pntCoord), new gfHit(iFlipped, binW) ); // shall I decrease binW?
 
 		int minI = (int)math.putWithinRange( iCenter - 2*di0, 0, (numGuessFactorBins-1) );
 		int maxI = (int)math.putWithinRange( iCenter + 2*di0, 0, (numGuessFactorBins-1) );
