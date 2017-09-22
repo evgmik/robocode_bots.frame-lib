@@ -77,7 +77,7 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 			return null;
 		}
 
-		boolean isSequentialSorting = true; // if true, sort results from best to worst neighbors
+		boolean isSequentialSorting = true; // if true, sort results from worst to best neighbors
 		cluster = tree.nearestNeighbor( coord, neigborsNum, isSequentialSorting );
 		return cluster;
 	}
@@ -99,21 +99,26 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 		//logger.dbg(getName() + " kdTree has " + tree.size() + " nodes");
 		int numGuessFactorBins = gfBins.length;
 		double bestDistance = Double.POSITIVE_INFINITY;
+		double dist = Double.POSITIVE_INFINITY;
 		double distThreshold = 0.2;
 		double scale =  0; // if we get zero neighbors
 		int cnt=0;
-		for ( KdTree.Entry<gfHit> neigbor : cluster ) {
+		int Nresults = cluster.size();
+		KdTree.Entry<gfHit> neigbor = null;
+		if ( Nresults > 0 ) {
+			// best neighbor
+			neigbor = cluster.get( Nresults -1 );
+			bestDistance = Math.max( neigbor.distance, distThreshold );
+		}
+		//since list is sorted from worst to best we have to do tricks
+		//for ( KdTree.Entry<gfHit> neigbor : cluster ) {
+		for ( int k = Nresults-1;  k>=0; k--) {
+			neigbor = cluster.get( k );
 			cnt++;
 			if ( cnt > neigborsNum ) break; // counted enough neighbors
 			scale =  binsSumThreshold; // if we here, at least 1 neighbor is found
 			double binW0 = neigbor.value.weight; // fixme do gf  weights  and distances
-			double dist = neigbor.distance;
-			if (dist < distThreshold ) {
-				dist =  distThreshold;
-			}
-			if  ( dist < bestDistance ) {
-				bestDistance = dist;
-			}
+			dist = Math.max( neigbor.distance, distThreshold );
 			binW0 *= scale;
 			binW0 *= bestDistance/dist;
 
