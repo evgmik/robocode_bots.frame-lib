@@ -73,6 +73,14 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v9.2
+
+- fixed bug in kdTree. kdTree cluster is returned sorted from worst to best!
+  - this bug was introduced around v8.4, also cached cluster worked wrong way
+- added calcFlipedLateralVelocityPositionFromCoord to utilize game symmetry
+- when adding git to the tree, adding a mirrored to latteral velocity hit too.
+
+
 ## v9.1
 
 - analyze bullet hit bullet to gain info which way enemy fires
