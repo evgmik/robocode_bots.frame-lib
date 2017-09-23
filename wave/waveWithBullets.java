@@ -467,6 +467,16 @@ public class waveWithBullets extends wave {
 		}
 	}
 
+	public double getEscapeAngleAtTime(long time){
+		Point2D.Double tPos = targetBot.getPositionClosestToTime(time);
+		double timeToReach = getTimeToReach( tPos );
+		double dt = timeToReach + firedTime - time;
+		if ( dt <= 0 )
+			return 0;
+		// not sure that this is precise enough but it gives proper border cases
+		return Math.toDegrees( Math.asin( dt * robocode.Rules.MAX_VELOCITY / firedPosition.distance(tPos) ) );
+	}
+
 	public void drawTotalWaveDanger(Graphics2D g, long time,  Color binsColor) {
 		if ( targetBot == null ) {
 			return;
@@ -488,9 +498,29 @@ public class waveWithBullets extends wave {
 		drawGFArrayDanger(g, time, bins, waveDangerColor);
 	}
 
+	public void drawCurrentEscapeAngle(Graphics2D g, long time, Color c) {
+		if ( targetBot == null ) {
+			return;
+		}
+		Point2D.Double tgtPosNow = targetBot.getPositionClosestToTime(time);
+		double hitAngle    = math.angle2pt( firedPosition, tgtPosNow);
+		double escapeAngle = getEscapeAngleAtTime( time );
+		double minA = hitAngle - escapeAngle;
+		double maxA = hitAngle + escapeAngle;
+		double distTraveled = getDistanceTraveledAtTime(time);
+		g.setColor( c );
+		graphics.drawCircArc( g, firedPosition, distTraveled, minA, maxA );
+		graphics.drawCircArc( g, firedPosition, distTraveled-1, minA, maxA );
+		graphics.drawCircArc( g, firedPosition, distTraveled-2, minA, maxA );
+		graphics.drawCircArc( g, firedPosition, distTraveled-3, minA, maxA );
+		graphics.drawCircArc( g, firedPosition, distTraveled-4, minA, maxA );
+		graphics.drawCircArc( g, firedPosition, distTraveled-5, minA, maxA );
+	}
+
 	public void drawGFdanger(Graphics2D g, long time) {
 		drawGFArrayDanger(g, time, gfDanger, gfColor);
 		drawTotalWaveDanger( g, time,  gfColor) ;
+		drawCurrentEscapeAngle( g, time,  gfColor) ;
 	}
 
 	public void onPaint(Graphics2D g, long time) {
