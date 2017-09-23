@@ -70,6 +70,22 @@ public class guessFactorGun extends baseGun {
 		return  fBot.getGunManager().getGuessFactors( tBot.getName() );
 	}
 
+	protected double getCenterOfMassGF(double[] guessFactorBins ) {
+		int numBins = guessFactorBins.length;
+		double cmBin = 0;
+		double wSum  = 0;
+		double gf =  0; // head on guess factor
+		for (int i=0; i< numBins; i++) {
+			cmBin = i*guessFactorBins[i];
+			wSum  =   guessFactorBins[i];
+		}
+		if ( wSum != 0 ) {
+			cmBin /= wSum;
+			gf =  math.bin2gf( (int) cmBin, numBins );
+		}
+		return gf;
+	}
+
 	protected double getMostProbableGF(double[] guessFactorBins ) {
 		int numBins = guessFactorBins.length;
 		double[] guessFactorWeighted = new double[ numBins ];
