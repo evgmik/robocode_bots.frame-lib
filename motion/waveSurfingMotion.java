@@ -69,12 +69,14 @@ public class waveSurfingMotion extends exactPathDangerMotion {
 					headOnAngle = Math.toRadians( math.game_angles2cortesian(math.angle2pt( myPos, pivotPnt ) ) );
 					// i=0 clockwise
 					// i=1 counter clockwise
-					a = headOnAngle + Math.PI/2.;
+					a =  Math.PI/2.; // will be 90 degree to enemy
+					a += Math.PI/8;  // and slightly away
 					clockwise = false;
 				        if ( i == COUNTERCLOCKWISE) {
-						a += Math.PI;
+						a = -a;
 						clockwise = true;
 					}
+					a += headOnAngle;
 				} else {
 					a = 2*Math.PI* Math.random();
 				}
