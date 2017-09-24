@@ -12,6 +12,7 @@ import java.awt.geom.Point2D;
 public class dangerPathPoint implements Comparable<dangerPathPoint> {
 	public botStatPoint botStat;
 	public double dangerLevel;
+	public boolean onTheWave = false;
 
 	public dangerPathPoint() {
 		botStat  = new botStatPoint();
@@ -46,6 +47,9 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 		}
 		dangers[3] = dangerCalc.calculateDangerFromEnemyBots(time, botStat.getPosition(), myBot);
 		dangers[4] = dangerCalc.calculateDangerFromEnemyWaves(time, botStat.getPosition(), myBot);
+		if (dangers[4] != 0) {
+			onTheWave = true;
+		}
 		//logger.dbg( "dangers " + logger.arrayToTextPlot( dangers ) + " at time " + time + " at pos " + botStat.getPosition() );
 		ArrayStats stats = new ArrayStats(dangers);
 		dL = stats.sum;
@@ -95,6 +99,10 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 		g.setColor( new Color(0x00, 0x00, 0xaa, 0xff) );
 		double dR = 2;
 		graphics.drawCircle(g, p, dR);
+		if ( onTheWave ) {
+			g.setColor( graphics.dangerLevel2mapColor( dL ) );
+			graphics.drawSquare(g, p, 40);
+		}
 	}
 
 }
