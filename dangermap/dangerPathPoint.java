@@ -102,6 +102,8 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 		if ( onTheWave ) {
 			g.setColor( graphics.dangerLevel2mapColor( dL ) );
 			graphics.drawSquare(g, p, 40);
+			g.setColor( new Color(0xff, 0xff, 0xff, 0xff) );
+			graphics.drawSquare(g, p, 42);
 		}
 	}
 
