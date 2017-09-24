@@ -22,7 +22,7 @@ import java.awt.Color;
 
 public class exactPathDangerMotion extends basicMotion {
 	protected fighterBot myBot;
-	private double superDanger = 1e8;
+	protected double superDanger = Double.POSITIVE_INFINITY;
 	dangerPath path = new dangerPath();
 	long stopTime = (long) ( Math.ceil(robocode.Rules.MAX_VELOCITY/robocode.Rules.DECELERATION) );
 	long antiRammerPathTics = 32;
