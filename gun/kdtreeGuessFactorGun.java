@@ -139,6 +139,44 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 			}
 		}
 
+		if ( antiGFavoider ) {
+			ArrayStats stats = new ArrayStats( gfBins );
+			double max = stats.max;
+			double[] gfBinsFlipped = new double[ numGuessFactorBins ];
+			for (int i=0; i< numGuessFactorBins; i++) {
+				// flipping GFs
+				gfBinsFlipped[i] = max - gfBins[i];
+			}
+
+			double threshold = stats.mean*.5; // spill out weight into a GF bin
+			// Essentially GF < threshold were never visited 
+			// either we have too little stats  or it is unreachable GF.
+			// Unreachable GF should be at edges we set them to zero so
+			// they never checked
+			// Threshold is quite high and tune heuristically to avoid shooting
+			// extreme GFs.
+			for (int i=0; i< numGuessFactorBins; i++) {
+				// left edge search
+				if ( gfBins[i] <= threshold ) {
+					gfBinsFlipped[i] = 0;
+				} else {
+					break;
+				}
+			}
+			for (int i=numGuessFactorBins-1; i>=0; i--) {
+				// right edge search
+				if ( gfBins[i] <= threshold ) {
+					gfBinsFlipped[i] = 0;
+				} else {
+					break;
+				}
+			}
+			// reassigning everything back to gfBins
+			for (int i=0; i< numGuessFactorBins; i++) {
+				gfBins[i] = gfBinsFlipped[i];
+			}
+		}
+
 		if ( false ) { // enable for debugging
 			int bestIndex = 0;
 			double maxW = Double.NEGATIVE_INFINITY;
