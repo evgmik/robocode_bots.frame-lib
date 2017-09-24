@@ -53,7 +53,7 @@ public class graphics {
 	}
 
 	public static Color dangerLevel2mapColor(double dLevel) {
-		int opacityTreshold = 100;
+		int opacityTreshold = 200;
 		return dangerLevel2mapColor( dLevel, opacityTreshold);
 	}
 
