@@ -130,6 +130,20 @@ public class dangerPath implements Comparable<dangerPath> {
 		shortenTo( safestPointIndex + 1);
 	}
 
+	public boolean isWithinBattleField( ) {
+		ListIterator<dangerPathPoint> iter = path.listIterator();
+		dangerPathPoint  dP;
+		boolean isWithin = true;
+		while (iter.hasNext()) {
+			dP = iter.next();
+			if ( !physics.botReacheableBattleField.contains( dP.getPosition() ) ) {
+				isWithin = false;
+				break;
+			}
+		}
+		return isWithin;
+	}
+
 	public int compare(dangerPath p1, dangerPath p2) {
 		double dL1 = p1.getDanger();
 		double dL2 = p2.getDanger();
