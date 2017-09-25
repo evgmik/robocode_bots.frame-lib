@@ -73,6 +73,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v9.3
+
+- added waveSurfer motion (only one wave)
+- fixed anti-kdTree gun array creation and storage
+- show white box where the wave hits the bot path
+- graphics shows current escape angle on the incoming waves
+
 ## v9.2
 
 - fixed bug in kdTree. kdTree cluster is returned sorted from worst to best!
