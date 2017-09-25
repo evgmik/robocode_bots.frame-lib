@@ -34,9 +34,9 @@ public class waveSurfingMotion extends exactPathDangerMotion {
 	public void choseNewPath( long pathLength, long nTrials ) {
 		profiler.start( "waveSurfingMotion.choseNewPath" );
 
-		dangerPath pathTrial;
-		pathLength = (long) math.putWithinRange( pathLength, minimalPathLength, maximalPathLength );
-		//pathLength = 30; // maximum time between waves
+		dangerPath pathTrial=null;
+		//pathLength = (long) math.putWithinRange( pathLength, minimalPathLength, maximalPathLength );
+		pathLength = 30; // maximum time between waves
 		Point2D.Double myPos = (Point2D.Double) myBot.getPosition().clone();
 		// first we try to reuse old destination point
 		Point2D.Double pp = (Point2D.Double) destPoint.getPosition().clone();
@@ -90,18 +90,28 @@ public class waveSurfingMotion extends exactPathDangerMotion {
 				clockwise = false;
 			}
 			double R = pathLength*robocode.Rules.MAX_VELOCITY;
-			do {
+			boolean isOutside = false;
+			do { // until final point and the whole path outside of the battlefield
+				isOutside = false;
 				pp.x = myPos.x + R*Math.cos( a ); 
 				pp.y = myPos.y + R*Math.sin( a ); 
 				a += da; // we will move final point into battlefield
-			} while ( !physics.botReacheableBattleField.contains( pp ) );
-			pathTrial = new dangerPath( pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength ) );
+				if ( !physics.botReacheableBattleField.contains( pp ) ) {
+					// end destinatation outside of battlefield
+					isOutside = true;
+					continue;
+				}
+				// no we check if path has points outside the battlefield
+				pathTrial = new dangerPath( pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength ) );
+				isOutside = !pathTrial.isWithinBattleField();
+			} while ( isOutside );
 			pathTrial.calculateDanger( myBot, path.getDanger() ); // also find hit by wave point
+
 			pathTrial.shortenToWaveHit();
 			if ( path.getDanger() > pathTrial.getDanger() ) {
-				//logger.dbg("Choosing new path with danger = " + pathTrial.getDanger() + " and length " + pathTrial.size()); 
 				path = pathTrial;
 				destPoint = new dangerPoint( path.getLast().getPosition(), path.getLast().getDanger() );
+				//logger.dbg("Chosing new path with danger = " + path.getDanger() + " and length " + path.size() + " and aiming to point " + destPoint.getPosition());
 			}
 		}
 		profiler.stop( "waveSurfingMotion.choseNewPath" );
