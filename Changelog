@@ -73,6 +73,10 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v9.4
+
+- enhancement: prevent aligning of the bot along x-axis when it reaches final point
+
 ## v9.3
 
 - added waveSurfer motion (only one wave)
