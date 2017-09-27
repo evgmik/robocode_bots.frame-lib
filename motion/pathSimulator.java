@@ -26,15 +26,22 @@ public class pathSimulator {
 	}
 
 	public static driveCommand moveToPointDriveCommand( Point2D.Double fromPnt, double headingDegrees,  Point2D.Double destPnt ) {
-		double angle = math.shortest_arc( math.angle2pt( fromPnt, destPnt) - headingDegrees );
 		double dist = fromPnt.distance(destPnt);
-		if ( Math.abs(angle ) > 90 ) {
-			if (angle > 90 ) {
-				angle = angle - 180;
-			} else {
-				angle = angle + 180;
+		double angle = 0;
+		double distThreshold =.001;
+
+		if ( dist > distThreshold ) {
+			// angle make sense only when distance is significant
+			// otherwise the bot whants to sit along x-axis
+			angle = math.shortest_arc( math.angle2pt( fromPnt, destPnt) - headingDegrees );
+			if ( Math.abs(angle ) > 90 ) {
+				if (angle > 90 ) {
+					angle = angle - 180;
+				} else {
+					angle = angle + 180;
+				}
+				dist = -dist;
 			}
-			dist = -dist;
 		}
 		driveCommand _driveCommand = new driveCommand( angle, dist );
 		return _driveCommand;
