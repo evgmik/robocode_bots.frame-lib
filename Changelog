@@ -73,6 +73,10 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v9.5
+
+- Fixed wave surfer logic. Consider all points on a wave, not just the first one
+
 ## v9.4
 
 - enhancement: prevent aligning of the bot along x-axis when it reaches final point
