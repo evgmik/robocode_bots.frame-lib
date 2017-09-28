@@ -84,16 +84,22 @@ public class dangerPath implements Comparable<dangerPath> {
 	}
 
 	public void shortenToWaveHit() {
+		// shorten to the last wave hit
 		LinkedList<dangerPathPoint> shortPath = new LinkedList<dangerPathPoint>();
 		ListIterator<dangerPathPoint> iter = path.listIterator();
 		dangerPathPoint  dP;
 		int cnt = 0;
+		boolean waveAlreadyMet=false;
 		while (iter.hasNext()) {
 			cnt++;
 			dP = iter.next();
 			shortPath.add(dP);
-			if (dP.onTheWave)
+			if ( !dP.onTheWave && waveAlreadyMet) {
+				cnt--; // we reached point beyond the wave
 				break;
+			}
+			if ( dP.onTheWave )
+				waveAlreadyMet = true;
 		}
 		shortenTo( cnt );
 	}
