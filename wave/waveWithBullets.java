@@ -537,5 +537,10 @@ public class waveWithBullets extends wave {
 		for ( safetyCorridor sC : safetyCorridors ) {
 			drawSafetyCorridor(g, sC, time);
 		}
+		// plot Head on Line
+		g.setColor( new Color(0x00, 0x00, 0x00, 0x80) );
+		Point2D.Double endP = math.project( firedPosition, headOnAngle, getDistanceTraveledAtTime(time) );
+		Point2D.Double strtP = math.project( firedPosition, headOnAngle, getDistanceTraveledAtTime( Math.max( 0, time-2) ) );
+		graphics.drawLine( g, strtP,  endP );
 	}
 }
