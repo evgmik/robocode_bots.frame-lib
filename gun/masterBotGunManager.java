@@ -78,6 +78,7 @@ public class masterBotGunManager extends gunManager {
 
 				myBot.getGameInfo()._wavesManager.add( nW );
 				waveWithBullets wB = new waveWithBullets( nW );
+				wB.setTargetBot( targetBot );
 				for ( firingSolution fS: firingSolutions ) {
 					wB.addFiringSolution(fS);
 				}
