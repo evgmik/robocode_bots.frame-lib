@@ -17,6 +17,8 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 	List<KdTree.Entry<gfHit>> cluster = null;
 	String kdTreeGunBaseName = "kdtGF";
 	boolean useCachedKdCluster = true;
+	boolean timeDecay = false;
+	double decayRate = 1; // how much per turn a weight is decreased. 1 is no decay
 
 	public kdtreeGuessFactorGun() {
 		this( 400, 3 ); //default
@@ -30,14 +32,27 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 		this( neigborsNum, 3, antiGFavoider );
 	}
 
-	public kdtreeGuessFactorGun( int neigborsNum, int binsSumThreshold, boolean antiGFavoider ) {
-		this( neigborsNum, binsSumThreshold );
-		this.antiGFavoider = antiGFavoider;
+	public kdtreeGuessFactorGun timeDecayOn ( double decayRate ) {
+		timeDecay = true;
+		this.decayRate = decayRate;
+		this.setName();
+		return this;
+	}
+
+	public void setName() {
 		this.gunName ="";
+		if ( timeDecay ) 
+			this.gunName += "Decaying-";
 		if ( antiGFavoider ) 
 			this.gunName += "Anti-";
 
 		this.gunName +=  kdTreeGunBaseName + neigborsNum;
+	}
+
+	public kdtreeGuessFactorGun( int neigborsNum, int binsSumThreshold, boolean antiGFavoider ) {
+		this( neigborsNum, binsSumThreshold );
+		this.antiGFavoider = antiGFavoider;
+		setName();
 	}
 
 	public kdtreeGuessFactorGun( int neigborsNum, int binsSumThreshold ) {
@@ -98,6 +113,7 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 
 		//logger.dbg(getName() + " kdTree has " + tree.size() + " nodes");
 		int numGuessFactorBins = gfBins.length;
+		long tnow = fBot.getTime();
 		double bestDistance = Double.POSITIVE_INFINITY;
 		double dist = Double.POSITIVE_INFINITY;
 		double distThreshold = 0.2;
@@ -118,6 +134,11 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 			if ( cnt > neigborsNum ) break; // counted enough neighbors
 			scale =  binsSumThreshold; // if we here, at least 1 neighbor is found
 			double binW0 = neigbor.value.weight; // fixme do gf  weights  and distances
+			if ( timeDecay ) {
+				binW0 *= Math.pow( decayRate, tnow - neigbor.value.firedTime );
+				//logger.dbg("time decay = " + (tnow - neigbor.value.firedTime) + " weight change " + Math.pow( decayRate, tnow - neigbor.value.firedTime ) );
+
+			}
 			dist = Math.max( neigbor.distance, distThreshold );
 			binW0 *= scale;
 			binW0 *= bestDistance/dist;
