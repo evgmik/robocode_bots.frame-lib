@@ -75,7 +75,16 @@ done, this event is not provided for enemy bullets
 
 ## v9.6
 
+Logic modification
+- if we get hit by bullet, we immediately update firing GF danger in waves in the air
+  - hopefully my bot will not be hit by several bullet with the same GF in a row
+
 Enhancements
+- more efficient wave creation
+- simplified wave creation
+- Changed wave creation and update logic
+- use a common method to calculate enemy wave danger
+- added method to calculate incoming wave danger
 - added draft of time decay capabilities for kdTree gun (bad round border crossing)
 - record gfHit fired time for analysis
 - gfHit keeps track when it was fired
