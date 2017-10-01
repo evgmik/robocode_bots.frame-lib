@@ -73,6 +73,15 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v9.7
+
+Logic modification
+- enemy wave gf have contribution from real hits and visited gf, and not only real hits
+
+Enhancements
+- new helper class to do math with arrays
+- getGFdanger returns probability density instead of raw numbers
+
 ## v9.6
 
 Logic modification
