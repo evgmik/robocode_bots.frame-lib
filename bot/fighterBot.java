@@ -323,13 +323,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			//wB.copyGFarray( gfA );
 			// debug flattener gun ends
 
-			// set GF array with real hits gf
-			kdtreeGuessFactorGun g = new realHitsGun(10);
-			//kdtreeGuessFactorGun g = new kdtreeGuessFactorGun(50); // flattener?
-			//kdtreeGuessFactorGun g = new kdtreeGuessFactorGun(50,true); // anti-flattener?
-			LinkedList<firingSolution> gunfSols =  g.getFiringSolutions( eBot, this.getInfoBot(), w.getFiredTime(), w.getBulletEnergy() ); // this is a dummy but it sets tree point coord
-			double[] gfA=g.getGFdanger( eBot, this.getInfoBot() );
-			//logger.dbg(logger.arrayToTextPlot( gfA ) + " GF danger" );
+			double[] gfA=eBot.getGunManager().calcMyWaveGFdanger( this, w.getFiredTime(), w.getBulletEnergy() );
 			wB.copyGFarray( gfA );
 
 			LinkedList<firingSolution> fSolutions = eBot.getFiringSolutions( fBot, w.getFiredTime(), w.getBulletEnergy() );
