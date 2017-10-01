@@ -205,8 +205,29 @@ public class gunManager implements gunManagerInterface {
 						break;
 					}
 				}
+				// now we update all flying waves with realHit new dangers
+				// this should help master bot to shift from just hit GF
+				// otherwise this info will be used only in newly fired waves
+				// which is too late, since enemy tends to fire at the same GF
+				// for a while
+				for (waveWithBullets wB : myWaves ) {
+					if ( wB.equals( w ) ) {
+						continue;
+					}
+				}
 			}
 		}
+	}
+
+	public double[] calcMyWaveGFdanger( fighterBot tBot, long firedTime, double bulletEnergy ) {
+		// set GF array with real hits gf
+		kdtreeGuessFactorGun g = new realHitsGun(10);
+		//kdtreeGuessFactorGun g = new kdtreeGuessFactorGun(50); // flattener?
+		//kdtreeGuessFactorGun g = new kdtreeGuessFactorGun(50,true); // anti-flattener?
+		LinkedList<firingSolution> gunfSols =  g.getFiringSolutions( myBot, tBot.getInfoBot(), firedTime, bulletEnergy ); // this is a dummy but it sets tree point coord
+		double[] gfA=g.getGFdanger( myBot, tBot.getInfoBot() );
+		//logger.dbg(logger.arrayToTextPlot( gfA ) + " GF danger" );
+		return gfA;
 	}
 
 	public fighterBot getTarget() {
