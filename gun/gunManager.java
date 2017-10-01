@@ -149,6 +149,24 @@ public class gunManager implements gunManagerInterface {
 		gfH = new gfHit(iFlipped, binW);
 		gfH.firedTime = firedTime;
 		tree.addPoint( gTP.calcFlipedLateralVelocityPositionFromCoord(pntCoord), gfH ); // shall I decrease binW?
+
+		// now we update all flying waves with realHit new dangers
+		// this should help master bot to shift from just hit GF
+		// otherwise this info will be used only in newly fired waves
+		// which is too late, since enemy tends to fire at the same GF
+		// for a while
+		// FIXME non master bot do not track their waves!
+		// thus I comment out below
+		//for (waveWithBullets wB : myBot.myWaves ) {
+		fighterBot masterBot = myBot.getGameInfo().getFighterBot(myBot.getGameInfo().getMasterBot().getName());
+		for (waveWithBullets wB : masterBot.getEnemyWaves() ) {
+			if ( wB.getFiredBot().getName().equals( myBot.getName() ) ) {
+				// this wave belong to this bot
+				double[] gfA = calcMyWaveGFdanger( wB.getTargetBot(), wB.getFiredTime(), wB.getBulletEnergy() );
+				wB.copyGFarray( gfA );
+				wB.calcCombineDanger();
+			}
+		}
 	}
 
 	// someone hit the master bot
@@ -203,16 +221,6 @@ public class gunManager implements gunManagerInterface {
 						}
 
 						break;
-					}
-				}
-				// now we update all flying waves with realHit new dangers
-				// this should help master bot to shift from just hit GF
-				// otherwise this info will be used only in newly fired waves
-				// which is too late, since enemy tends to fire at the same GF
-				// for a while
-				for (waveWithBullets wB : myWaves ) {
-					if ( wB.equals( w ) ) {
-						continue;
 					}
 				}
 			}
