@@ -20,18 +20,19 @@ public class waveWithBullets extends wave {
 	protected double headOnAngle = 0;
 	protected double MEA = 0, posMEA=0, negMEA=0;
 	protected Color gfColor = new Color(0xff, 0x00, 0x00, 0x80);
-	protected int numGuessFactorBins = 31;
+	protected int numGuessFactorBins = 0;
 	protected double gfDangerWeight = 0.91; // 0 to 1, set high for GF flatteners or rambot avoidance
 	protected double fsDangerWeight = 1.0 - gfDangerWeight;
-	protected double[] gfDanger = new double[numGuessFactorBins];
-	protected double[] combGFdanger = new double[numGuessFactorBins];
-	protected double[] fsDanger = new double[numGuessFactorBins];
-	protected double[] shadows = new double[numGuessFactorBins];
+	protected double[] gfDanger = null;
+	protected double[] combGFdanger = null;
+	protected double[] fsDanger = null;
+	protected double[] shadows = null;
 	protected double meaMarkerLenth = 10;
 	protected double gfDangerMarkerScale = 300; // unity probability gives this length
 
-	public waveWithBullets( wave w ) {
+	public waveWithBullets( wave w, int numGuessFactorBins ) {
 		super( w.getFiredBot(), w.getFiredTime(), w.getBulletEnergy() );
+		setNumberOfGuessFactors( numGuessFactorBins );
 		for ( int i=0; i< numGuessFactorBins; i++ ) {
 			gfDanger[i] = 1./numGuessFactorBins;
 			fsDanger[i] = 0;
@@ -57,13 +58,20 @@ public class waveWithBullets extends wave {
 		return firingSolutions;
 	}
 
-	public void setTargetBotAndGFarray(fighterBot tBot, double[] gfSrc ) {
-		// Order is important since we need lateral velocity!
-		setTargetBot( tBot );
-		copyGFarray( gfSrc );
+	public waveWithBullets setNumberOfGuessFactors( int N ) {
+		numGuessFactorBins = N;
+		gfDanger = new double[numGuessFactorBins];
+		fsDanger = new double[numGuessFactorBins];
+		shadows = new double[numGuessFactorBins];
+		combGFdanger = new double[numGuessFactorBins];
+		return this;
 	}
 
-	public void setTargetBot(fighterBot tBot ) {
+	public fighterBot getTargetBot() {
+		return targetBot;
+	}
+
+	public waveWithBullets setTargetBot(fighterBot tBot ) {
 		targetBot = tBot;
 		if ( tBot != null ) {
 			botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
@@ -76,15 +84,10 @@ public class waveWithBullets extends wave {
 		} else {
 			targetLateralSpeedSignNoZero = 1;
 		}
+		return this;
 	}
 
 	public void copyGFarray(double[] gfSrc ) {
-		numGuessFactorBins = gfSrc.length;
-		gfDanger = new double[numGuessFactorBins];
-		fsDanger = new double[numGuessFactorBins];
-		shadows = new double[numGuessFactorBins];
-		combGFdanger = new double[numGuessFactorBins];
-
 		ArrayStats  stats = new ArrayStats( gfSrc );
 		gfDanger = stats.getProbDensity();
 		// fixme: do the flip in the caller, it is silly to do it here
@@ -98,7 +101,6 @@ public class waveWithBullets extends wave {
 			}
 
 		}
-		calcCombineDanger();
 	}
 
 	public void calcSafetyCorridorsShadowsGFpositions() {
@@ -169,10 +171,16 @@ public class waveWithBullets extends wave {
 		}
 	}
 
-	public void addFiringSolution( firingSolution fS ) {
-		firingSolutions.add(fS);
+	public void addFiringSolutions( LinkedList<firingSolution> firingSolutions ) {
+		for ( firingSolution fS: firingSolutions ) {
+			this.addFiringSolution(fS);
+		}
 		calcFiringSolutionGFdangers();
 		calcCombineDanger();
+	}
+
+	public void addFiringSolution( firingSolution fS ) {
+		firingSolutions.add(fS);
 	}
 
 	public void removeFiringSolution( firingSolution fS ) {
