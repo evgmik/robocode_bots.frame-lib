@@ -615,6 +615,24 @@ public class gunManager implements gunManagerInterface {
 		return unkownGunPerfRate;
 	}
 
+	public baseGun getBestGunAgainstBot( fighterBot targetBot ) {
+		baseGun bestGun = null;
+		double bestHitRate = Double.NEGATIVE_INFINITY;
+		String enemyName = targetBot.getName();
+		for ( baseGun g: gunList ) {
+			String2D key = new String2D( g.getName(), enemyName );
+			double hR = math.eventRate( hitByMyGun.getHashCounter( key ), firedAtEnemyByGun.getHashCounter( key ) );
+			if  (hR > bestHitRate ) {
+				bestHitRate = hR;
+				bestGun = g;
+			}
+		}
+		if ( bestGun == null ) {
+			logger.dbg("Error: best gun is null. Looks like gunList is empty.");
+		}
+		return bestGun;
+	}
+
 	public LinkedList<firingSolution> getFiringSolutions( fighterBot targetBot, long firingTime, double bulletEnergy ) {
 		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
 		// generate solutions for each gun
