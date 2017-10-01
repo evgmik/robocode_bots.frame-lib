@@ -73,6 +73,14 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v9.8
+
+Logic modification
+- visited stats danger, enables only if unknownGun perfroming better than a threshold
+
+Enhancements
+- added new method getBestGunAgainstBot
+
 ## v9.7
 
 Logic modification
