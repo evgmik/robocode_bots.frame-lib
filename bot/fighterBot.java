@@ -311,8 +311,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				// enemy bot do not count or use them
 				return;
 			}
-			waveWithBullets wB = new waveWithBullets( w );
-			wB.setTargetBotAndGFarray( this, eBot.getGunManager().getGuessFactors( this.getName() ) );
+			waveWithBullets wB = new waveWithBullets( w, eBot.getGunManager().getGuessFactosrBinNum() );
+			wB.setTargetBot( this );
 			// debug flattener GF starts
 			// assigns a random "safety" within MEA
 			//double[] gfA = eBot.getGunManager().getGuessFactors( this.getName() );
@@ -327,8 +327,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			wB.copyGFarray( gfA );
 
 			LinkedList<firingSolution> fSolutions = eBot.getFiringSolutions( fBot, w.getFiredTime(), w.getBulletEnergy() );
+			wB.addFiringSolutions( fSolutions );
 			for ( firingSolution fS: fSolutions ) {
-				wB.addFiringSolution(fS);
 				eBot.getGunManager().incrFiredAtEnemyByGun(fS);
 			}
 			// unknown gun does not make solutions so it had to be forced in
@@ -350,7 +350,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			//safetyCorridor sCrand = new safetyCorridor( rA, rA+4);
 			//wB.removeFiringSolutionsInSafetyCorridor( sCrand );
 			//wB.addToSafetyCorridors( sCrand );
-
+			
+			wB.calcCombineDanger();
 			enemyWaves.add(wB);
 			// calculate time when wave hits us if we do not move
 			long hitTime = (long) (w.getFiredTime() + w.getTimeToReach( fBot.getPosition() ) );
