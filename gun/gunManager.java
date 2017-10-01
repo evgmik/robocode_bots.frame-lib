@@ -228,14 +228,21 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public double[] calcMyWaveGFdanger( fighterBot tBot, long firedTime, double bulletEnergy ) {
+		double realHitsWeight = 0.8;
 		// set GF array with real hits gf
-		kdtreeGuessFactorGun g = new realHitsGun(10);
-		//kdtreeGuessFactorGun g = new kdtreeGuessFactorGun(50); // flattener?
-		//kdtreeGuessFactorGun g = new kdtreeGuessFactorGun(50,true); // anti-flattener?
-		LinkedList<firingSolution> gunfSols =  g.getFiringSolutions( myBot, tBot.getInfoBot(), firedTime, bulletEnergy ); // this is a dummy but it sets tree point coord
-		double[] gfA=g.getGFdanger( myBot, tBot.getInfoBot() );
-		//logger.dbg(logger.arrayToTextPlot( gfA ) + " GF danger" );
-		return gfA;
+		kdtreeGuessFactorGun g = null;
+		g = new realHitsGun(10); // real hits avoidance
+		g.getFiringSolutions( myBot, tBot.getInfoBot(), firedTime, bulletEnergy ); // this is a dummy but it sets tree point coordinates
+		ArrayWithMath gfA = new ArrayWithMath( g.getGFdanger( myBot, tBot.getInfoBot() ) );
+
+		g = new kdtreeGuessFactorGun(50); // visited GF avoidance
+		g.getFiringSolutions( myBot, tBot.getInfoBot(), firedTime, bulletEnergy ); // this is a dummy but it sets tree point coordinates
+		ArrayWithMath visitsGF = new ArrayWithMath( g.getGFdanger( myBot, tBot.getInfoBot() ) );
+		gfA.multiplyBy( realHitsWeight );
+		visitsGF.multiplyBy( 1-realHitsWeight );
+		gfA.plus( visitsGF );
+
+		return gfA.bins;
 	}
 
 	public fighterBot getTarget() {
