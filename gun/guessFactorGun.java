@@ -63,7 +63,8 @@ public class guessFactorGun extends baseGun {
 
 	public double[] getGFdanger( fighterBot fBot, InfoBot tBot ) {
 		double[] gf= getRelevantGF( fBot, tBot );
-		return gf;
+		ArrayStats stats = new ArrayStats( gf );
+		return stats.getProbDensity();
 	}
 
 	protected double[] getRelevantGF( fighterBot fBot, InfoBot tBot ) {
