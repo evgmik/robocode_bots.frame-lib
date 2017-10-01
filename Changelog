@@ -73,6 +73,15 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v9.6
+
+Enhancements
+- added draft of time decay capabilities for kdTree gun (bad round border crossing)
+- record gfHit fired time for analysis
+- gfHit keeps track when it was fired
+- wave with bullets marks head on direction
+- master bot set wave target when fires
+
 ## v9.5
 
 - Fixed wave surfer logic. Consider all points on a wave, not just the first one
