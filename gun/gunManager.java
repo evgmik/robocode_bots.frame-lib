@@ -228,19 +228,33 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public double[] calcMyWaveGFdanger( fighterBot tBot, long firedTime, double bulletEnergy ) {
-		double realHitsWeight = 0.8;
+		double realHitsWeight = 1.0;
+		baseGun bestGun = getBestGunAgainstBot( tBot );
+	        if (
+				!myBot.isItMasterBotDriver() 
+				&& bestGun.getName().equals("unknownGun")
+				&& (getUnknownGunPerformanceAgainstBot(  tBot ) > 0.05)
+		) {
+			//logger.dbg("reducing real hits weight, unknown gun performance is " + getUnknownGunPerformanceAgainstBot(  tBot ) );
+			// looks like the enemy fire at the master bullets which
+			// we can't predict, let's give more weight to visited stats
+			// and reduce realHitsWeight
+			realHitsWeight = 0.8;
+		}
 		// set GF array with real hits gf
 		kdtreeGuessFactorGun g = null;
 		g = new realHitsGun(10); // real hits avoidance
 		g.getFiringSolutions( myBot, tBot.getInfoBot(), firedTime, bulletEnergy ); // this is a dummy but it sets tree point coordinates
 		ArrayWithMath gfA = new ArrayWithMath( g.getGFdanger( myBot, tBot.getInfoBot() ) );
 
-		g = new kdtreeGuessFactorGun(50); // visited GF avoidance
-		g.getFiringSolutions( myBot, tBot.getInfoBot(), firedTime, bulletEnergy ); // this is a dummy but it sets tree point coordinates
-		ArrayWithMath visitsGF = new ArrayWithMath( g.getGFdanger( myBot, tBot.getInfoBot() ) );
-		gfA.multiplyBy( realHitsWeight );
-		visitsGF.multiplyBy( 1-realHitsWeight );
-		gfA.plus( visitsGF );
+		if ( realHitsWeight < 1.0 ) {
+			g = new kdtreeGuessFactorGun(10); // visited GF avoidance
+			g.getFiringSolutions( myBot, tBot.getInfoBot(), firedTime, bulletEnergy ); // this is a dummy but it sets tree point coordinates
+			ArrayWithMath visitsGF = new ArrayWithMath( g.getGFdanger( myBot, tBot.getInfoBot() ) );
+			gfA.multiplyBy( realHitsWeight );
+			visitsGF.multiplyBy( 1-realHitsWeight );
+			gfA.plus( visitsGF );
+		}
 
 		return gfA.bins;
 	}
