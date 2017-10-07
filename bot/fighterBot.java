@@ -370,6 +370,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		} else {
 			firedCount++;
 			_gunManager.incrFiredCount();
+			_gunManager.setLastFiredBullet( w.getBulletEnergy() );
 			//logger.dbg("Detecting my own wave");
 		}
 	}

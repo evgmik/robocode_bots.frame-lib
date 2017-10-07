@@ -30,6 +30,7 @@ public class gunManager implements gunManagerInterface {
 	long fireAtTime = -9999; // gun manager will set this time
 	LinkedList<firingSolution> firingSolutions = new LinkedList<firingSolution>();
 	firingSolution bestFiringSolution = null;
+	double lastFiredfBulletEnergy = robocode.Rules.MAX_BULLET_POWER;
 
 	public HashCounter<String> hitByOther = new HashCounter<String>();
 	public HashCounter<String> hitByMe = new HashCounter<String>();
@@ -607,6 +608,14 @@ public class gunManager implements gunManagerInterface {
 
 	public void incrFiredCount() {
 		firedCount++;
+	}
+
+	public void setLastFiredBullet(double bulletEnergy ) {
+		lastFiredfBulletEnergy = bulletEnergy;
+	}
+
+	public double getLastFiredBullet() {
+		return lastFiredfBulletEnergy;
 	}
 
 	public void incrFiredAtEnemyByGun(firingSolution fS) {
