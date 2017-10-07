@@ -52,6 +52,10 @@ public class physics {
 		return (int) Math.ceil( heat/gunCoolingRate );
 	}
 
+	public static int gunHeat( double bulletEnergy ) {
+		return (int) Math.ceil( 1.0 + (bulletEnergy / 5)); 
+	}
+
 	public static double bulletSpeed( double firePower ) {
 		if ( firePower > maximalAllowedBulletEnergy ) {
 			logger.warning("bulletSpeed(): Forbiden bullet energy requested: " + firePower + " > " + maximalAllowedBulletEnergy);
@@ -75,6 +79,14 @@ public class physics {
 		bDamage = Rules.getBulletDamage(bEnergy);
 		return bDamage;
 	}
+
+	public static double  bulletGiveBackByEnergy( double bEnergy ) {
+		double bDamage;
+		//bDamage = 3*bEnergy ; // see source
+		bDamage = Rules.getBulletHitBonus(bEnergy);
+		return bDamage;
+	}
+
 
 	public static double  bulletScoreBonusEnergy( double bEnergy ) {
 		// so far it is the same as Rules.getBulletDamage
