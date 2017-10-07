@@ -52,8 +52,9 @@ public class physics {
 		return (int) Math.ceil( heat/gunCoolingRate );
 	}
 
-	public static int gunHeat( double bulletEnergy ) {
-		return (int) Math.ceil( 1.0 + (bulletEnergy / 5)); 
+	public static double gunHeat( double bulletEnergy ) {
+		//(1.0 + (bulletEnergy / 5));  // see code
+		return Rules.getGunHeat( bulletEnergy);
 	}
 
 	public static double bulletSpeed( double firePower ) {
