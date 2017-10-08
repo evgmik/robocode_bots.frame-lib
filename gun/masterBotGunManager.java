@@ -261,14 +261,62 @@ public class masterBotGunManager extends gunManager {
 
 		bulletEnergy = Math.max( bulletEnergy, robocode.Rules.MIN_BULLET_POWER );
 		double energySurplus = myBot.getEnergy() - mostEnergeticEnemy.getEnergy();
-		if ( false ) { // looks like below is bad idea 1on1 performance drops a lot
+		if ( true ) { // looks like below is bad idea 1on1 performance drops a lot
 		if ( myBot.getEnemyBots().size() == 1 ) {
 			// if we below enemy energy we need to shoot to survive 
 			// since smart one will stop firing and we are screwed
 			// but we need to fire lower energy in a hope to get even
-			if ( energySurplus < 0 ) {
-				logger.dbg("tic " + myBot.getTime() + ": under cutting energy");
-				bulletEnergy = robocode.Rules.MIN_BULLET_POWER;
+			double enemyBullet = mostEnergeticEnemy.getGunManager().getLastFiredBullet();
+			double myEnergyDrain = 0;
+			double enemyEnergyDrain = 0;
+
+			double diffDrain = 0;
+			double myTimeToDie = Double.POSITIVE_INFINITY;
+			double enemyTimeToDie = Double.POSITIVE_INFINITY;
+
+			double firstEstimateBulletEnergy = bulletEnergy;
+			bulletEnergy *=2;
+			do {
+				bulletEnergy /= 2;
+				bulletEnergy = Math.max( bulletEnergy, robocode.Rules.MIN_BULLET_POWER );
+				myEnergyDrain = energyDrainPerTickByEnemy(enemyBullet, mostEnergeticEnemy) - energyGainPerTickFromEnemy( bulletEnergy, mostEnergeticEnemy);
+				enemyEnergyDrain = mostEnergeticEnemy.getGunManager().energyDrainPerTickByEnemy(bulletEnergy, myBot) - mostEnergeticEnemy.getGunManager().energyGainPerTickFromEnemy( enemyBullet, myBot);
+				diffDrain = myEnergyDrain - enemyEnergyDrain;
+				myTimeToDie = myBot.getEnergy()/myEnergyDrain;
+				enemyTimeToDie = mostEnergeticEnemy.getEnergy()/enemyEnergyDrain;
+				if ( myBot.getEnergy() > 80 ) {
+					// nothing to worry yet 
+					// and helps against ram bots
+					break; 
+				}
+				if ( energySurplus >0 && diffDrain < 0) {
+					break; // nothing to worry
+				}
+				if ( energySurplus >0 && diffDrain > 0) {
+					if ( ( energySurplus / Math.max(diffDrain,0.01) ) > Math.max(2*enemyTimeToDie, 200) ) {
+						// can we maintain energySurplus long enough
+						break;
+					}
+
+				}
+				if ( energySurplus <0 ) {
+					bulletEnergy = robocode.Rules.MIN_BULLET_POWER;
+				}
+				if (myTimeToDie > enemyTimeToDie - 200) {
+					// we will outlive the enemy
+					break;
+				}
+				//logger.dbg("my energy drain = " + myEnergyDrain + " enemy energy drain = " + enemyEnergyDrain );
+				//logger.dbg("myEnergy = " + myBot.getEnergy() + " myTimeToDie = " + myTimeToDie + " enemyTimeToDie = " + enemyTimeToDie );
+				//logger.dbg("tic " + myBot.getTime() + ": under cutting bullet energy = " + bulletEnergy);
+			} while ( bulletEnergy > robocode.Rules.MIN_BULLET_POWER );
+			if ( (energySurplus < -10 ) && (myTimeToDie > 0) && (enemyTimeToDie > 0 ) && (myTimeToDie < enemyTimeToDie - myTimeToDie*.3) ) {
+				// looks like we screwed, enemy will outlive us
+				// let's drain our energy as quickly as possible
+				// so the enemy will not get damage points
+				//logger.dbg("my energy drain = " + myEnergyDrain + " enemy energy drain = " + enemyEnergyDrain );
+				//logger.dbg("myEnergy = " + myBot.getEnergy() + " my bullet energy = " + bulletEnergy + " myTimeToDie = " + myTimeToDie + " enemyTimeToDie = " + enemyTimeToDie );
+				bulletEnergy = Math.min(firstEstimateBulletEnergy, myBot.getEnergy()-.01);
 			}
 		}
 		}
@@ -301,6 +349,7 @@ public class masterBotGunManager extends gunManager {
 			bulletEnergy = -1; // negative = no fire
 		}
 
+		//logger.dbg("calculated bulletEnergy = " + bulletEnergy);
 		return bulletEnergy;
 	}
 
