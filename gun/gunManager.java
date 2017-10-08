@@ -521,6 +521,39 @@ public class gunManager implements gunManagerInterface {
 		}
 	}
 
+	public double energyGainPerTickFromEnemy(double myBulletEnergy, fighterBot enemyBot) {
+		double myTimePerFire = (double) physics.gunCoolingTime(physics.gunHeat(myBulletEnergy));
+		//logger.dbg("my time per fire = " + myTimePerFire + " for bullet energy = " + myBulletEnergy );
+		// energy drain by the act of firing
+		double myEnergyDrain = myBulletEnergy/myTimePerFire;
+
+		double myProbToHit   = enemyHitRate( enemyBot );
+
+		// how much are we getting back for hitting other bot
+		myEnergyDrain += - myProbToHit*physics.bulletGiveBackByEnergy( myBulletEnergy )/myTimePerFire;
+		return  -myEnergyDrain; // gain = -drain
+	}
+	public double energyDrainPerTickByEnemy(double enemyBullet, fighterBot enemyBot) {
+		double enemyTimePerFire = (double) physics.gunCoolingTime(physics.gunHeat(enemyBullet));
+		// energy drain by the act of firing
+		double enemyProbToHit   = enemyBot.getGunManager().enemyHitRate( enemyBot );
+		// energy drain by enemy fire
+		double myEnergyDrain =  enemyProbToHit*physics.bulletDamageByEnergy(enemyBullet)/enemyTimePerFire;
+		return myEnergyDrain;
+	}
+
+	public double enemyHitRate(fighterBot enemyBot) {
+		String eName = enemyBot.getName();
+		Integer fCnt;
+		fCnt = firedAt.getHashCounter( eName );
+		if ( fCnt == 0 ) {
+			// we have no clue to whom we fired
+			// using total firedCount
+			fCnt = firedCount;
+		}
+		return math.eventRate( hitByMe.getHashCounter( eName ), fCnt );
+	}
+
 	public void reportHitByMe(){
 		logger.routine("hit rate for the following bot(s) out of " + firedCount + " shots");
 		for ( fighterBot fB: myBot.getAllKnownEnemyBots() ) {
