@@ -73,6 +73,20 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v10.0
+
+Logic modification
+- smart energy management, attempt to survive instead of fire energetic bullets
+
+Enhancements
+- keep track of last fired bullet energy
+- new functions:
+  - energyGainPerTickFromEnemy
+  - energyDrainPerTickByEnemy
+  - enemyHitRate
+  - gunHeat
+  - bulletGiveBackByEnergy
+
 ## v9.8
 
 Logic modification
