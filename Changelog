@@ -73,6 +73,11 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v10.1
+
+Logic modification
+- less agressive survival
+
 ## v10.0
 
 Logic modification
