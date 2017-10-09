@@ -138,7 +138,7 @@ public class waveWithBullets extends wave {
 			if ( corridorsCoverage > 0 ) {
 				// shadows proportional to coverage:
 				// 1 means that a bot in this position fully covered by  safety corridors
-				shadows[i] = Math.max( corridorsCoverage/botShadowSize, 1);
+				shadows[i] = Math.min( corridorsCoverage/botShadowSize, 1);
 			}
 		}
 	}
