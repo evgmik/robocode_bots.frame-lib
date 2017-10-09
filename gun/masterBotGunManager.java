@@ -316,9 +316,9 @@ public class masterBotGunManager extends gunManager {
 				// looks like we screwed, enemy will outlive us
 				// let's drain our energy as quickly as possible
 				// so the enemy will not get damage points
-				//logger.dbg("my energy drain = " + myEnergyDrain + " enemy energy drain = " + enemyEnergyDrain );
-				logger.dbg("myEnergy = " + myBot.getEnergy() + " my bullet energy = " + bulletEnergy + " enemyBullet = " + enemyBullet + " myTimeToDie = " + myTimeToDie + " enemyTimeToDie = " + enemyTimeToDie );
 				//logger.dbg("tic " + myBot.getTime() + " looks like we are going to lose, betting on high energy bullets");
+				//logger.dbg("my energy drain = " + myEnergyDrain + " enemy energy drain = " + enemyEnergyDrain );
+				//logger.dbg("myEnergy = " + myBot.getEnergy() + " my bullet energy = " + bulletEnergy + " enemyBullet = " + enemyBullet + " myTimeToDie = " + myTimeToDie + " enemyTimeToDie = " + enemyTimeToDie );
 				bulletEnergy = Math.min(firstEstimateBulletEnergy, myBot.getEnergy()-.01);
 				logger.dbg("setting bullet to " + bulletEnergy );
 			}
