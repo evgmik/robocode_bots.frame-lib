@@ -76,6 +76,15 @@ done, this event is not provided for enemy bullets
 ## v10.1
 
 Logic modification
+- fixed bugs in bullets' safety corridor logic
+- remove safety corridor requirement to be large
+
+Enhancements
+- added bulletShieldGun (currently unused)
+
+## v10.1
+
+Logic modification
 - less agressive survival
 
 ## v10.0
