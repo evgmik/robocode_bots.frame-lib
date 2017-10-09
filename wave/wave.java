@@ -179,70 +179,31 @@ public class wave {
 
 	public safetyCorridor getSafetyCorridor( firingSolution fS) {
 		// safety corridor made by a bullet shadow from firingSolution fS.
-
-		Point2D.Double fSStartPos = fS.getFiringPositon();
-		double v2 = fS.getBulletSpeed();
-		double v1 = bulletSpeed;
-		long t2 = fS.getFiredTime();
-		long dT = t2 - firedTime;
-
-		double d = firedPosition.distance( fSStartPos );
-
-		double theta2 = 180 - fS.getFiringAngle() + math.angle2pt( firedPosition, fSStartPos );
-
-		// setting up quadratic equation a*t^2 + b*t + c = 0
-		double a = v2*v2 - v1*v1;
-		double b = -2*(d*v2*Math.cos( Math.toRadians( theta2 ) ) + v1*v1*dT );
-		double c = d*d - v1*v1*dT*dT;
-
-		LinkedList<Double> tCrossList = new LinkedList<Double>();
-
-		// solving the quadratic equation
-		if ( (a == 0) && (b != 0) ) {
-			tCrossList.add( -c/b);
-		} else if ( a != 0 ) {
-			double Det = b*b - 4*a*c;
-			if ( Det >= 0 ) {
-				double sqrtDet = Math.sqrt( Det );
-				tCrossList.add( t2 + (-b + sqrtDet)/2/a );
-				tCrossList.add( t2 + (-b - sqrtDet)/2/a );
-			}
-		}
-
-		// pick physical solutions and closest in time to the firedTimes
-		double tmin = Double.POSITIVE_INFINITY;
-		boolean haveSolution = false;
-		for ( Double t : tCrossList ) {
-			if ( (t < t2) && (t < firedTime) ) {
-				// unphysical solution
-				// we should remove
-			} else if (t < tmin ) {
-				tmin = t;
-				haveSolution = true;
-			}
-		}
-
-		if ( ((tmin - t2) <= 2) || ((tmin - firedTime) <=2) ) {
-			// one of the bullets is inside a bot
-			// TODO: be more smart about travel time inside a bot body
-			// replace 2 with physics.robotHalfDiagonal/bulletSpeed
-			// and it should depend on bullet or wave speed
-			haveSolution = false;
-		}
-
 		safetyCorridor sC = null;
 
-		if ( haveSolution ) {
-			Point2D.Double fsPos1 = fS.getLocationAt ( tmin );
-			Point2D.Double fsPos2 = fS.getLocationAt ( (long) Math.floor(tmin+1) );
+		long t = Math.max( firedTime, fS.getFiredTime());
+		double d = 0;
+		double dist = firedPosition.distance( fS.getLocationAt ( t ) ) - getDistanceTraveledAtTime(t);
+		if ( dist > 0 ) {
+			long tmax = t+20;
+			double distPrev = Double.NEGATIVE_INFINITY;
+			do {
+				t++ ;
+				distPrev = dist;
+				dist = firedPosition.distance( fS.getLocationAt ( t ) ) - getDistanceTraveledAtTime(t);
+			} while (dist > 0 && (dist < distPrev) && (t < tmax) );
+			if ( dist < distPrev ) {
+				// firing solution was approaching wave firing point
+				Point2D.Double fsPos1 = fS.getLocationAt ( t );
+				Point2D.Double fsPos2 = fS.getLocationAt ( t-1 );
 
-			double hitAngle1 = math.angle2pt( firedPosition, fsPos1 );
-			double hitAngle2 = math.angle2pt( firedPosition, fsPos2 );
+				double hitAngle1 = math.angle2pt( firedPosition, fsPos1 );
+				double hitAngle2 = math.angle2pt( firedPosition, fsPos2 );
 
-			sC = new safetyCorridor( hitAngle1, hitAngle2);
-			sC.normalize();
+				sC = new safetyCorridor( hitAngle1, hitAngle2);
+				sC.normalize();
+			} 
 		}
-
 		return sC; 
 	}
 
