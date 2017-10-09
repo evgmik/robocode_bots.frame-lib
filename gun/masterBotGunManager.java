@@ -320,7 +320,7 @@ public class masterBotGunManager extends gunManager {
 				//logger.dbg("my energy drain = " + myEnergyDrain + " enemy energy drain = " + enemyEnergyDrain );
 				//logger.dbg("myEnergy = " + myBot.getEnergy() + " my bullet energy = " + bulletEnergy + " enemyBullet = " + enemyBullet + " myTimeToDie = " + myTimeToDie + " enemyTimeToDie = " + enemyTimeToDie );
 				bulletEnergy = Math.min(firstEstimateBulletEnergy, myBot.getEnergy()-.01);
-				logger.dbg("setting bullet to " + bulletEnergy );
+				//logger.dbg("setting bullet to " + bulletEnergy );
 			}
 		}
 		}
