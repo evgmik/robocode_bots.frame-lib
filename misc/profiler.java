@@ -69,6 +69,7 @@ public class profiler {
 			       	str += " min " + profTimeString(p.minExecTime);
 			       	str += ", average " + profTimeString(p.totalExecTime/p.numExec);
 			       	str += ", max " + profTimeString(p.maxExecTime);
+			       	str += ", total " + profTimeString(p.totalExecTime);
 			} else {
 				str += "Method " + methodName + " was never executed";
 			}
