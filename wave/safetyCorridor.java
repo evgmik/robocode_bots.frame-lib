@@ -74,7 +74,7 @@ public class safetyCorridor {
 	public safetyCorridor getJoin( safetyCorridor sC ) {
 		// joins two corridors
 		// IMPORTANT: it assume that there is an overlap
-		profiler.start( "getJoin" );
+		//profiler.start( "getJoin" );
 
 		safetyCorridor sCjoin = null;
 
@@ -91,7 +91,7 @@ public class safetyCorridor {
 		sCjoin = new safetyCorridor( minEnd + refAngle, maxEnd + refAngle);
 		sCjoin.normalize();
 
-		profiler.stop( "getJoin" );
+		//profiler.stop( "getJoin" );
 		return sCjoin;
 	}
 
