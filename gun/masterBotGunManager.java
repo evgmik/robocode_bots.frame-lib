@@ -124,6 +124,7 @@ public class masterBotGunManager extends gunManager {
 		profiler.start( "rankAimAtAllSolutions" );
 
 		//first we rank firing solution based on target bot weights
+		if (  myBot.getEnemyBots().size() > 1 ) {
 		for ( firingSolution fS1 : fSols ) {
 			String tName1 = fS1.getTargetBotName();
 			double gunPerf = fS1.getQualityOfSolution();
@@ -145,6 +146,7 @@ public class masterBotGunManager extends gunManager {
 			//w *= gunPerfW;
 
 			fS1.setQualityOfSolution( w );
+		}
 		}
 		if ( useAngleDistribution ) { //disable angle normalization
 			rankSolutionsBasedOnAngleDistribution( bestTargetBot, fSols, bulletEnergy );
