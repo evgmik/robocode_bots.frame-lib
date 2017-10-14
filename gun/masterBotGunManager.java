@@ -225,8 +225,12 @@ public class masterBotGunManager extends gunManager {
 		profiler.start( "gunManagerManage" );
 		askRadarToTrack();
 		fireTheGunIfShould();
+		profiler.start( "gunManagerManage.findTheBestTarget" );
 		targetBot = findTheBestTarget();
+		profiler.stop( "gunManagerManage.findTheBestTarget" );
+		profiler.start( "gunManagerManage.aimTheGun" );
 		aimTheGun();
+		profiler.stop( "gunManagerManage.aimTheGun" );
 		profiler.stop( "gunManagerManage" );
 	}
 
