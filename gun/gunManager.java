@@ -588,6 +588,8 @@ public class gunManager implements gunManagerInterface {
 			str = "  ";
 			String enemyName = b.getName();
 			str += String.format( "%25s", enemyName );
+			hitRateArray = new ArrayList<Double>();
+			bestHitRate = Double.NEGATIVE_INFINITY;
 			for ( baseGun g: gunList ) {
 				String2D key = new String2D( g.getName(), enemyName );
 				str += String.format( "%25s", logger.hitRateFormat( hitByMyGun.getHashCounter( key ), firedAtEnemyByGun.getHashCounter( key ) ) );
