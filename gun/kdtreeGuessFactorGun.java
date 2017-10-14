@@ -86,6 +86,7 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 
 	protected List<KdTree.Entry<gfHit>> calculateNearestNeighborsCluster( fighterBot fBot, InfoBot tBot ) {
 		KdTree<gfHit> tree = getKdTree( fBot, tBot );
+		//logger.dbg(getName() + " of " + fBot.getName() + " kdTree has " + tree.size() + " nodes against " + tBot.getName());
 		double[] coord = getTreePointCoord();
 		if ( coord == null ) {
 			logger.error("error: this should not happen -  coord for KdTree is null");
@@ -111,7 +112,6 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 		}
 		// FIXME: smoothing can be cached, high N neighbors gun already did it
 
-		//logger.dbg(getName() + " kdTree has " + tree.size() + " nodes");
 		int numGuessFactorBins = gfBins.length;
 		long tnow = fBot.getTime();
 		double bestDistance = Double.POSITIVE_INFINITY;
