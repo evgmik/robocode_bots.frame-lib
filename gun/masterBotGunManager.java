@@ -81,6 +81,10 @@ public class masterBotGunManager extends gunManager {
 				wB.setTargetBot( targetBot );
 				wB.addFiringSolutions( firingSolutions );
 				myBot.myWaves.add(wB);
+			} else {
+				// fire virtual wave
+				wave nW = new wave( myBot.getInfoBot(), myBot.getTime(), bestFiringSolution.bulletEnergy );
+				myBot.getGameInfo()._wavesManager.add( nW );
 			}
 		}
 	}
