@@ -27,10 +27,10 @@ public class profiler {
 		profiler p = profilers.get(methodName);
 		if ( p == null ) {
 			p = new profiler();
+			profilers.put(methodName, p );
 		}
 		p.startTime = System.nanoTime();
 		p.isActive = true;
-		profilers.put(methodName, p );
 	}
 
 	public static void stop( String methodName ) {
