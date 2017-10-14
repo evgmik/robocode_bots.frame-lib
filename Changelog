@@ -73,6 +73,24 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v10.3
+
+Logic modification
+- master bot fires virtual waves each tic
+- relaxing corridor overlap check
+- small speed up for 1on1 case
+
+Enhancements
+- profiler outputs total exec time
+- a bit of speedup of profiler start code
+
+Bug fix
+- wrong gun stats report
+
+## v10.2
+
+Skipped
+
 ## v10.1
 
 Logic modification
