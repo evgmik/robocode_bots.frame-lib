@@ -724,7 +724,9 @@ public class gunManager implements gunManagerInterface {
 		double [] treeCoord =  gTP.getPosition();
 		for ( baseGun g : gunList ) {
 			// note getTime()+1, the fire command is executed at next tic
+			//profiler.start("getFiringSolutions for " + g.getName() + " " + targetBot.getName() );
 			LinkedList<firingSolution> gunfSols =  g.getFiringSolutions( myBot, targetBot.getInfoBot(), firingTime, bulletEnergy );
+			//profiler.stop("getFiringSolutions for " + g.getName() + " " + targetBot.getName() );
 
 			String2D key = new String2D( g.getName(), targetBot.getName() );
 			double gunPerfRate = math.perfRate( hitByMyGun.getHashCounter(key) , firedAtEnemyByGun.getHashCounter(key) );
