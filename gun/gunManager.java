@@ -572,39 +572,51 @@ public class gunManager implements gunManagerInterface {
 	public void reportMyGunStats() {
 		String fightType = myBot.getGameInfo().fightType();
 		String2D bestGunKey = new String2D();
+		baseGun   bestGun = new baseGun();
 		double bestHitRate = Double.NEGATIVE_INFINITY;
 		ArrayList<Double> hitRateArray = new ArrayList<Double>();
 	        gunList = gunListForGameType.get( fightType );
 		// FIXME: some wave are still flying and are not fully accounted
-		logger.routine("  My virtual gun hit rate stats stats");
-		String str = "  ";
+		String marginStr="  ";
+		logger.routine(marginStr + "My virtual gun hit rate stats stats");
+		String histStr = "";
 		// make headers
-		str += String.format( "%25s", "enemy name" );
+		String str = marginStr;
+		str += String.format( "%30s", "enemy name" );
+		str += String.format( "%25s", "BestGunAgainst" );
 		for ( baseGun g: gunList ) {
 			str += String.format( "%25s", g.getName() );
 		}
 		logger.routine( str );
 		for ( fighterBot b: myBot.getAllKnownEnemyBots() ) {
-			str = "  ";
 			String enemyName = b.getName();
-			str += String.format( "%25s", enemyName );
 			hitRateArray = new ArrayList<Double>();
 			bestHitRate = Double.NEGATIVE_INFINITY;
+			String otherGunsStr = "";
 			for ( baseGun g: gunList ) {
 				String2D key = new String2D( g.getName(), enemyName );
-				str += String.format( "%25s", logger.hitRateFormat( hitByMyGun.getHashCounter( key ), firedAtEnemyByGun.getHashCounter( key ) ) );
+				otherGunsStr += String.format( "%25s", logger.hitRateFormat( hitByMyGun.getHashCounter( key ), firedAtEnemyByGun.getHashCounter( key ) ) );
 				double hR = math.eventRate( hitByMyGun.getHashCounter( key ), firedAtEnemyByGun.getHashCounter( key ) );
 				hitRateArray.add( hR) ;
 				if  (hR > bestHitRate ) {
+					bestGun = g;
 					bestHitRate = hR;
 					bestGunKey = new String2D( g.getName(), enemyName );
 				}
 
 			}
+			str = marginStr;
+			str += String.format( "%30s", enemyName );
+			str += String.format( "%25s", bestGun.getName() );
+			str += otherGunsStr;
 			logger.routine( str );
-			logger.routine( "Guns hit rates against " +  enemyName + " " + logger.arrayToTextPlot( hitRateArray.toArray(new Double[hitRateArray.size()] ) ) ); 
-			logger.routine ("Best gun against " +  enemyName + ": " + bestGunKey.getX() + " with hit rate " + logger.hitRateFormat( hitByMyGun.getHashCounter( bestGunKey ), firedAtEnemyByGun.getHashCounter( bestGunKey ) ));
+			histStr += marginStr;
+			histStr += String.format( "%30s", enemyName );
+			histStr += logger.arrayToTextPlot( hitRateArray.toArray(new Double[hitRateArray.size()] ) );
+			histStr += "\n";
+
 		}
+		logger.routine ( histStr );
 	}
 
 	public void reportEnemyGunStats() {
