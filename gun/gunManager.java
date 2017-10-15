@@ -691,20 +691,12 @@ public class gunManager implements gunManagerInterface {
 		return bestGun;
 	}
 
-	public LinkedList<firingSolution> getFiringSolutions( fighterBot targetBot, long firingTime, double bulletEnergy ) {
-		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
-		// generate solutions for each gun
-		for ( baseGun g : gunList ) {
-			// note getTime()+1, the fire command is executed at next tic
-			LinkedList<firingSolution> gunfSols =  g.getFiringSolutions( myBot, targetBot.getInfoBot(), firingTime, bulletEnergy );
-			String2D key = new String2D( g.getName(), targetBot.getName() );
-			gunTreePoint gTP = new gunTreePoint(
-					myBot,
-					targetBot.getInfoBot(),
-					firingTime, bulletEnergy
-					);
-			double [] treeCoord =  gTP.getPosition();
-			KdTree<gunHitMissLog> tree = getGunHitMissKDTree( key );
+	public double refineGunPerformanceBasedOnKDTree( double[] treeCoord, fighterBot targetBot, baseGun g, double gunPerfRate) {
+		//profiler.start("gunPerfEstimate.kdTree");
+		String2D key = new String2D( g.getName(), targetBot.getName() );
+		KdTree<gunHitMissLog> tree = getGunHitMissKDTree( key );
+		//logger.dbg( g.getName() + " " + targetBot.getName() + " tree size " + tree.size() );
+		if ( tree.size() > hitProbEstimateNeighborsNum ) {
 			boolean isSequentialSorting = false;
 			List<KdTree.Entry<gunHitMissLog>> cluster = tree.nearestNeighbor( treeCoord, hitProbEstimateNeighborsNum, isSequentialSorting );
 			int fireCnt = 0;
@@ -715,12 +707,30 @@ public class gunManager implements gunManagerInterface {
 					hitCnt++;
 				}
 			}
-			double gunHitKdTreeProb = math.perfRate( hitCnt, fireCnt );
+			gunPerfRate = math.perfRate( hitCnt, fireCnt );
+		}
+		//profiler.stop("gunPerfEstimate.kdTree");
+		return gunPerfRate;
+	}
 
+	public LinkedList<firingSolution> getFiringSolutions( fighterBot targetBot, long firingTime, double bulletEnergy ) {
+		LinkedList<firingSolution> fSols = new LinkedList<firingSolution>();
+		// generate solutions for each gun
+		gunTreePoint gTP = new gunTreePoint(
+				myBot,
+				targetBot.getInfoBot(),
+				firingTime, bulletEnergy
+				);
+		double [] treeCoord =  gTP.getPosition();
+		for ( baseGun g : gunList ) {
+			// note getTime()+1, the fire command is executed at next tic
+			LinkedList<firingSolution> gunfSols =  g.getFiringSolutions( myBot, targetBot.getInfoBot(), firingTime, bulletEnergy );
+
+			String2D key = new String2D( g.getName(), targetBot.getName() );
 			double gunPerfRate = math.perfRate( hitByMyGun.getHashCounter(key) , firedAtEnemyByGun.getHashCounter(key) );
 			if ( myBot.isItMasterBotDriver() ) {
 				// overwriting global gun performance
-				gunPerfRate = gunHitKdTreeProb;
+				gunPerfRate = refineGunPerformanceBasedOnKDTree( treeCoord, targetBot, g, gunPerfRate);
 			}
 			for ( firingSolution fS: gunfSols ) {
 				double solQ = fS.getQualityOfSolution();
