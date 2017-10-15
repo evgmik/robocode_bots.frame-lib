@@ -73,6 +73,12 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v10.4
+
+Enhancements
+- speed up of gun performance evaluation
+- nicer guns report
+
 ## v10.3
 
 Logic modification
