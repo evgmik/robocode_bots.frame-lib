@@ -631,11 +631,15 @@ public class gunManager implements gunManagerInterface {
 	public void reportStats() {
 		if ( myBot.isItMasterBotDriver() ) {
 			reportHitByOther();
+		}
+		if ( myBot.isItMasterBotDriver() && ( myBot.getGameInfo().fightType().equals("1on1") ) ) {
 			reportEnemyGunStats();
 		}
-		reportHitByMe();
-		reportGFStats();
-		reportMyGunStats();
+		if ( myBot.isItMasterBotDriver() || ( myBot.getGameInfo().fightType().equals("1on1") ) ) {
+			reportHitByMe();
+			reportGFStats();
+			reportMyGunStats();
+		}
 		if ( myBot.isItMasterBotDriver() ) {
 			reportBulletHitBullet();
 		}
