@@ -196,7 +196,20 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		return myWaves;
 	}
 
+	public void removeBulletsOutsideOfHitRegion() {
+		for ( waveWithBullets wB : getMyWaves() ) {
+			wB.removeBulletsOutsideOfHitRegion( getTime() );
+		}
+	}
+
 	public void initTic() {
+		if ( isItMasterBotDriver() && (this.getGameInfo().fightType().equals("1on1") || this.getGameInfo().fightType().equals("melee1on1")) ) {
+			// At large distances usually the 1st wave hits 
+			// when two others are in the air.
+			// This gives slight extra stats info about bullets
+			// which miss even before wave hits the enemy
+			removeBulletsOutsideOfHitRegion();
+		}
 		_gunManager.initTic();
 		processScheduledEnergyDrop();
 		_motion.initTic();

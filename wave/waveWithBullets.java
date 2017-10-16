@@ -415,6 +415,24 @@ public class waveWithBullets extends wave {
 		calcCombineDanger();
 	}
 
+	public void removeBulletsOutsideOfHitRegion(long time) {
+		LinkedList<firingSolution> fStoRemove = new LinkedList<firingSolution>();
+		if ( time <= firedTime+5 ) // if wave did not travel bot shadow > 180 degrees
+			return;
+		safetyCorridor hC = getHitCoridor( time );
+		for ( firingSolution fS : firingSolutions ) {
+			if ( !fS.isItInCoridor( hC ) ) {
+				fighterBot fBot = targetBot.getGameInfo().getFighterBot( firedBot.getName() );
+				fBot.getGunManager().logHitOrMissForMyFS(fS);
+				
+				fStoRemove.add(fS);
+			}
+		}
+		firingSolutions.removeAll(fStoRemove);
+		calcFiringSolutionGFdangers();
+		calcCombineDanger();
+	}
+
 	public void addSafetyCorridor( fighterBot bot) {
 		safetyCorridor sC = getSafetyCorridor( bot );
 		addSafetyCorridor ( sC );
