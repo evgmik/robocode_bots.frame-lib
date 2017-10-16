@@ -73,7 +73,7 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
-## v10.5-pre
+## v10.5
 
 Enhancement
 - remove and count bullets which do not hit target as wave approaches
@@ -81,6 +81,9 @@ Enhancement
     if we count it, we can adjust guns hit probabilities before wave reaches,
     enemy. This should help especially at the beginning of a game, otherwise 1st 3 wave
     are fired with a 1st default gut on long distances.
+
+Bug fix
+- energy disabling condition was wrong, so bot disabled itself with last fire
 
 ## v10.4
 
