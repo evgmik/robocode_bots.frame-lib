@@ -201,7 +201,6 @@ public class wave {
 				double hitAngle2 = math.angle2pt( firedPosition, fsPos2 );
 
 				sC = new safetyCorridor( hitAngle1, hitAngle2);
-				sC.normalize();
 			} 
 		}
 		return sC; 
@@ -218,7 +217,6 @@ public class wave {
 		double shadowHalfAngle = Math.atan(physics.robotHalfDiagonal/dist);
 		shadowHalfAngle = Math.toDegrees( shadowHalfAngle );
 		safetyCorridor sC = new safetyCorridor( hitAngle - shadowHalfAngle, hitAngle + shadowHalfAngle );
-		sC.normalize();
 		return sC;
 	}
 

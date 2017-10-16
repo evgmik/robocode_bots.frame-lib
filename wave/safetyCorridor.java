@@ -12,6 +12,7 @@ public class safetyCorridor {
 	public safetyCorridor( double minA, double maxA ) {
 		minAngle = minA;
 		maxAngle = maxA;
+		normalize();
 	}
 
 	public double getMinAngle() {
