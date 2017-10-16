@@ -478,7 +478,7 @@ public class waveWithBullets extends wave {
 	public double getEscapeAngleAtTime(long time){
 		Point2D.Double tPos = targetBot.getPositionClosestToTime(time);
 		double timeToReach = getTimeToReach( tPos );
-		double dt = timeToReach + firedTime - time;
+		double dt = timeToReach + firedTime - time + ( physics.robotHalfDiagonal / bulletSpeed) ;
 		if ( dt <= 0 )
 			return 0;
 		// not sure that this is precise enough but it gives proper border cases
