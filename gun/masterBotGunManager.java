@@ -358,8 +358,8 @@ public class masterBotGunManager extends gunManager {
 				bulletEnergy = Math.max( bulletEnergy, robocode.Rules.MIN_BULLET_POWER );
 			}
 		}
-		if ( bulletEnergy >= (myBot.getEnergy() - 1e-4) ) {
-			// do not fire or we will get ourself disabled
+		if ( (myBot.getEnergy() - bulletEnergy) < (1.5*physics.depletedEnergyLevel) ) {
+			// do not fire or we will get yourself disabled
 			bulletEnergy = -1; // negative = no fire
 		}
 
