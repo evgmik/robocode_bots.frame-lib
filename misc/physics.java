@@ -20,6 +20,9 @@ public class physics {
 	public static double gunCoolingRate = 0; 
 	public static double minimalAllowedBulletEnergy = 0; 
 	public static double maximalAllowedBulletEnergy = 0; 
+	// if a bot have less energy it is rounded down to zero and bot get disabled
+	// see RobotPeer.java
+	public static double depletedEnergyLevel = 0.01; 
 	// using maxTurnsInRound to have ticTime growing Round independent
 	// robocode itself reset Turn=getTime() to 0 every Round
 	public static long maxTurnsInRound = 100000; // maximum # of Turns/Tics per round
