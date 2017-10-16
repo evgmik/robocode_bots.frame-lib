@@ -73,6 +73,15 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v10.5-pre
+
+Enhancement
+- remove and count bullets which do not hit target as wave approaches
+  - as wave approaches we can deduce which bullets will miss for sure,
+    if we count it, we can adjust guns hit probabilities before wave reaches,
+    enemy. This should help especially at the beginning of a game, otherwise 1st 3 wave
+    are fired with a 1st default gut on long distances.
+
 ## v10.4
 
 Enhancements
