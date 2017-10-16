@@ -506,15 +506,28 @@ public class waveWithBullets extends wave {
 		drawGFArrayDanger(g, time, bins, waveDangerColor);
 	}
 
-	public void drawCurrentEscapeAngle(Graphics2D g, long time, Color c) {
-		if ( targetBot == null ) {
-			return;
+	public safetyCorridor getHitCoridor( long time ) {
+		// angles range within which target can be at given time
+		// at fire time it is +/- MEA
+		// but as time progress the hit area decreases
+		// it is handy to see which bullets might still hit the target
+		double minA=0, maxA=0;
+		if ( targetBot != null ) {
+			double distTraveled = getDistanceTraveledAtTime(time);
+			double botHalfWidthAngle = Math.toDegrees( Math.atan(physics.robotHalfDiagonal/distTraveled) );
+			Point2D.Double tgtPosNow = targetBot.getPositionClosestToTime(time);
+			double hitAngle    = math.angle2pt( firedPosition, tgtPosNow);
+			double escapeAngle = getEscapeAngleAtTime( time );
+			minA = hitAngle - botHalfWidthAngle - escapeAngle;
+			maxA = hitAngle + botHalfWidthAngle + escapeAngle;
 		}
-		Point2D.Double tgtPosNow = targetBot.getPositionClosestToTime(time);
-		double hitAngle    = math.angle2pt( firedPosition, tgtPosNow);
-		double escapeAngle = getEscapeAngleAtTime( time );
-		double minA = hitAngle - escapeAngle;
-		double maxA = hitAngle + escapeAngle;
+		return new safetyCorridor( minA, maxA );
+	}
+
+	public void drawCurrentEscapeAngle(Graphics2D g, long time, Color c) {
+		safetyCorridor hC = getHitCoridor( time );
+		double minA = hC.getMinAngle();
+		double maxA = hC.getMaxAngle();
 		double distTraveled = getDistanceTraveledAtTime(time);
 		g.setColor( c );
 		graphics.drawCircArc( g, firedPosition, distTraveled, minA, maxA );
