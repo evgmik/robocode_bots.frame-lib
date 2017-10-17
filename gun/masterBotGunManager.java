@@ -85,6 +85,14 @@ public class masterBotGunManager extends gunManager {
 				// fire virtual wave
 				wave nW = new wave( myBot.getInfoBot(), myBot.getTime(), bestFiringSolution.bulletEnergy );
 				myBot.getGameInfo()._wavesManager.add( nW );
+				if (firingSolutions.size() > 0) {
+					// since we have already calculated firing solutions
+					// let's add them to a wave
+					waveWithBullets wB = new waveWithBullets( nW, myBot.getGunManager().getGuessFactosrBinNum() );
+					wB.setTargetBot( targetBot );
+					wB.addFiringSolutions( firingSolutions );
+					myBot.myWaves.add(wB);
+				}
 			}
 		}
 	}
