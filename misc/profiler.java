@@ -84,9 +84,9 @@ public class profiler {
 			sign="-";
 		}
 		if (t > 1000*1000)
-			return sign + ((long) Math.round(t/(1000.*1000))) + " mS";
+			return sign + String.format("%.1f", t/(1000.*1000) ) + " mS";
 		if (t > 1000)
-			return sign + ((long) Math.round(t/(1000.))) + " uS";
+			return sign + String.format("%.1f", t/(1000.) ) + " uS";
 
 		return sign + ((long) t) + " nS";
 	}
