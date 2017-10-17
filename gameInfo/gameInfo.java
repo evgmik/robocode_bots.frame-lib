@@ -54,8 +54,10 @@ public class gameInfo implements botListener {
 		return b; // it is either null for unknown name or one of the dead ones
 	}
 
-	public void initBattle( CoreBot b) {
+	public void initBattle( CoreBot b) { //this is done every ROUND! a battle is many rounds
 		setMasterBot( b );
+		cpuManager.calcCpuConstant(); // we need to do it every round
+		logger.routine("Cpu constant = " + profiler.profTimeString( cpuManager.getCpuConstant() ) );
 		HashMap<String,fighterBot> allBots = getAllFighterBots(); 
 		for ( fighterBot fB: allBots.values() ) {
 			fB.initBattle();
