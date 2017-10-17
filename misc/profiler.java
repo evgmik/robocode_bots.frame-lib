@@ -78,12 +78,17 @@ public class profiler {
 	}
 
 	public static String profTimeString(long t) {
+		String sign="";
+		if (t < 0) {
+			t=-t;
+			sign="-";
+		}
 		if (t > 1000*1000)
-			return "" + ((long) Math.round(t/(1000.*1000))) + " mS";
+			return sign + ((long) Math.round(t/(1000.*1000))) + " mS";
 		if (t > 1000)
-			return "" + ((long) Math.round(t/(1000.))) + " uS";
+			return sign + ((long) Math.round(t/(1000.))) + " uS";
 
-		return "" + ((long) t) + " nS";
+		return sign + ((long) t) + " nS";
 	}
 
 	public static String formatAll( ) {
