@@ -2,6 +2,7 @@
 package eem.frame.misc;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Arrays;
 
 // The idea for this profiler was inspired by Xander.Cat and its framework class RunTimeLogger 
 // http://robowiki.net/wiki/XanderCat and http://robowiki.net/wiki/XanderFramework
@@ -94,7 +95,9 @@ public class profiler {
 	public static String formatAll( ) {
 		String str = "Profiler stats";
 		str += "---------------------------";
-		Set<String> keys = profilers.keySet();
+		Set<String> keysSet = profilers.keySet();
+		String[] keys = keysSet.toArray(new String[0]);
+		Arrays.sort(keys);
 		for ( String k : keys ) {
 			str += "\n";
 			str += format( k );
