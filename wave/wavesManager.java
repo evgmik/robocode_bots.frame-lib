@@ -28,12 +28,15 @@ public class  wavesManager {
 	}
 
 	public void initTic(long timeNow) {
+		profiler.start("wavesManager.initTic");
 		LinkedList<InfoBot> listOfAliveBots = myBot._gameinfo._botsmanager.listOfAliveBots();
 		remove ( getListOfPassedWaves( listOfAliveBots, timeNow ) );
 		checkForPassingOverBotsWaves( listOfAliveBots, timeNow );
+		profiler.stop("wavesManager.initTic");
 	}
 
 	public void checkForPassingOverBotsWaves( LinkedList<InfoBot> listOfAliveBots, long timeNow ) {
+		profiler.start("checkForPassingOverBotsWaves");
 		for ( wave w: Waves ) {
 			for ( InfoBot bot : listOfAliveBots ) {
 				if ( w.isPassingOverBot( bot, timeNow ) ) {
@@ -41,6 +44,7 @@ public class  wavesManager {
 				}
 			}
 		}
+		profiler.stop("checkForPassingOverBotsWaves");
 	}
 
 	public void add( InfoBot firedBot, long firedTime, double bulletEnergy )  {
@@ -66,9 +70,11 @@ public class  wavesManager {
 	}
 
 	public void remove(LinkedList<wave> wavesToRemove) {
+		profiler.start("remove");
 		for ( wave w : wavesToRemove ) {
 			remove( w );
 		}
+		profiler.stop("remove");
 	}
 
 	public LinkedList<wave> getWavesOfBot( fighterBot bot ) {
@@ -82,6 +88,7 @@ public class  wavesManager {
 	}
 
 	public LinkedList<wave> getListOfPassedWaves(LinkedList<InfoBot> listOfAliveBots, long timeNow) {
+		profiler.start("getListOfPassedWaves");
 		LinkedList<wave> passedWaves = new LinkedList<wave>();
 		ListIterator<wave> wLIter;
 		wLIter = Waves.listIterator();
@@ -100,6 +107,7 @@ public class  wavesManager {
 				passedWaves.add( w );
 			}
 		}
+		profiler.stop("getListOfPassedWaves");
 		return( passedWaves );
 	}
 

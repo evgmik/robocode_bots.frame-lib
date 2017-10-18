@@ -59,12 +59,12 @@ public class  botsManager {
 
 	public void initTic(long ticTime) {
 		updateMasterBotStatus(myBot);
-		//profiler.start( "botsManager.initTic" );
+		profiler.start( "botsManager.initTic" );
 		for (InfoBot bot : liveBots.values()) 
 		{
 			bot.initTic(ticTime);
 		}
-		//profiler.stop( "botsManager.initTic" );
+		profiler.stop( "botsManager.initTic" );
 	}
 
 

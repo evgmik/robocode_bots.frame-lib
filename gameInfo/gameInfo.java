@@ -66,12 +66,20 @@ public class gameInfo implements botListener {
 	}
 
 	public void initTic() {
+		timer t = new timer( cpuManager.getCpuConstant() );
 		long timeNow = myBot.getTime();
+		//logger.dbg("gameInfo.initTic " + timeNow);
+		profiler.start("gameInfo.initTic");
 		_botsmanager.initTic( timeNow );
+		//logger.dbg( "Time left after _botsmanager.initTic = " + profiler.profTimeString( t.timeLeft() ) );
 		_wavesManager.initTic( timeNow );
+		//logger.dbg( "Time left after _wavesManager.initTic " + profiler.profTimeString( t.timeLeft() ) );
 		for( fighterBot fb: liveBots.values() ) {
 			fb.initTic();
+			//logger.dbg( "Time left after fb.initTic " + fb.getName() + " " + profiler.profTimeString( t.timeLeft() ) );
+
 		}
+		profiler.stop("gameInfo.initTic");
 	}
 
 	public long getRoundNum() {
@@ -91,9 +99,11 @@ public class gameInfo implements botListener {
 	}
 
 	public void run() {
+		profiler.start("gameInfo.run");
 		for (fighterBot b : liveBots.values()) {
 			b.manage();
 		}
+		profiler.stop("gameInfo.run");
 		myBot.execute();
 	}
 

@@ -203,6 +203,9 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public void initTic() {
+		timer t = new timer( cpuManager.getCpuConstant() );
+		//logger.dbg("fighterBot.initTic for " + getName());
+		profiler.start("fighterBot.initTic " + getName());
 		if ( isItMasterBotDriver() && (this.getGameInfo().fightType().equals("1on1") || this.getGameInfo().fightType().equals("melee1on1")) ) {
 			// At large distances usually the 1st wave hits 
 			// when two others are in the air.
@@ -210,9 +213,14 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			// which miss even before wave hits the enemy
 			removeBulletsOutsideOfHitRegion();
 		}
+		//logger.dbg( "Time left after removeBulletsOutsideOfHitRegion = " + profiler.profTimeString( t.timeLeft() ) );
 		_gunManager.initTic();
+		//logger.dbg( "Time left after _gunManager.initTic = " + profiler.profTimeString( t.timeLeft() ) );
 		processScheduledEnergyDrop();
+		//logger.dbg( "Time left after processScheduledEnergyDrop = " + profiler.profTimeString( t.timeLeft() ) );
 		_motion.initTic();
+		//logger.dbg( "Time left after _motion.initTic = " + profiler.profTimeString( t.timeLeft() ) );
+		profiler.stop("fighterBot.initTic " + getName());
 	}
 
 	public void initBattle() {
@@ -240,9 +248,11 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public void manage() {
+		profiler.start("fighterBot.manage " + getName());
 		_radar.manage();
 		_motion.manage();
 		_gunManager.manage();
+		profiler.stop("fighterBot.manage " + getName());
 	}
 
 	public basicMotion getMotion() {
