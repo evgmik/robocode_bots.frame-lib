@@ -344,6 +344,7 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public void onMyWavePassingOverBot( wave w, InfoBot bot ) {
+		profiler.start("gunManager.onMyWavePassingOverBot");
 		// FIXME: update stats
 		// FIXME: firing solution need to know target otherwise
 		//        we count bullets directed to someone else
@@ -355,15 +356,20 @@ public class gunManager implements gunManagerInterface {
 		// then the enemy bot moves.
 		Point2D.Double botPos = bot.getPositionClosestToTime( time - 1 );
 
+		profiler.start("updateHitGuessFactor");
 		updateHitGuessFactor( bot, w );
+		profiler.stop("updateHitGuessFactor");
 
 		// count the wave with bullets
+		profiler.start("updateMyWaves");
 		for ( waveWithBullets wB: myBot.myWaves ) {
 			if ( w.equals( wB) ) {
 				wB.setMyWavePassedOverTargetFlag( enemyName, true );
 				wB.markFiringSolutionWhichHitBotAt( botPos, enemyName, time);
 			}
 		}
+		profiler.stop("updateMyWaves");
+		profiler.stop("gunManager.onMyWavePassingOverBot");
 	}
 
 	public double[] getGuessFactors( String  botName ) {
@@ -438,6 +444,7 @@ public class gunManager implements gunManagerInterface {
 		double gfRange = w.getFiringGuessFactorRange( bot, time );
 		double distAtLastAim = w.getDistanceAtLastAimTime( bot );
 		// get circular gun guess factor
+		profiler.start("calculate old circularGF");
 		double circularGF = Double.NaN;
 		circularGun circGun = new circularAccelGun();
 		LinkedList<firingSolution> fSs = circGun.getFiringSolutions( w.getFiredPosition(), bot, w.getFiredTime(), w.getBulletEnergy() );
@@ -445,25 +452,33 @@ public class gunManager implements gunManagerInterface {
 			double cAngle = fSs.getFirst().getFiringAngle();
 			circularGF = w.getFiringGuessFactor( bot, cAngle );
 		}
+		profiler.stop("calculate old circularGF");
 
 		//logger.routine("hitGF" +  " target:" + bot.getName() + " gf:" + gf + " cgf:" +circularGF + " distance:" + distAtLastAim );
+		profiler.start("prepare tree and arrays");
 		int di0 = (int)Math.round( gfRange/2*numGuessFactorBins );
 		int iCenter = (int)math.gf2bin( gf, numGuessFactorBins );
 
 		KdTree<gfHit> tree = getTreeKDTreeMap( bot.getName() );
+		profiler.start("get tree point");
 		gunTreePoint gTP = new gunTreePoint( myBot, bot, w.getFiredTime(), w.getBulletEnergy() );
 		double [] pntCoord =  gTP.getPosition();
+		profiler.stop("get tree point");
 
 		double[] gfBins = getGuessFactors( bot.getName() );
 		double[] gfBinsDecaying = getDecayingGuessFactors( bot.getName() );
 		double[][] assistedGFBins = getAssistedGuessFromHashMap( assistedGFactorsMap, bot.getName() );
+		profiler.stop("prepare tree and arrays");
+		profiler.start("update decaying map");
 		// decay in all decaying map
 		for ( int k=0; k< numGuessFactorBins; k++) {
 			gfBinsDecaying[k] *= decayRate;	
 		}
+		profiler.stop("update decaying map");
 
 		//logger.dbg( "iCenter = " + iCenter + " di0 = " + di0 );
 		// update guess factors tree
+		profiler.start("update gf tree");
 		double binW = 1;
 		gfHit gfH = null;
 		gfH = new gfHit(iCenter, binW);
@@ -475,7 +490,9 @@ public class gunManager implements gunManagerInterface {
 		gfH = new gfHit(iFlipped, binW);
 		gfH.firedTime = w.getFiredTime();
 		tree.addPoint( gTP.calcFlipedLateralVelocityPositionFromCoord(pntCoord), gfH ); // shall I decrease binW?
+		profiler.stop("update gf tree");
 
+		profiler.start("update gf array");
 		int minI = (int)math.putWithinRange( iCenter - 2*di0, 0, (numGuessFactorBins-1) );
 		int maxI = (int)math.putWithinRange( iCenter + 2*di0, 0, (numGuessFactorBins-1) );
 		for ( int i = minI; i <= maxI; i++ ) {
@@ -499,9 +516,11 @@ public class gunManager implements gunManagerInterface {
 				assistedGFBins[j][i] += binW;
 			}
 		}
+		profiler.stop("update gf array");
 	}
 
 	public void onWavePassingOverMe( wave w ) {
+		profiler.start("gunManager.onWavePassingOverMe");
 		long time = myBot.getTime();
 		Point2D.Double botPos = myBot.getPosition( ); // time is now
 		for ( waveWithBullets wB: myBot.enemyWaves ) {
@@ -519,6 +538,7 @@ public class gunManager implements gunManagerInterface {
 				}
 			}
 		}
+		profiler.stop("gunManager.onWavePassingOverMe");
 	}
 
 	public double energyGainPerTickFromEnemy(double myBulletEnergy, fighterBot enemyBot) {

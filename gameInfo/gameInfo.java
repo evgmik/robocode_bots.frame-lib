@@ -213,9 +213,11 @@ public class gameInfo implements botListener {
 	}
 
 	public void onWavePassingOverBot( wave w, InfoBot bot ) {
+		profiler.start("onWavePassingOverBot");
 		for ( fighterBot fB: liveBots.values() ) {
 			fB.onWavePassingOverBot( w, bot );
 		}
+		profiler.stop("onWavePassingOverBot");
 	}
 
 	public HashMap<String,fighterBot> getAllFighterBots() {

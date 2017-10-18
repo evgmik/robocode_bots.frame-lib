@@ -550,6 +550,8 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public void onWavePassingOverBot( wave w, InfoBot bot ) {
+		profiler.start("fighterBot " + getName());
+		profiler.start("onWavePassingOverBot");
 		if ( w.getFiredBot().getName().equals( getName() ) ) {
 			_gunManager.onMyWavePassingOverBot( w, bot );
 		}
@@ -560,13 +562,17 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			// someone else wave passing over other bot
 			// FIXME: think about possible energy drop detection
 			//        to avoid false fired wave generation
+			profiler.start("addSafetyCorridor from shadow of " + bot.getName());
 			w.addSafetyCorridor( getGameInfo().getFighterBot( bot.getName() ) );
 			for ( waveWithBullets wB: getEnemyWaves() ) {
 				if ( w.equals( wB) ) {
 					wB.addSafetyCorridor( getGameInfo().getFighterBot( bot.getName() ) );
 				}
 			}
+			profiler.stop("addSafetyCorridor from shadow of " + bot.getName());
 		}
+		profiler.stop("onWavePassingOverBot");
+		profiler.stop("fighterBot " + getName());
 	}
 
 	public void drawThisBot( Graphics2D g, long timeNow ) {
