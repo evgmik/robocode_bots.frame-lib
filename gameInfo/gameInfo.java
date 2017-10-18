@@ -7,6 +7,7 @@ import eem.frame.event.*;
 import eem.frame.radar.*;
 import eem.frame.motion.*;
 import eem.frame.bot.*;
+import eem.frame.gun.*;
 import eem.frame.wave.*;
 import eem.frame.misc.*;
 
@@ -58,6 +59,7 @@ public class gameInfo implements botListener {
 		setMasterBot( b );
 		cpuManager.calcCpuConstant(); // we need to do it every round
 		logger.routine("Cpu constant = " + profiler.profTimeString( cpuManager.getCpuConstant() ) );
+		new gunTreePoint().clearCache();
 		HashMap<String,fighterBot> allBots = getAllFighterBots(); 
 		for ( fighterBot fB: allBots.values() ) {
 			fB.initBattle();

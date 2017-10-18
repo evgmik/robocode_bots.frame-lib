@@ -45,6 +45,10 @@ public class gunTreePoint  {
 
 	public gunTreePoint() {
 	}
+ 
+	public void clearCache() {
+		cache.clear();
+	}
 
 	public gunTreePoint( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		// time is time at fire
@@ -55,7 +59,7 @@ public class gunTreePoint  {
 		if ( gTP != null ) {
 			this.coord = gTP.getPosition();
 		} else {
-			cache.clear();
+			//cache.clear();
 			this.coord = calcGunTreePointCoord( fBot, tBot, time, bulletEnergy );
 			cache.put( aC, this );
 		}
