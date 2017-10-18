@@ -25,6 +25,9 @@ public class profiler {
 	private long maxExecTime = Long.MIN_VALUE; ;
 	private int  numExec = 0;
 	private boolean isActive = false;
+	private boolean showYourSelf = true;
+	private boolean showChildren = true;
+	public static boolean SHOW_CHILDREN = true;
 
 	public static String longName() {
 		String sep = ".";
@@ -37,15 +40,36 @@ public class profiler {
 	}
 
 	public static void start( String methodName ) {
+		String parentName = longName();
+		profiler parent = profilers.get(parentName);
 		methodsChain.add(methodName);
 		String name = longName();
 		profiler p = profilers.get(name);
 		if ( p == null ) {
 			p = new profiler();
 			profilers.put(name, p );
+			if ( parent != null ) {
+				p.showYourSelf = parent.showChildren;
+				p.showChildren = parent.showChildren;
+			}
 		}
 		p.startTime = System.nanoTime();
-		p.isActive = true;
+		if (!p.isActive) {
+			p.isActive = true;
+			p.numExec ++;
+		} else {
+			logger.error("ERROR: profiler restarted without stopping for method " + name);
+		}
+	}
+
+	public static void start( String methodName, boolean showChildren ) {
+		profiler.start( methodName );
+		String name = longName();
+		profiler p = profilers.get(name);
+		if ( p == null ) {
+			logger.error("ERROR: something wrong was not able to start profiler with name " + name);
+		}
+		p.showChildren = showChildren;
 	}
 
 	public static void stop( String methodName ) {
@@ -67,7 +91,6 @@ public class profiler {
 		if ( p.minExecTime > execTime ) {
 			p.minExecTime = execTime;
 		}
-		p.numExec ++;
 		p.isActive = false;
 		methodsChain.removeLast();
 	}
@@ -93,13 +116,16 @@ public class profiler {
 	public static String format( String methodName ) {
 		String sep = " | ";
 		String margin = "  ";
-		String str = margin;
+		String str = "";
 		profiler p = profilers.get(methodName);
 		if ( p == null ) {
 			// this method did not start its clock
+			str += "\n";
 			str += "Method " + methodName + " was never executed";
 		} else {
-			if ( p.numExec >= 1 ) {
+			if ( p.numExec >= 1 && p.showYourSelf ) {
+				str += "\n";
+				str += margin;
 			       	str += String.format("%10s", p.numExec);
 				str += sep;
 			       	str += String.format("%8s", profTimeString(p.minExecTime) );
@@ -111,8 +137,6 @@ public class profiler {
 			       	str += String.format("%8s", profTimeString(p.totalExecTime) );
 				str += sep;
 				str +=  methodName;
-			} else {
-				str += "Method " + methodName + " was never executed";
 			}
 		}
 		return str;
@@ -143,7 +167,6 @@ public class profiler {
 		str += "\n";
 		str += formatHeaders();
 		for ( String k : keys ) {
-			str += "\n";
 			str += format( k );
 		}
 		str += "\n";
