@@ -3,6 +3,7 @@ package eem.frame.misc;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 // The idea for this profiler was inspired by Xander.Cat and its framework class RunTimeLogger 
 // http://robowiki.net/wiki/XanderCat and http://robowiki.net/wiki/XanderFramework
@@ -16,6 +17,7 @@ import java.util.Arrays;
 
 public class profiler {
 	public static HashMap<String, profiler> profilers   = new HashMap<String, profiler>();
+	public static LinkedList<String> methodsChain   = new LinkedList<String>();
 
 	private long startTime;
 	private long totalExecTime = 0;
@@ -24,18 +26,31 @@ public class profiler {
 	private int  numExec = 0;
 	private boolean isActive = false;
 
+	public static String longName() {
+		String sep = ".";
+		String str = "";
+		for (String m: methodsChain) {
+			str += sep;
+			str += m;
+		}
+		return str;
+	}
+
 	public static void start( String methodName ) {
-		profiler p = profilers.get(methodName);
+		methodsChain.add(methodName);
+		String name = longName();
+		profiler p = profilers.get(name);
 		if ( p == null ) {
 			p = new profiler();
-			profilers.put(methodName, p );
+			profilers.put(name, p );
 		}
 		p.startTime = System.nanoTime();
 		p.isActive = true;
 	}
 
 	public static void stop( String methodName ) {
-		profiler p = profilers.get(methodName);
+		String name = longName();
+		profiler p = profilers.get(name);
 		if ( p == null ) {
 			// this method did not start its clock
 			return;
@@ -54,6 +69,7 @@ public class profiler {
 		}
 		p.numExec ++;
 		p.isActive = false;
+		methodsChain.removeLast();
 	}
 
 	public static String format( String methodName ) {
