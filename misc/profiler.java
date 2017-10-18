@@ -74,19 +74,25 @@ public class profiler {
 
 	public static String format( String methodName ) {
 		String str = "";
+		String sep = " | ";
 		profiler p = profilers.get(methodName);
 		if ( p == null ) {
 			// this method did not start its clock
 			str += "Method " + methodName + " was never executed";
 		} else {
 			if ( p.numExec >= 1 ) {
-				str += "  " + methodName;
-			       	str += " was executed " + p.numExec;
-				str += " execution times:";
-			       	str += " min " + profTimeString(p.minExecTime);
-			       	str += ", average " + profTimeString(p.totalExecTime/p.numExec);
-			       	str += ", max " + profTimeString(p.maxExecTime);
-			       	str += ", total " + profTimeString(p.totalExecTime);
+				str += "  ";
+			       	str += "executed " + String.format("%6s", p.numExec) + " times";
+				str += sep;
+			       	str += "min " + String.format("%8s", profTimeString(p.minExecTime) );
+				str += sep;
+			       	str += "average " + String.format("%8s", profTimeString(p.totalExecTime/p.numExec) );
+				str += sep;
+			       	str += "max " + String.format("%8s", profTimeString(p.maxExecTime) );
+				str += sep;
+			       	str += "total " + String.format("%8s", profTimeString(p.totalExecTime) );
+				str += sep;
+				str +=  methodName;
 			} else {
 				str += "Method " + methodName + " was never executed";
 			}
