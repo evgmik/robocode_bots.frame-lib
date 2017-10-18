@@ -28,7 +28,7 @@ public class  wavesManager {
 	}
 
 	public void initTic(long timeNow) {
-		profiler.start("wavesManager.initTic");
+		profiler.start("wavesManager.initTic", !profiler.SHOW_CHILDREN);
 		LinkedList<InfoBot> listOfAliveBots = myBot._gameinfo._botsmanager.listOfAliveBots();
 		remove ( getListOfPassedWaves( listOfAliveBots, timeNow ) );
 		checkForPassingOverBotsWaves( listOfAliveBots, timeNow );
