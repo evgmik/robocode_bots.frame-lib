@@ -95,13 +95,7 @@ public class wave {
 			return false;
 	}
 
-	public boolean isPassingOverBot(InfoBot bot, long timeNow) {
-		if ( firedBot.getName().equals( bot.getName() ) ) {
-			// this is the wave of the fired bot
-			// no need to check for passing
-			return false;
-		}
-		Point2D.Double botPos = bot.getPosition( timeNow );
+	public boolean isPassingOverBotPosition(Point2D.Double botPos, long timeNow) {
 		if ( botPos == null ) {
 			// we do not know the position of the bot at this time
 			// so we report false to avoid wrong hit counts
@@ -113,6 +107,15 @@ public class wave {
 			return true;
 		else
 			return false;
+	}
+	public boolean isPassingOverBot(InfoBot bot, long timeNow) {
+		if ( firedBot.getName().equals( bot.getName() ) ) {
+			// this is the wave of the fired bot
+			// no need to check for passing
+			return false;
+		}
+		Point2D.Double botPos = bot.getPosition( timeNow );
+		return isPassingOverBotPosition( botPos, timeNow );
 	}
 
 	public double getTimeToReach( Point2D.Double p ) {
