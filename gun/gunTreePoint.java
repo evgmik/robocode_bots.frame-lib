@@ -48,7 +48,7 @@ public class gunTreePoint  {
 
 	public gunTreePoint( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		// time is time at fire
-		//profiler.start("gunTreePoint");
+		profiler.start("gunTreePoint");
 		String gunType = "any";
 		aimingConditions aC = new aimingConditions( fBot, tBot, time, bulletEnergy, gunType );
 		gunTreePoint gTP = cache.get( aC );
@@ -59,7 +59,7 @@ public class gunTreePoint  {
 			this.coord = calcGunTreePointCoord( fBot, tBot, time, bulletEnergy );
 			cache.put( aC, this );
 		}
-		//profiler.stop("gunTreePoint");
+		profiler.stop("gunTreePoint");
 	}
 
 	public double[] calcGunTreePointCoord( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
