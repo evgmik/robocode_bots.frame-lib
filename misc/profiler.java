@@ -72,25 +72,43 @@ public class profiler {
 		methodsChain.removeLast();
 	}
 
-	public static String format( String methodName ) {
-		String str = "";
+	public static String formatHeaders() {
 		String sep = " | ";
+		String margin = "  ";
+		String str = margin;
+		str += String.format("%10s", "times exec");
+		str += sep;
+		str += String.format("%8s", "min");
+		str += sep;
+		str += String.format("%8s", "average");
+		str += sep;
+		str += String.format("%8s", "max");
+		str += sep;
+		str += String.format("%8s", "total");
+		str += sep;
+		str += "method name";
+		return str;
+	}
+
+	public static String format( String methodName ) {
+		String sep = " | ";
+		String margin = "  ";
+		String str = margin;
 		profiler p = profilers.get(methodName);
 		if ( p == null ) {
 			// this method did not start its clock
 			str += "Method " + methodName + " was never executed";
 		} else {
 			if ( p.numExec >= 1 ) {
-				str += "  ";
-			       	str += "executed " + String.format("%6s", p.numExec) + " times";
+			       	str += String.format("%10s", p.numExec);
 				str += sep;
-			       	str += "min " + String.format("%8s", profTimeString(p.minExecTime) );
+			       	str += String.format("%8s", profTimeString(p.minExecTime) );
 				str += sep;
-			       	str += "average " + String.format("%8s", profTimeString(p.totalExecTime/p.numExec) );
+			       	str += String.format("%8s", profTimeString(p.totalExecTime/p.numExec) );
 				str += sep;
-			       	str += "max " + String.format("%8s", profTimeString(p.maxExecTime) );
+			       	str += String.format("%8s", profTimeString(p.maxExecTime) );
 				str += sep;
-			       	str += "total " + String.format("%8s", profTimeString(p.totalExecTime) );
+			       	str += String.format("%8s", profTimeString(p.totalExecTime) );
 				str += sep;
 				str +=  methodName;
 			} else {
@@ -106,6 +124,8 @@ public class profiler {
 			t=-t;
 			sign="-";
 		}
+		if (t > 1000*1000*1000)
+			return sign + String.format("%.1f", t/(1000.*1000*1000) ) + "  S";
 		if (t > 1000*1000)
 			return sign + String.format("%.1f", t/(1000.*1000) ) + " mS";
 		if (t > 1000)
@@ -120,6 +140,8 @@ public class profiler {
 		Set<String> keysSet = profilers.keySet();
 		String[] keys = keysSet.toArray(new String[0]);
 		Arrays.sort(keys);
+		str += "\n";
+		str += formatHeaders();
 		for ( String k : keys ) {
 			str += "\n";
 			str += format( k );
