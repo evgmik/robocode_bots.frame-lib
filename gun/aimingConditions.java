@@ -13,8 +13,13 @@ public class aimingConditions {
 	public aimingConditions(fighterBot fBot, InfoBot tBot, long fireTime, double bulletEnergy ) {
 		firingBotName = fBot.getName();
 		targetBotName = tBot.getName();
-		timeWhenCalculated = fBot.getTime();
 		this.fireTime = fireTime;
+		timeWhenCalculated = fBot.getTime();
+		if (timeWhenCalculated >= this.fireTime) {
+			// we are checking the aimingConditions after the fact
+			// but last information for aiming was available at
+			timeWhenCalculated = this.fireTime - 1;
+		}
 		this.bulletEnergy = bulletEnergy;
 	}
 
