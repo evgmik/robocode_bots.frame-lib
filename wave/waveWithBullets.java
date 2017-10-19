@@ -42,6 +42,7 @@ public class waveWithBullets extends wave {
 	}
 	
 	public void calcCombineDanger() {
+		profiler.start("calcCombineDanger");
 		for ( int i=0; i< combGFdanger.length; i++ ) {
 			combGFdanger[i] = 0;
 			// shadow of 1 means that this GF is fully safe
@@ -52,6 +53,7 @@ public class waveWithBullets extends wave {
 		}
 		ArrayStats  stats = new ArrayStats( combGFdanger );
 		combGFdanger = stats.getProbDensity();
+		profiler.stop("calcCombineDanger");
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions() {
@@ -153,8 +155,10 @@ public class waveWithBullets extends wave {
 	}
 
 	public void calcFiringSolutionGFdangers() {
+		profiler.start("calcFiringSolutionGFdangers");
 		fsDanger = new double[numGuessFactorBins];
 		if (targetBot == null ) {
+			profiler.stop("calcFiringSolutionGFdangers");
 			return;
 		}
 		botStatPoint tBStat = targetBot.getStatClosestToTime( firedTime - 1 );
@@ -169,6 +173,7 @@ public class waveWithBullets extends wave {
 				fsDanger[i] += fS.getDanger( time, botShadow );
 			}
 		}
+		profiler.stop("calcFiringSolutionGFdangers");
 	}
 
 	public void addFiringSolutions( LinkedList<firingSolution> firingSolutions ) {
@@ -416,21 +421,29 @@ public class waveWithBullets extends wave {
 	}
 
 	public void removeBulletsOutsideOfHitRegion(long time) {
+		profiler.start("wB_removeBulletsOutsideOfHitRegion");
 		LinkedList<firingSolution> fStoRemove = new LinkedList<firingSolution>();
-		if ( time <= firedTime+5 ) // if wave did not travel bot shadow > 180 degrees
-			return;
-		safetyCorridor hC = getHitCoridor( time );
-		for ( firingSolution fS : firingSolutions ) {
-			if ( !fS.isItInCoridor( hC ) ) {
-				fighterBot fBot = targetBot.getGameInfo().getFighterBot( firedBot.getName() );
-				fBot.getGunManager().logHitOrMissForMyFS(fS);
-				
-				fStoRemove.add(fS);
+		if ( time > firedTime+5 && firingSolutions.size() > 0) { 
+			// if wave did not travel enough bot shadow > 180 degrees
+			safetyCorridor hC = getHitCoridor( time );
+			fighterBot fBot = targetBot.getGameInfo().getFighterBot( firedBot.getName() );
+			gunManager gm = fBot.getGunManager();
+			for ( firingSolution fS : firingSolutions ) {
+				if ( !fS.isItInCoridor( hC ) ) {
+					gm.logHitOrMissForMyFS(fS);
+
+					fStoRemove.add(fS);
+				}
+			}
+			if ( fStoRemove.size() > 0 ) {
+				firingSolutions.removeAll(fStoRemove);
+				if ( !fBot.isItMasterBotDriver() ) {
+					calcFiringSolutionGFdangers();
+					calcCombineDanger();
+				}
 			}
 		}
-		firingSolutions.removeAll(fStoRemove);
-		calcFiringSolutionGFdangers();
-		calcCombineDanger();
+		profiler.stop("wB_removeBulletsOutsideOfHitRegion");
 	}
 
 	public void addSafetyCorridor( fighterBot bot) {
@@ -525,6 +538,7 @@ public class waveWithBullets extends wave {
 	}
 
 	public safetyCorridor getHitCoridor( long time ) {
+		profiler.start("getHitCoridor");
 		// angles range within which target can be at given time
 		// at fire time it is +/- MEA
 		// but as time progress the hit area decreases
@@ -539,6 +553,7 @@ public class waveWithBullets extends wave {
 			minA = hitAngle - botHalfWidthAngle - escapeAngle;
 			maxA = hitAngle + botHalfWidthAngle + escapeAngle;
 		}
+		profiler.stop("getHitCoridor");
 		return new safetyCorridor( minA, maxA );
 	}
 
