@@ -74,6 +74,7 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public void initTic() {
+		profiler.start("gunManager.initTic");
 		String fightType = myBot.getGameInfo().fightType();
 		gunList = gunListForGameType.get( fightType );
 		if ( myBot.proxy.getGunHeat()/physics.gunCoolingRate >  (180/robocode.Rules.GUN_TURN_RATE + 1) ) {
@@ -91,6 +92,7 @@ public class gunManager implements gunManagerInterface {
 			logger.error("ERROR: no gun list for the default fight type. Assigning empty list");
 			gunList = new LinkedList<baseGun>();
 		}
+		profiler.stop("gunManager.initTic");
 	}
 
 	public void initBattle() {

@@ -197,22 +197,17 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public void removeBulletsOutsideOfHitRegion() {
+		profiler.start("removeBulletsOutsideOfHitRegion");
 		for ( waveWithBullets wB : getMyWaves() ) {
 			wB.removeBulletsOutsideOfHitRegion( getTime() );
 		}
+		profiler.stop("removeBulletsOutsideOfHitRegion");
 	}
 
 	public void initTic() {
 		timer t = new timer( cpuManager.getCpuConstant() );
 		//logger.dbg("fighterBot.initTic for " + getName());
 		profiler.start("fighterBot.initTic " + getName());
-		if ( isItMasterBotDriver() && (this.getGameInfo().fightType().equals("1on1") || this.getGameInfo().fightType().equals("melee1on1")) ) {
-			// At large distances usually the 1st wave hits 
-			// when two others are in the air.
-			// This gives slight extra stats info about bullets
-			// which miss even before wave hits the enemy
-			removeBulletsOutsideOfHitRegion();
-		}
 		//logger.dbg( "Time left after removeBulletsOutsideOfHitRegion = " + profiler.profTimeString( t.timeLeft() ) );
 		_gunManager.initTic();
 		//logger.dbg( "Time left after _gunManager.initTic = " + profiler.profTimeString( t.timeLeft() ) );
@@ -220,6 +215,15 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 		//logger.dbg( "Time left after processScheduledEnergyDrop = " + profiler.profTimeString( t.timeLeft() ) );
 		_motion.initTic();
 		//logger.dbg( "Time left after _motion.initTic = " + profiler.profTimeString( t.timeLeft() ) );
+		if ( isItMasterBotDriver() && (this.getGameInfo().fightType().equals("1on1") || this.getGameInfo().fightType().equals("melee1on1")) ) {
+			// At large distances usually the 1st wave hits 
+			// when two others are in the air.
+			// This gives slight extra stats info about bullets
+			// which miss even before wave hits the enemy
+			// This is low priority operation, 
+			// and needed only about first 100 waves
+			removeBulletsOutsideOfHitRegion();
+		}
 		profiler.stop("fighterBot.initTic " + getName());
 	}
 
@@ -230,6 +234,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	protected void processScheduledEnergyDrop() {
+		profiler.start("processScheduledEnergyDrop");
 		double eDrop = scheduledEdrop;
 		if ( !isItMasterBotDriver() ) {
 			// here we try to detect enemy wave fired
@@ -245,6 +250,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 			}
 		}
 		scheduledEdrop = 0;
+		profiler.stop("processScheduledEnergyDrop");
 	}
 
 	public void manage() {

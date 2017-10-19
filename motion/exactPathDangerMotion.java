@@ -41,6 +41,7 @@ public class exactPathDangerMotion extends basicMotion {
 	long wrongPathPredictionCount = 0;
 	
 	public void initTic() {
+		profiler.start("motion_exactPathDangerMotion.initTic");
 		// here I check exact path simulator
 		if ( path.size() >= 1) {
 			long curTime = myBot.getTime();
@@ -78,7 +79,7 @@ public class exactPathDangerMotion extends basicMotion {
 			// routine update with smaller number of trials
 			choseNewPath( Math.max( predictionEndTime - myBot.getTime(), maximalPathLength ), nTrialsToImprove );
 		}
-
+		profiler.stop("motion_exactPathDangerMotion.initTic");
 	}
 
 	public exactPathDangerMotion() {
