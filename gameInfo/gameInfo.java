@@ -56,6 +56,7 @@ public class gameInfo implements botListener {
 	}
 
 	public void initBattle( CoreBot b) { //this is done every ROUND! a battle is many rounds
+		profiler.start("gameInfo.initBattle");
 		setMasterBot( b );
 		cpuManager.calcCpuConstant(); // we need to do it every round
 		logger.routine("Cpu constant = " + profiler.profTimeString( cpuManager.getCpuConstant() ) );
@@ -64,14 +65,14 @@ public class gameInfo implements botListener {
 		for ( fighterBot fB: allBots.values() ) {
 			fB.initBattle();
 		}
-
+		profiler.stop("gameInfo.initBattle");
 	}
 
 	public void initTic() {
+		profiler.start("gameInfo.initTic");
 		timer t = new timer( cpuManager.getCpuConstant() );
 		long timeNow = myBot.getTime();
 		//logger.dbg("gameInfo.initTic " + timeNow);
-		profiler.start("gameInfo.initTic");
 		_botsmanager.initTic( timeNow );
 		//logger.dbg( "Time left after _botsmanager.initTic = " + profiler.profTimeString( t.timeLeft() ) );
 		_wavesManager.initTic( timeNow );
