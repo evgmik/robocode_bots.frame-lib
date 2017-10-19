@@ -24,6 +24,8 @@ public class profiler {
 	private long minExecTime = Long.MAX_VALUE; ;
 	private long maxExecTime = Long.MIN_VALUE; ;
 	private int  numExec = 0;
+	private int  numParents = 0;
+	private String shortName = "";
 	private boolean isActive = false;
 	private boolean showYourSelf = true;
 	private boolean showChildren = true;
@@ -49,10 +51,12 @@ public class profiler {
 			p = new profiler();
 			profilers.put(name, p );
 			if ( parent != null ) {
+				p.numParents =   parent.numParents+1;
 				p.showYourSelf = parent.showChildren;
 				p.showChildren = parent.showChildren;
 			}
 		}
+		p.shortName = methodName;
 		p.startTime = System.nanoTime();
 		if (!p.isActive) {
 			p.isActive = true;
@@ -136,7 +140,10 @@ public class profiler {
 				str += sep;
 			       	str += String.format("%8s", profTimeString(p.totalExecTime) );
 				str += sep;
-				str +=  methodName;
+				for (int i=0; i< p.numParents; i++ ) {
+					str += "  ";
+				}
+				str += p.shortName;
 			}
 		}
 		return str;
