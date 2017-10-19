@@ -33,9 +33,11 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 	}
 
 	public double calculateDanger( fighterBot myBot ) {
+		//profiler.start( "dangerPathPoint_calculateDanger" );
 		double dL = 0;
 		double[] dangers = new double[5];
 		long time = botStat.getTime();
+		//profiler.start( "SpacialPositionDanger" );
 		dangers[0] = dangerCalc.calculateDangerFromCorners(time, botStat.getPosition(), myBot);
 		dangers[1] = dangerCalc.calculateDangerFromWall(time, botStat.getPosition(), myBot);
 		if ( myBot.getEnemyBots().size() == 4 ) {
@@ -45,15 +47,23 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 		} else {
 			dangers[2] = 0;
 		}
+		//profiler.stop( "SpacialPositionDanger" );
+		//profiler.start( "OtherBotsDanger" );
 		dangers[3] = dangerCalc.calculateDangerFromEnemyBots(time, botStat.getPosition(), myBot);
+		//profiler.stop( "OtherBotsDanger" );
+		//profiler.start( "WaveDanger" );
 		dangers[4] = dangerCalc.calculateDangerFromEnemyWaves(time, botStat.getPosition(), myBot);
 		if (dangers[4] != 0) {
 			onTheWave = true;
 		}
+		//profiler.stop( "WaveDanger" );
 		//logger.dbg( "dangers " + logger.arrayToTextPlot( dangers ) + " at time " + time + " at pos " + botStat.getPosition() );
+		//profiler.start( "SummingUp" );
 		ArrayStats stats = new ArrayStats(dangers);
 		dL = stats.sum;
 		setDanger(dL);
+		//profiler.stop( "SummingUp" );
+		//profiler.stop( "dangerPathPoint_calculateDanger" );
 		return dL;
 	}
 	

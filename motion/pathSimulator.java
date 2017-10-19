@@ -149,6 +149,7 @@ public class pathSimulator {
 	}
 
 	public static LinkedList<botStatPoint> getPathTo( Point2D.Double destPnt, botStatPoint strtPnt, long maxSteps ) {
+		profiler.start("pathSimulator_getPathTo");
 		LinkedList<botStatPoint> pathPoints = new LinkedList<botStatPoint>();
 		driveCommand _dCmnd;
 		botStatPoint prevPnt  = strtPnt;
@@ -160,6 +161,7 @@ public class pathSimulator {
 			pathPoints.add( nextPnt);
 			prevPnt = nextPnt;
 		} while ( cnt < maxSteps );
+		profiler.stop("pathSimulator_getPathTo");
 		return pathPoints;
 	}
 
