@@ -19,6 +19,8 @@ public class profiler {
 	public static HashMap<String, profiler> profilers   = new HashMap<String, profiler>();
 	public static LinkedList<String> methodsChain   = new LinkedList<String>();
 
+	private static boolean SHOW_ALL = false; // enables all profiling output
+
 	private long startTime;
 	private long totalExecTime = 0;
 	private long minExecTime = Long.MAX_VALUE; ;
@@ -127,7 +129,7 @@ public class profiler {
 			str += "\n";
 			str += "Method " + methodName + " was never executed";
 		} else {
-			if ( p.numExec >= 1 && p.showYourSelf ) {
+			if ( p.numExec >= 1 && (p.showYourSelf || p.SHOW_ALL) ) {
 				str += "\n";
 				str += margin;
 			       	str += String.format("%10s", p.numExec);
