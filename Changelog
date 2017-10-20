@@ -73,6 +73,18 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v10.6
+
+- profiling a lot of internal functions, speed should be higher now
+- added ability to add bullet to a virtual wave (disabled now)
+
+Enhancements
+- improved profiler output
+- added cpuManager to calculate cpuConstant
+- added timer class for future use
+- aiming condition does not use time in the future
+- gunTreePoint holds its cache the whole round
+
 ## v10.5
 
 Enhancement
