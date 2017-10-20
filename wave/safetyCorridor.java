@@ -45,7 +45,7 @@ public class safetyCorridor {
 
 	public safetyCorridor getOverlap( safetyCorridor sC ) {
 		// calculates overlap of two safety corridors
-		profiler.start( "getOverlap" );
+		//profiler.start( "getOverlap" );
 
 		safetyCorridor sCoverlap = null;
 
@@ -68,7 +68,7 @@ public class safetyCorridor {
 			sCoverlap.normalize();
 		}
 
-		profiler.stop( "getOverlap" );
+		//profiler.stop( "getOverlap" );
 		return sCoverlap;
 	}
 

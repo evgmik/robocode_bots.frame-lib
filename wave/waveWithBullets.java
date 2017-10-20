@@ -42,7 +42,7 @@ public class waveWithBullets extends wave {
 	}
 	
 	public void calcCombineDanger() {
-		profiler.start("calcCombineDanger");
+		//profiler.start("calcCombineDanger");
 		for ( int i=0; i< combGFdanger.length; i++ ) {
 			combGFdanger[i] = 0;
 			// shadow of 1 means that this GF is fully safe
@@ -53,7 +53,7 @@ public class waveWithBullets extends wave {
 		}
 		ArrayStats  stats = new ArrayStats( combGFdanger );
 		combGFdanger = stats.getProbDensity();
-		profiler.stop("calcCombineDanger");
+		//profiler.stop("calcCombineDanger");
 	}
 
 	public LinkedList<firingSolution> getFiringSolutions() {
@@ -410,7 +410,7 @@ public class waveWithBullets extends wave {
 	}
 
 	public void removeBulletsOutsideOfHitRegion(long time) {
-		profiler.start("wB_removeBulletsOutsideOfHitRegion");
+		//profiler.start("wB_removeBulletsOutsideOfHitRegion");
 		LinkedList<firingSolution> fStoRemove = new LinkedList<firingSolution>();
 		if ( time > firedTime+5 && firingSolutions.size() > 0) { 
 			// if wave did not travel enough bot shadow > 180 degrees
@@ -432,7 +432,7 @@ public class waveWithBullets extends wave {
 				}
 			}
 		}
-		profiler.stop("wB_removeBulletsOutsideOfHitRegion");
+		//profiler.stop("wB_removeBulletsOutsideOfHitRegion");
 	}
 
 	public void addSafetyCorridor( fighterBot bot) {
@@ -527,7 +527,7 @@ public class waveWithBullets extends wave {
 	}
 
 	public safetyCorridor getHitCoridor( long time ) {
-		profiler.start("getHitCoridor");
+		//profiler.start("getHitCoridor");
 		// angles range within which target can be at given time
 		// at fire time it is +/- MEA
 		// but as time progress the hit area decreases
@@ -542,7 +542,7 @@ public class waveWithBullets extends wave {
 			minA = hitAngle - botHalfWidthAngle - escapeAngle;
 			maxA = hitAngle + botHalfWidthAngle + escapeAngle;
 		}
-		profiler.stop("getHitCoridor");
+		//profiler.stop("getHitCoridor");
 		return new safetyCorridor( minA, maxA );
 	}
 

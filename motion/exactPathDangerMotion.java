@@ -121,7 +121,7 @@ public class exactPathDangerMotion extends basicMotion {
 		Point2D.Double pivotPnt = new Point2D.Double(physics.BattleField.getX()/2, physics.BattleField.getY()/2);
 		headOnAngle = Math.toRadians( math.game_angles2cortesian(math.angle2pt( myPos, pivotPnt ) ) );
 		for ( long i = 0; i < nTrials; i++ ) {
-			profiler.start("place final point into battlefield");
+			//profiler.start("place final point into battlefield");
 			pp = new Point2D.Double(0,0);
 			// FIXME make final decision
 			// for now I disable the orthogonal to the enemy motion
@@ -161,7 +161,7 @@ public class exactPathDangerMotion extends basicMotion {
 				pp.y = myPos.y + R*Math.sin( a ); 
 				a += da; // we will move final point into battlefield
 			} while ( !physics.botReacheableBattleField.contains( pp ) );
-			profiler.stop("place final point into battlefield");
+			//profiler.stop("place final point into battlefield");
 			pathTrial = new dangerPath( pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength ) );
 			pathTrial.calculateDanger( myBot, path.getDanger() );
 			if ( path.getDanger() > pathTrial.getDanger() ) {

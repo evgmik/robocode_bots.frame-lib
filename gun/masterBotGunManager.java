@@ -133,7 +133,7 @@ public class masterBotGunManager extends gunManager {
 	}
 
 	public void rankAimAtAllSolutions( fighterBot bestTargetBot, LinkedList<firingSolution> fSols, double bulletEnergy ) {
-		profiler.start( "rankAimAtAllSolutions" );
+		//profiler.start( "rankAimAtAllSolutions" );
 
 		//first we rank firing solution based on target bot weights
 		if (  myBot.getEnemyBots().size() > 1 ) {
@@ -163,7 +163,7 @@ public class masterBotGunManager extends gunManager {
 		if ( useAngleDistribution ) { //disable angle normalization
 			rankSolutionsBasedOnAngleDistribution( bestTargetBot, fSols, bulletEnergy );
 		}
-		profiler.stop( "rankAimAtAllSolutions" );
+		//profiler.stop( "rankAimAtAllSolutions" );
 	}
 
 	public LinkedList<firingSolution> getAimAtEveryoneFiringSolutions(double bulletEnergy) {
