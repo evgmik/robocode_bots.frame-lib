@@ -132,7 +132,7 @@ public class gunManager implements gunManagerInterface {
 	}
 
 	public void addRealHitGF( double gf,  InfoBot tBot, long firedTime, double bulletEnergy ) {
-		logger.dbg(myBot.getTime() + ": addRealHitGF to " + myBot.getName() + " for target " + tBot.getName() + " at GF = " + gf + " with bullet energy " + bulletEnergy );
+		//logger.dbg(myBot.getTime() + ": addRealHitGF to " + myBot.getName() + " for target " + tBot.getName() + " at GF = " + gf + " with bullet energy " + bulletEnergy );
 		String gunName = "realHitsGun";
 		String trgtBotName = tBot.getName();
 		String2D key = new String2D( gunName, trgtBotName );
