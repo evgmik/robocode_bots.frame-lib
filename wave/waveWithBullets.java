@@ -236,16 +236,17 @@ public class waveWithBullets extends wave {
 
 	public double getWaveDanger( long time, Point2D.Double dP ) {
 		// use danger at the closest matching GF to the point
-		profiler.start("waveWithBullets.getWaveDanger");
+		//profiler.start("waveWithBullets.getWaveDanger");
 		double dL = 0;
 		double dist = Math.abs(dP.distance( firedPosition ) - getDistanceTraveledAtTime( time ) );
 		if ( dist <= physics.robotHalfDiagonal ) {
 			double hitAngle = math.angle2pt( firedPosition, dP );
 			double gf = getFiringGuessFactor( hitAngle );
 			long i = math.gf2bin( gf, combGFdanger.length );
+			// FIXME: use the full bot shadow size
 			dL += combGFdanger[ (int)i];
 		}
-		profiler.stop("waveWithBullets.getWaveDanger");
+		//profiler.stop("waveWithBullets.getWaveDanger");
 		return dL;
 	}
 
@@ -324,9 +325,7 @@ public class waveWithBullets extends wave {
 		double waveDangerRadius = 100;
 		double dL = 0;
 		double dist = Math.abs(dP.distance( firedPosition ) - getDistanceTraveledAtTime( time ) );
-		if ( dist <= physics.robotHalfDiagonal ) {
-			dL += getWaveDanger( time, dP );
-		}
+		dL += getWaveDanger( time, dP );
 		//profiler.stop("waveWithBullets.getDanger");
 		return dL*10;
 	}
