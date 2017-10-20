@@ -73,6 +73,14 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v10.7
+
+Logic change
+- different kdTreePoint calculation formula
+
+Enhancements
+- fixed center of mass formula (still unused)
+
 ## v10.6
 
 - profiling a lot of internal functions, speed should be higher now
