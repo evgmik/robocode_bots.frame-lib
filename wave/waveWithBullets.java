@@ -561,8 +561,11 @@ public class waveWithBullets extends wave {
 	}
 
 	public void drawGFdanger(Graphics2D g, long time) {
-		drawGFArrayDanger(g, time, gfDanger, gfColor);
-		drawTotalWaveDanger( g, time,  gfColor) ;
+		fighterBot fBot = targetBot.getGameInfo().getFighterBot( firedBot.getName() );
+		if ( !fBot.isItMasterBotDriver() ) {
+			drawGFArrayDanger(g, time, gfDanger, gfColor);
+			drawTotalWaveDanger( g, time,  gfColor) ;
+		}
 		drawCurrentEscapeAngle( g, time,  gfColor) ;
 	}
 
