@@ -320,24 +320,14 @@ public class waveWithBullets extends wave {
 	}
 
 	public double getDanger( long time, Point2D.Double dP ) {
-		// FIXME: 2017/08/24 after many years I notice the CPU hog
-		// FIXME: GFs array danger should be recalculated every tick
-		// FIXME: then wave danger will take no time to calculate
-		// FIXME: and we need many of such calculations when I search for best path
-		// TODO:  high priority, fix according to the above message!!!
-		profiler.start("waveWithBullets.getDanger");
+		//profiler.start("waveWithBullets.getDanger");
 		double waveDangerRadius = 100;
 		double dL = 0;
 		double dist = Math.abs(dP.distance( firedPosition ) - getDistanceTraveledAtTime( time ) );
 		if ( dist <= physics.robotHalfDiagonal ) {
 			dL += getWaveDanger( time, dP );
-			if ( dL == 0 ) {
-				// bot is fully covered by safety corridors
-			} else {
-				//dL += getFiringSolutionsDanger( time, dP );
-			}
 		}
-		profiler.stop("waveWithBullets.getDanger");
+		//profiler.stop("waveWithBullets.getDanger");
 		return dL*10;
 	}
 
