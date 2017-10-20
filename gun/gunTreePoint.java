@@ -125,13 +125,14 @@ public class gunTreePoint  {
 		x = distAtLastAim/physics.MaxSeparationOnBattleField;
 		coord[0] = advancingSpeed;
 		coord[1] = latteralSpeed;
-		coord[2] = 1.1*tFlight;
-		coord[3] = 1.0*1.0/(1+Math.min(distToWallAhead/vBotMax, tWallHit));
+		//coord[2] = 0*1.1*tFlight;
+		coord[2] = 10*distAtLastAim/physics.MaxSeparationOnBattleField;
+		coord[3] = 10.0*1.0/(1+Math.min(distToWallAhead/vBotMax, tWallHit));
 		coord[4] = 100*posMEA/MEA;
 		coord[5] = 100*negMEA/MEA;
 		x = timeSinceVelocityChange;
-		coord[6] = Math.max(x,10);
-		coord[7] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
+		coord[6] = 0*Math.max(x,10);
+		coord[7] = 0*1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
 
 		if ( false ) { // enable for debugging
 			String sout = fBot.getName() + " Tree coords: ";
