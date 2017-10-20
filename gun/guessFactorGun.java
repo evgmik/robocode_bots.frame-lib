@@ -77,8 +77,8 @@ public class guessFactorGun extends baseGun {
 		double wSum  = 0;
 		double gf =  0; // head on guess factor
 		for (int i=0; i< numBins; i++) {
-			cmBin = i*guessFactorBins[i];
-			wSum  =   guessFactorBins[i];
+			cmBin += i*guessFactorBins[i];
+			wSum  +=   guessFactorBins[i];
 		}
 		if ( wSum != 0 ) {
 			cmBin /= wSum;
