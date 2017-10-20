@@ -565,8 +565,8 @@ public class waveWithBullets extends wave {
 		if ( !fBot.isItMasterBotDriver() ) {
 			drawGFArrayDanger(g, time, gfDanger, gfColor);
 			drawTotalWaveDanger( g, time,  gfColor) ;
+			drawCurrentEscapeAngle( g, time,  gfColor) ;
 		}
-		drawCurrentEscapeAngle( g, time,  gfColor) ;
 	}
 
 	public void onPaint(Graphics2D g, long time) {
