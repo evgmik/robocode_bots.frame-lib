@@ -197,11 +197,18 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 	}
 
 	public void removeBulletsOutsideOfHitRegion() {
-		profiler.start("removeBulletsOutsideOfHitRegion");
-		for ( waveWithBullets wB : getMyWaves() ) {
-			wB.removeBulletsOutsideOfHitRegion( getTime() );
+		// this suppose to help in early stage of the game
+		// by counting bullets which will not hit target
+		// after some wave propagation.
+		// There is no need to do it every tic
+		// FIXME: make decision based on number of fired wave
+		if ( isItMasterBotDriver() && getTime() < physics.ticTimeFromTurnAndRound(200, 0) ) {
+			profiler.start("removeBulletsOutsideOfHitRegion");
+			for ( waveWithBullets wB : getMyWaves() ) {
+				wB.removeBulletsOutsideOfHitRegion( getTime() );
+			}
+			profiler.stop("removeBulletsOutsideOfHitRegion");
 		}
-		profiler.stop("removeBulletsOutsideOfHitRegion");
 	}
 
 	public void initTic() {
