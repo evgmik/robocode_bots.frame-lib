@@ -73,6 +73,16 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v10.8
+
+Logic change
+- fire virtual wave only first 200 tics
+- add virtual bullets to virtual wave only for the first 200 tics as well
+
+Enhancements
+- remove bullets which miss (to update gun hit rates) only for the first 200
+  tics. After this time it just give small correction but consumes a lot of CPU.
+
 ## v10.7
 
 Logic change
