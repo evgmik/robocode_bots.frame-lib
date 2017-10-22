@@ -118,6 +118,12 @@ public class gunTreePoint  {
 		double posMEA = MEAs[1];
 		double MEA    = MEAs[2];
 
+		double averageSpeed=0;
+		long Ntics=10;
+		for (long i=Ntics; i>=1; i-- ) {
+			double decay=0.9;
+			averageSpeed =(decay)*averageSpeed + (1-decay)*tBot.getStatClosestToTime( time - i ).getSpeed();
+		}
 		//logger.dbg( tBot.getName() + " has maxMEA = " + physics.calculateMEA(vBullet) + " negMEA = " + negMEA + " posMEA = " + posMEA + " and laterals speed = " + latteralSpeed );
 
 		// assign normalized coordinates
@@ -131,7 +137,7 @@ public class gunTreePoint  {
 		coord[4] = 100*posMEA/MEA;
 		coord[5] = 100*negMEA/MEA;
 		x = timeSinceVelocityChange;
-		coord[6] = 0*Math.max(x,10);
+		coord[6] = averageSpeed;
 		coord[7] = 0*1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
 
 		if ( false ) { // enable for debugging
