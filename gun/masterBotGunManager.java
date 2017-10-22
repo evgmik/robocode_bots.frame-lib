@@ -83,7 +83,7 @@ public class masterBotGunManager extends gunManager {
 				myBot.myWaves.add(wB);
 			} else {
 				// fire virtual wave
-				if ( true || myBot.getTime() < physics.ticTimeFromTurnAndRound(200, 0) ) {
+				if ( false || myBot.getTime() < physics.ticTimeFromTurnAndRound(200, 0) ) {
 				wave nW = new wave( myBot.getInfoBot(), myBot.getTime(), bestFiringSolution.bulletEnergy );
 				myBot.getGameInfo()._wavesManager.add( nW );
 				if ( true ) { // DEBUG AND SPEED UP 
