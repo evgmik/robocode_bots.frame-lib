@@ -26,6 +26,9 @@ public class gameInfo implements botListener {
 	public botsManager _botsmanager;
 	public wavesManager _wavesManager;
 
+	private boolean enableSleepIfHaveTime = true;
+	private timer timeReserve = null;
+
 	public static HashMap<String,fighterBot> liveBots = new HashMap<String, fighterBot>();
 	public static HashMap<String,fighterBot> deadBots = new HashMap<String, fighterBot>();;
 
@@ -69,18 +72,15 @@ public class gameInfo implements botListener {
 	}
 
 	public void initTic() {
+		profiler.start("gameInfo.ticCycle"); // stop will be at the end of gameInfo.run()!
 		profiler.start("gameInfo.initTic");
-		timer t = new timer( cpuManager.getCpuConstant() );
+		timeReserve = new timer( cpuManager.getCpuConstant() );
 		long timeNow = myBot.getTime();
 		//logger.dbg("gameInfo.initTic " + timeNow);
 		_botsmanager.initTic( timeNow );
-		//logger.dbg( "Time left after _botsmanager.initTic = " + profiler.profTimeString( t.timeLeft() ) );
 		_wavesManager.initTic( timeNow );
-		//logger.dbg( "Time left after _wavesManager.initTic " + profiler.profTimeString( t.timeLeft() ) );
 		for( fighterBot fb: liveBots.values() ) {
 			fb.initTic();
-			//logger.dbg( "Time left after fb.initTic " + fb.getName() + " " + profiler.profTimeString( t.timeLeft() ) );
-
 		}
 		profiler.stop("gameInfo.initTic");
 	}
@@ -106,7 +106,25 @@ public class gameInfo implements botListener {
 		for (fighterBot b : liveBots.values()) {
 			b.manage();
 		}
+		
+		if ( enableSleepIfHaveTime && timeReserve.timeLeft() > 1000000 ) {
+			// we have time to spare,
+			// let's give time for Java's garbage collector to kick in
+			profiler.start("Thread.sleep");
+			try {
+				Thread.sleep(1); // sleep for 1 mS
+				// java timing is crap:
+				// sleep could be as long as 10 mS for requested 1 mS
+			} catch (InterruptedException e) {
+				// Immediately reasserts the exception by interrupting the caller thread
+				// itself.
+				logger.dbg("we get interrupted");
+				Thread.currentThread().interrupt();
+			}
+			profiler.stop("Thread.sleep");
+		}
 		profiler.stop("gameInfo.run");
+		profiler.stop("gameInfo.ticCycle"); // start is in gameInfo.initTic()!
 		myBot.execute();
 	}
 
