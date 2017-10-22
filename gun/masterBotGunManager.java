@@ -86,7 +86,6 @@ public class masterBotGunManager extends gunManager {
 				if ( false || myBot.getTime() < physics.ticTimeFromTurnAndRound(200, 0) ) {
 				wave nW = new wave( myBot.getInfoBot(), myBot.getTime(), bestFiringSolution.bulletEnergy );
 				myBot.getGameInfo()._wavesManager.add( nW );
-				if ( true ) { // DEBUG AND SPEED UP 
 				if (firingSolutions.size() > 0 && myBot.getTime() < physics.ticTimeFromTurnAndRound(200, 0) ) {
 					// since we have already calculated firing solutions
 					// let's add them to a wave
@@ -107,7 +106,6 @@ public class masterBotGunManager extends gunManager {
 					wB.setTargetBot( targetBot );
 					wB.addFiringSolutions( firingSolutions );
 					myBot.myWaves.add(wB);
-				}
 				}
 				}
 			}
