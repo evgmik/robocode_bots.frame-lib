@@ -73,11 +73,19 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
-## v10.8
+## v10.9
 
 Logic change
 - fire virtual wave only first 200 tics
-- add virtual bullets to virtual wave only for the first 200 tics as well
+- asking 1 mS Thread.Sleep if there is spare time
+- gunTreePoint uses averageSpeed
+- gunTreePoint uses number of bots back
+
+
+## v10.8
+
+Logic change
+- add virtual bullets to virtual wave only for the first 200 tics
 
 Enhancements
 - remove bullets which miss (to update gun hit rates) only for the first 200
