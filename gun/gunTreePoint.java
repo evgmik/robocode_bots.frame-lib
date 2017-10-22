@@ -120,10 +120,15 @@ public class gunTreePoint  {
 
 		double averageSpeed=0;
 		long Ntics=10;
-		for (long i=Ntics; i>=1; i-- ) {
+		double weight = 1;
+		double wSum = 0;
+		for (long i=1; i<=Ntics; i++ ) {
 			double decay=0.9;
-			averageSpeed =(decay)*averageSpeed + (1-decay)*tBot.getStatClosestToTime( time - i ).getSpeed();
+			weight *= decay;
+			averageSpeed += weight*tBot.getStatClosestToTime( time - i ).getSpeed();
+			wSum += weight;
 		}
+		averageSpeed /= wSum;
 		//logger.dbg( tBot.getName() + " has maxMEA = " + physics.calculateMEA(vBullet) + " negMEA = " + negMEA + " posMEA = " + posMEA + " and laterals speed = " + latteralSpeed );
 
 		// assign normalized coordinates
