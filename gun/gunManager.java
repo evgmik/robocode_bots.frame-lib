@@ -486,6 +486,7 @@ public class gunManager implements gunManagerInterface {
 		gfH = new gfHit(iCenter, binW);
 		gfH.firedTime = w.getFiredTime();
 		tree.addPoint( pntCoord, gfH );
+		logger.dbg( "{\"treePoint\": { \"coord\": " + Arrays.toString( pntCoord ) + ", " + " \"gf\": " + gf + "} }" ); 
 
 		// this uses game symmetry
 		int iFlipped = (int)math.gf2bin( -gf, numGuessFactorBins );
