@@ -73,9 +73,17 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v11.0
+
+Enhancements
+
+- list safe removal of fighterBot waves from myWaves list
+-  bug fix: virtual waves were fired twice, and were not properly removed
+
 ## v10.9
 
 Logic change
+
 - fire virtual wave only first 200 tics
 - asking 1 mS Thread.Sleep if there is spare time
 - gunTreePoint uses averageSpeed
@@ -85,9 +93,11 @@ Logic change
 ## v10.8
 
 Logic change
+
 - add virtual bullets to virtual wave only for the first 200 tics
 
 Enhancements
+
 - remove bullets which miss (to update gun hit rates) only for the first 200
   tics. After this time it just give small correction but consumes a lot of CPU.
 
@@ -394,7 +404,7 @@ This synchronizes framework and EvBotNG versions.
 - in 1 on 1 situation surf only the oldest (hopefully closest wave), this
   seems to help against GF counting guns
 - 1on1 point to go calculation favors orthogonal to target motion
-- border uncertainty detection is almost 0 now, insetead of 1.1
+- border uncertainty detection is almost 0 now, instead of 1.1
 - Added proper circular acceleration gun
 - fixed rotation rate calculation
 - added MEA marker on enemy wave
@@ -498,7 +508,7 @@ bullets.
 
 ## v4.3
 
-Increased bullet energy a bit, v4.2 change greately increased survival in
+Increased bullet energy a bit, v4.2 change greatly increased survival in
 melee, but APS dropped by about 1%.
 
 ## v4.2
@@ -535,7 +545,7 @@ Added safety corridors capabilities. I.e., bullet and bots shadows.
 
 ## v3.6
 
-Each GF gun has its own threshold for goodness decision. As result decayin GF
+Each GF gun has its own threshold for goodness decision. As result decaying GF
 guns fire now.
 
 ## v3.5
@@ -565,7 +575,7 @@ Added the circular gun which handles an accelerating bot.
 
 ## v3.1
 
-Put a safety net around a potential problem spot. When a ficticios wave is
+Put a safety net around a potential problem spot. When a fictitious wave is
 asked to be added from a bit which rams with me before a radar had a chance to
 see it. This use to throw the "null pointer exception" which propagates for
 the rest of the match.
@@ -573,7 +583,7 @@ the rest of the match.
 
 ## v3.0
 
-Remove attractive potential from energentic but non firing bot.
+Remove attractive potential from energetic but non firing bot.
 
 ## v2.9
 
@@ -586,12 +596,12 @@ will come closer, if bot has no energy to fire it will ram it.
 
 Reverted target selection logic to v2.6
 
-If a point is the closest to enemy, this enemy danger raius increased, to push
+If a point is the closest to enemy, this enemy danger radius increased, to push
 away my bot from being the closest to the enemy. Should increase
 survivability.
 
 Even not the closest enemy fires at master bot sometimes, this helps with no
-motion freeze when all other bots are the closest to somenone else. But some
+motion freeze when all other bots are the closest to someone else. But some
 no so advance bot fire at any target in a view (walls, crazy, etc ).
 
 
@@ -626,7 +636,7 @@ Take in account enemy hit stats, when calculate firing solution danger.
 Circular gun use a more general method to find intercept, 
 it also tries to project target motion if stats are delayed.
 
-Master bot guns are set in config which can hadle different game types.
+Master bot guns are set in config which can handle different game types.
 Enemy bot guns are set in config, as well.
 
 Enemy gunManager is used to provide virtual bullets against master bot
@@ -663,8 +673,8 @@ Added enemy wave count, to implement lagging guess factor gun.
 bug fix: guess factor use the lateral velocity from wrong time
 
 New gun: flipLastGuessFactorGun. I note that many bots including my own
-have next wave guess factor close to opposit of the previous wave. This gun
-tryes to exploit it.
+have next wave guess factor close to opposite of the previous wave. This gun
+tries to exploit it.
 
 ## v1.9
 Disabling mostly orthogonal to the enemy direction path search. Looks like 
@@ -680,7 +690,7 @@ the enemy.
 
 Enemy bots fire guess factor gun too.
 
-Master bot has new decaying gueess factor gun.
+Master bot has new decaying guess factor gun.
 Enemy bots also fire decayingGuessFactorGun gun at master bot.
 
 New exact path choice in 1on1 type, try to chose points orthogonal to line to
@@ -723,7 +733,7 @@ Enemy wave directed at us only if master bot is the closest or number of
 enemies >=3. Consequently enemy waves with no dangerous bullet are
 disregarded.
 
-Exact path is calculated for longer time period and is not updated evey tick
+Exact path is calculated for longer time period and is not updated every tick
 any more (unless there is a fire detected or minimal path length is reached).
 
 Added Random gun, to the guns array.
