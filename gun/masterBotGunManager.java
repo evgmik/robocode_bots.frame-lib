@@ -101,11 +101,6 @@ public class masterBotGunManager extends gunManager {
 						}
 						wB.addFiringSolution( fS );
 					}
-
-					waveWithBullets wB = new waveWithBullets( nW, myBot.getGunManager().getGuessFactosrBinNum() );
-					wB.setTargetBot( targetBot );
-					wB.addFiringSolutions( firingSolutions );
-					myBot.myWaves.add(wB);
 				}
 				}
 			}
