@@ -84,24 +84,24 @@ public class masterBotGunManager extends gunManager {
 			} else {
 				// fire virtual wave
 				if ( false || myBot.getTime() < physics.ticTimeFromTurnAndRound(200, 0) ) {
-				wave nW = new wave( myBot.getInfoBot(), myBot.getTime(), bestFiringSolution.bulletEnergy );
-				myBot.getGameInfo()._wavesManager.add( nW );
-				if (firingSolutions.size() > 0 && myBot.getTime() < physics.ticTimeFromTurnAndRound(200, 0) ) {
-					// since we have already calculated firing solutions
-					// let's add them to a wave
-					HashMap<String, waveWithBullets> waveCache = new HashMap<String, waveWithBullets>();
-					for (firingSolution fS : firingSolutions ) {
-						String targetName = fS.getTargetBotName();
-						waveWithBullets wB = waveCache.get(targetName);
-						if ( wB == null ) {
-							wB = new waveWithBullets( nW, myBot.getGunManager().getGuessFactosrBinNum() );
-							wB.setTargetBot( myBot.getGameInfo().getFighterBot( targetName) );
-							waveCache.put(targetName, wB);
-							myBot.myWaves.add(wB);
+					wave nW = new wave( myBot.getInfoBot(), myBot.getTime(), bestFiringSolution.bulletEnergy );
+					myBot.getGameInfo()._wavesManager.add( nW );
+					if (firingSolutions.size() > 0 && myBot.getTime() < physics.ticTimeFromTurnAndRound(200, 0) ) {
+						// since we have already calculated firing solutions
+						// let's add them to a wave
+						HashMap<String, waveWithBullets> waveCache = new HashMap<String, waveWithBullets>();
+						for (firingSolution fS : firingSolutions ) {
+							String targetName = fS.getTargetBotName();
+							waveWithBullets wB = waveCache.get(targetName);
+							if ( wB == null ) {
+								wB = new waveWithBullets( nW, myBot.getGunManager().getGuessFactosrBinNum() );
+								wB.setTargetBot( myBot.getGameInfo().getFighterBot( targetName) );
+								waveCache.put(targetName, wB);
+								myBot.myWaves.add(wB);
+							}
+							wB.addFiringSolution( fS );
 						}
-						wB.addFiringSolution( fS );
 					}
-				}
 				}
 			}
 		}
