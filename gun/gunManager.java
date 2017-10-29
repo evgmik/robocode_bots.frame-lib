@@ -488,7 +488,7 @@ public class gunManager implements gunManagerInterface {
 		gfH.firedTime = w.getFiredTime();
 		tree.addPoint( pntCoord, gfH );
 		if ( logKdTreePoints ) {
-			logger.dbg( "{\"treePoint\": { \"coord\": " + Arrays.toString( pntCoord ) + ", " + " \"gf\": " + gf + "} }" ); 
+			logger.dbg( "{\"treePoint\": {\"targetBot\": \"" + bot.getName() + "\", \"coord\": " + Arrays.toString( pntCoord ) + ", " + " \"gf\": " + gf + "} }" );
 		}
 
 		// this uses game symmetry
