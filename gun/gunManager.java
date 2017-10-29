@@ -21,6 +21,7 @@ import robocode.Rules.*;
 
 
 public class gunManager implements gunManagerInterface {
+	boolean logKdTreePoints = false;
 	public HashMap<String, LinkedList<baseGun>> gunListForGameType = new HashMap<String, LinkedList<baseGun>>();
 	public LinkedList<baseGun> gunList = new LinkedList<baseGun>(); // this one assigned from above
 	public fighterBot myBot;
@@ -251,7 +252,7 @@ public class gunManager implements gunManagerInterface {
 		ArrayWithMath gfA = new ArrayWithMath( g.getGFdanger( myBot, tBot.getInfoBot() ) );
 
 		if ( realHitsWeight < 1.0 ) {
-			g = new kdtreeGuessFactorGun(10); // visited GF avoidance
+			g = new kdtreeGuessFactorGun(100); // visited GF avoidance
 			g.getFiringSolutions( myBot, tBot.getInfoBot(), firedTime, bulletEnergy ); // this is a dummy but it sets tree point coordinates
 			ArrayWithMath visitsGF = new ArrayWithMath( g.getGFdanger( myBot, tBot.getInfoBot() ) );
 			gfA.multiplyBy( realHitsWeight );
@@ -486,6 +487,9 @@ public class gunManager implements gunManagerInterface {
 		gfH = new gfHit(iCenter, binW);
 		gfH.firedTime = w.getFiredTime();
 		tree.addPoint( pntCoord, gfH );
+		if ( logKdTreePoints ) {
+			logger.dbg( "{\"treePoint\": { \"coord\": " + Arrays.toString( pntCoord ) + ", " + " \"gf\": " + gf + "} }" ); 
+		}
 
 		// this uses game symmetry
 		int iFlipped = (int)math.gf2bin( -gf, numGuessFactorBins );
