@@ -73,12 +73,21 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v11.1
+
+Logic change
+
+- use kdTreeGun(100) instead of kdTreeGun(10) for flattener
+
+Enhancements
+- can log kdtree points for off-line analysis
+
 ## v11.0
 
 Enhancements
 
 - list safe removal of fighterBot waves from myWaves list
--  bug fix: virtual waves were fired twice, and were not properly removed
+- bug fix: virtual waves were fired twice, and were not properly removed
 
 ## v10.9
 
