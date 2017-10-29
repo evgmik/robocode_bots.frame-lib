@@ -252,7 +252,7 @@ public class gunManager implements gunManagerInterface {
 		ArrayWithMath gfA = new ArrayWithMath( g.getGFdanger( myBot, tBot.getInfoBot() ) );
 
 		if ( realHitsWeight < 1.0 ) {
-			g = new kdtreeGuessFactorGun(10); // visited GF avoidance
+			g = new kdtreeGuessFactorGun(100); // visited GF avoidance
 			g.getFiringSolutions( myBot, tBot.getInfoBot(), firedTime, bulletEnergy ); // this is a dummy but it sets tree point coordinates
 			ArrayWithMath visitsGF = new ArrayWithMath( g.getGFdanger( myBot, tBot.getInfoBot() ) );
 			gfA.multiplyBy( realHitsWeight );
