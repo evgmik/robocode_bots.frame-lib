@@ -21,7 +21,7 @@ import robocode.Rules.*;
 
 
 public class gunManager implements gunManagerInterface {
-	boolean logKdTreePoints = false;
+	boolean logKdTreePoints = true;
 	public HashMap<String, LinkedList<baseGun>> gunListForGameType = new HashMap<String, LinkedList<baseGun>>();
 	public LinkedList<baseGun> gunList = new LinkedList<baseGun>(); // this one assigned from above
 	public fighterBot myBot;
@@ -408,7 +408,8 @@ public class gunManager implements gunManagerInterface {
 	public KdTree<gfHit> getTreeKDTreeMap( String  botName ) {
                 if ( !guessFactorsKDTreeMap.containsKey( botName ) ) {
 			gunTreePoint gTP = new gunTreePoint();
-			KdTree<gfHit> tree = new KdTree.Manhattan<gfHit>( gTP.getKdTreeDims(), kdTreeSizeLimit );
+			KdTree.WeightedManhattan<gfHit> tree = new KdTree.WeightedManhattan<gfHit>( gTP.getKdTreeDims(), kdTreeSizeLimit );
+			tree.setWeights( gTP.getCoordWeights() );
 			guessFactorsKDTreeMap.put( botName, tree );
                 }
 		KdTree<gfHit> tree = guessFactorsKDTreeMap.get( botName );
@@ -418,7 +419,8 @@ public class gunManager implements gunManagerInterface {
 	public KdTree<gfHit> getRealHitsGFKDTreeMap( String  botName ) {
                 if ( !realHitsGFKDTreeMap.containsKey( botName ) ) {
 			gunTreePoint gTP = new gunTreePoint();
-			KdTree<gfHit> tree = new KdTree.Manhattan<gfHit>( gTP.getKdTreeDims(), kdTreeSizeLimit );
+			KdTree.WeightedManhattan<gfHit> tree = new KdTree.WeightedManhattan<gfHit>( gTP.getKdTreeDims(), kdTreeSizeLimit );
+			tree.setWeights( gTP.getCoordWeights() );
 			realHitsGFKDTreeMap.put( botName, tree );
                 }
 		KdTree<gfHit> tree = realHitsGFKDTreeMap.get( botName );
@@ -429,7 +431,8 @@ public class gunManager implements gunManagerInterface {
 	public KdTree<gunHitMissLog> getGunHitMissKDTree( String2D  key ) {
                 if ( !gunHitMissKDTreeMap.containsKey( key ) ) {
 			gunTreePoint gTP = new gunTreePoint();
-			KdTree<gunHitMissLog> tree = new KdTree.Manhattan<gunHitMissLog>( gTP.getKdTreeDims(), kdTreeSizeLimit );
+			KdTree.WeightedManhattan<gunHitMissLog> tree = new KdTree.WeightedManhattan<gunHitMissLog>( gTP.getKdTreeDims(), kdTreeSizeLimit );
+			tree.setWeights( gTP.getCoordWeights() );
 			gunHitMissKDTreeMap.put( key, tree );
                 }
 		KdTree<gunHitMissLog> tree = gunHitMissKDTreeMap.get( key );
