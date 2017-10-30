@@ -12,6 +12,7 @@ import robocode.*;
 public class gunTreePoint  {
 	protected int kdTreeDims = 8; // dist, bulletEnergy, abs(latVel), accel, dist to wall, enemy num, timeSinceVelocityChange, advancing speed
 	protected double[] coord = new double[kdTreeDims];
+	protected double[] coordWeight = new double[kdTreeDims];
 
 	protected static HashMap<aimingConditions, gunTreePoint > cache = new HashMap<aimingConditions, gunTreePoint >();
 
@@ -44,6 +45,14 @@ public class gunTreePoint  {
 	}
 
 	public gunTreePoint() {
+		coordWeight[0] = 1.0;
+		coordWeight[1] = 1.0;
+		coordWeight[2] = 1.0;
+		coordWeight[3] = 1.0;
+		coordWeight[4] = 1.0;
+		coordWeight[5] = 1.0;
+		coordWeight[6] = 1.0;
+		coordWeight[7] = 1.0;
 	}
  
 	public void clearCache() {
@@ -53,6 +62,7 @@ public class gunTreePoint  {
 	public gunTreePoint( fighterBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
 		// time is time at fire
 		//profiler.start("gunTreePoint");
+		this();
 		String gunType = "any";
 		aimingConditions aC = new aimingConditions( fBot, tBot, time, bulletEnergy, gunType );
 		gunTreePoint gTP = cache.get( aC );
@@ -138,12 +148,17 @@ public class gunTreePoint  {
 		coord[1] = latteralSpeed;
 		//coord[2] = 0*1.1*tFlight;
 		coord[2] = 10*distAtLastAim/physics.MaxSeparationOnBattleField;
-		coord[3] = 10.0*1.0/(1+Math.min(distToWallAhead/vBotMax, tWallHit));
-		coord[4] = 100*posMEA/MEA;
-		coord[5] = 100*negMEA/MEA;
+		coord[3] = 1.0/(1+Math.min(distToWallAhead/vBotMax, tWallHit));
+		coord[4] = posMEA/MEA;
+		coord[5] = negMEA/MEA;
 		x = timeSinceVelocityChange;
 		coord[6] = averageSpeed;
 		coord[7] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
+
+		// weight coordinates
+		for (int i=0; i < kdTreeDims ; i++) {
+			coord[i] *= coordWeight[i];
+		}
 
 		if ( false ) { // enable for debugging
 			String sout = fBot.getName() + " Tree coords: ";
