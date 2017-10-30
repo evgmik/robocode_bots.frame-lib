@@ -13,6 +13,7 @@ public class gunTreePoint  {
 	protected int kdTreeDims = 8; // dist, bulletEnergy, abs(latVel), accel, dist to wall, enemy num, timeSinceVelocityChange, advancing speed
 	protected double[] coord = new double[kdTreeDims];
 	protected double[] coordWeight = new double[kdTreeDims];
+	protected boolean treeIsWeighted = true;
 
 	protected static HashMap<aimingConditions, gunTreePoint > cache = new HashMap<aimingConditions, gunTreePoint >();
 
@@ -45,6 +46,10 @@ public class gunTreePoint  {
 	}
 
 	public gunTreePoint() {
+		setCoordWeights();
+	}
+
+	public void setCoordWeights() {
 		coordWeight[0] = 0.414;
 		coordWeight[1] = 0.1653;
 		coordWeight[2] = 0.8598;
@@ -53,6 +58,10 @@ public class gunTreePoint  {
 		coordWeight[5] = 6.50;
 		coordWeight[6] = 0.1358;
 		coordWeight[7] = 1.0;
+	}
+
+	public double[] getCoordWeights() {
+		return coordWeight;
 	}
  
 	public void clearCache() {
@@ -156,8 +165,10 @@ public class gunTreePoint  {
 		coord[7] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
 
 		// weight coordinates
-		for (int i=0; i < kdTreeDims ; i++) {
-			coord[i] *= coordWeight[i];
+		if ( !treeIsWeighted ) {
+			for (int i=0; i < kdTreeDims ; i++) {
+				coord[i] *= coordWeight[i];
+			}
 		}
 
 		if ( false ) { // enable for debugging
