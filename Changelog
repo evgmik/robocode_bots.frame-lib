@@ -73,6 +73,17 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v11.2
+
+Logic change
+
+- gunTreePoint weights redone
+
+Enhancements
+
+- off-line anlusis tracks target bot name
+- kdTree switched to weighted one, to simplify logic
+
 ## v11.1
 
 Logic change
