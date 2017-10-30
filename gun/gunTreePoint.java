@@ -45,13 +45,13 @@ public class gunTreePoint  {
 	}
 
 	public gunTreePoint() {
-		coordWeight[0] = 1.0;
-		coordWeight[1] = 1.0;
-		coordWeight[2] = 1.0;
-		coordWeight[3] = 1.0;
-		coordWeight[4] = 1.0;
-		coordWeight[5] = 1.0;
-		coordWeight[6] = 1.0;
+		coordWeight[0] = 0.414;
+		coordWeight[1] = 0.1653;
+		coordWeight[2] = 0.8598;
+		coordWeight[3] = 13.212;
+		coordWeight[4] = 6.2637;
+		coordWeight[5] = 6.50;
+		coordWeight[6] = 0.1358;
 		coordWeight[7] = 1.0;
 	}
  
