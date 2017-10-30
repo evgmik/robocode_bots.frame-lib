@@ -21,7 +21,7 @@ import robocode.Rules.*;
 
 
 public class gunManager implements gunManagerInterface {
-	boolean logKdTreePoints = true;
+	boolean logKdTreePoints = false;
 	public HashMap<String, LinkedList<baseGun>> gunListForGameType = new HashMap<String, LinkedList<baseGun>>();
 	public LinkedList<baseGun> gunList = new LinkedList<baseGun>(); // this one assigned from above
 	public fighterBot myBot;
