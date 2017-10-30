@@ -50,14 +50,12 @@ public class gunTreePoint  {
 	}
 
 	public void setCoordWeights() {
-		coordWeight[0] = 0.414;
-		coordWeight[1] = 0.1653;
-		coordWeight[2] = 0.8598;
-		coordWeight[3] = 13.212;
-		coordWeight[4] = 6.2637;
-		coordWeight[5] = 6.50;
-		coordWeight[6] = 0.1358;
-		coordWeight[7] = 1.0;
+		coordWeight = new double[] { 1,
+			0.4152,  3.1524, 42.4300, 14.4910, 15.8883, 0.3883,
+			1};
+		if ( coordWeight.length != kdTreeDims ) {
+			logger.error( "Error: coordWeight.length = " + coordWeight.length + "  does not match kdTreeDims = " + kdTreeDims);
+		}
 	}
 
 	public double[] getCoordWeights() {
