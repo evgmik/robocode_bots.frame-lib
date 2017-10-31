@@ -140,12 +140,18 @@ public class exactPathDangerMotion extends basicMotion {
 					pivotPnt = tmpEnemyBot.getPosition();
 					headOnAngle = Math.toRadians( math.game_angles2cortesian(math.angle2pt( myPos, pivotPnt ) ) );
 					a = headOnAngle + Math.PI/2.;
+					if ( pivotPnt.distance( myPos ) < 200 ) {
+						// enemy is ramming
+						a += 1*Math.PI/8;
+						a += Math.PI/3*(Math.random());
+					} else {
 					// random spread to it
 					double angleSpread = Math.PI/4.;
 					a += angleSpread*(Math.random() - 0.5);
+					}
 					if ( Math.random() > 0.5 ) {
-						// shift angle 180 degree to flip direction
-						a += Math.PI;
+						// reflect with respect to headOnAngle;
+						a = headOnAngle - (a -headOnAngle);
 					}
 				} else {
 					a = 2*Math.PI* Math.random();
