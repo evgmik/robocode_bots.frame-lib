@@ -10,7 +10,7 @@ import eem.frame.misc.*;
 import robocode.*;
 
 public class gunTreePoint  {
-	protected int kdTreeDims = 8; // dist, bulletEnergy, abs(latVel), accel, dist to wall, enemy num, timeSinceVelocityChange, advancing speed
+	protected int kdTreeDims = 9; // dist, bulletEnergy, abs(latVel), accel, dist to wall, enemy num, timeSinceVelocityChange, advancing speed
 	protected double[] coord = new double[kdTreeDims];
 	protected double[] coordWeight = new double[kdTreeDims];
 	protected boolean treeIsWeighted = true;
@@ -51,7 +51,9 @@ public class gunTreePoint  {
 
 	public void setCoordWeights() {
 		coordWeight = new double[] { 1,
-			0.4152,  3.1524, 42.4300, 14.4910, 15.8883, 0.3883,
+			//0.4152,  3.1524, 42.4300, 14.4910, 15.8883, 0.3883, 1,
+			0.4152,  3.1524, 42.4300, 14.4910, 15.8883, 0.3883, 1.3843,
+			//0.4146, 2.3424, 37.3923, 19.4532, 18.5956, 0.4498, 1.3843,
 			1};
 		if ( coordWeight.length != kdTreeDims ) {
 			logger.error( "Error: coordWeight.length = " + coordWeight.length + "  does not match kdTreeDims = " + kdTreeDims);
@@ -160,7 +162,8 @@ public class gunTreePoint  {
 		coord[5] = negMEA/MEA;
 		x = timeSinceVelocityChange;
 		coord[6] = averageSpeed;
-		coord[7] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
+		coord[7] = vBullet;
+		coord[8] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
 
 		// weight coordinates
 		if ( !treeIsWeighted ) {
