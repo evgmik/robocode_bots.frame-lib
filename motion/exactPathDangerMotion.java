@@ -142,12 +142,14 @@ public class exactPathDangerMotion extends basicMotion {
 					a = headOnAngle + Math.PI/2.;
 					if ( pivotPnt.distance( myPos ) < 200 ) {
 						// enemy is ramming
-						a += 1*Math.PI/8;
-						a += Math.PI/3*(Math.random());
+						double offset = 0*Math.PI/8;
+						a += offset;
+						a += (Math.PI/2-offset)*Math.random();
+						//R = Math.max(10*robocode.Rules.MAX_VELOCITY, pivotPnt.distance( myPos ) );
 					} else {
-					// random spread to it
-					double angleSpread = Math.PI/4.;
-					a += angleSpread*(Math.random() - 0.5);
+						// random spread to it
+						double angleSpread = Math.PI/4.;
+						a += angleSpread*(Math.random() - 0.5);
 					}
 					if ( Math.random() > 0.5 ) {
 						// reflect with respect to headOnAngle;
