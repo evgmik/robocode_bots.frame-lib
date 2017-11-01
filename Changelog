@@ -73,6 +73,12 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v11.4
+
+Logic change
+
+- anti-rammer improvements attempt
+
 ## v11.3
 
 Logic change
