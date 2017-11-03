@@ -125,7 +125,6 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 						// Attraction is disabled for now.
 						//+ Math.exp ( - 4*Math.abs(dist - physics.MaxSeparationOnBattleField)/physics.MaxSeparationOnBattleField )
 						);
-
 			} else {
 				// this bot has no energy for bullets
 				// approach as close as you want
@@ -134,6 +133,13 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 						Math.exp ( - 4*Math.abs(dist - physics.MaxSeparationOnBattleField)/physics.MaxSeparationOnBattleField )
 						);
 			}
+		}
+		// ram avoidance
+		dist = math.distanceEuclidian( dP, getPositionClosestToTime( time ) ) ;
+		if ( dist <= (2*physics.robotHalfSize+1) ) {
+			// two bots try to get inside each other
+			// this is forbiden
+			dL += 100; // something big
 		}
 		return dL;
 	}
