@@ -201,6 +201,13 @@ public class math {
 		return n;
 	}
 
+	public static double distanceEuclidian( Point2D.Double pntOne, Point2D.Double pntTwo ) {
+		double dist = 0;
+		dist = Math.max( Math.abs( pntOne.getX() - pntTwo.getX() ),
+				 Math.abs( pntOne.getY() - pntTwo.getY() ) );
+		return dist;
+	}
+
 	public static Point2D.Double project( Point2D.Double strtPnt, double angle, double R) {
 		// angle is the game angle
 		Point2D.Double endPnt= new Point2D.Double( strtPnt.x, strtPnt.y );
