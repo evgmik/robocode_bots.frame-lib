@@ -73,6 +73,18 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v11.5
+
+Logic change
+
+- anti-rammer improvements attempt
+- added special danger for points inside bots overlap zone
+- wave danger use the full bot shadow, not just nearest gf danger
+
+Enhancements
+
+- added euclidean distance calculation function
+
 ## v11.4
 
 Logic change
