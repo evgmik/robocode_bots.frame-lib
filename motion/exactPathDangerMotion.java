@@ -39,6 +39,8 @@ public class exactPathDangerMotion extends basicMotion {
 	long nTrialsToImprove = 2;
 	
 	long wrongPathPredictionCount = 0;
+
+	protected boolean ramDetected = false;
 	
 	public void initTic() {
 		profiler.start("motion_exactPathDangerMotion.initTic");
@@ -72,7 +74,23 @@ public class exactPathDangerMotion extends basicMotion {
 		} else {
 			needToRecalculate = true;
 		}
+		isRamDetected();
+		if (
+			ramDetected &&
+			!needToRecalculate
+		) {
+			double myFutureSpeed = Math.abs( path.getFirst().getBotStatPoint().getSpeed() );
+			double myCurrentSpeed = Math.abs( myBot.getStatClosestToTime( myBot.getTime() ).getSpeed() );
+			if ( myFutureSpeed < myCurrentSpeed ) {
+				logger.dbg( "my current speed = " + myCurrentSpeed );
+				logger.dbg("some one rams and speed about to drop below max, it will be " + myFutureSpeed);
+				needToRecalculate = true;
+			}
+		}
+
 		if (needToRecalculate) {
+			path = null;
+			//logger.dbg("recalculating " + myBot.getTime());
 			choseNewPath( Math.max( predictionEndTime - myBot.getTime(), maximalPathLength ), nTrials );
 			needToRecalculate = false;
 		} else {
@@ -89,6 +107,22 @@ public class exactPathDangerMotion extends basicMotion {
 		myBot = bot;
 		initBattle( myBot );
 		destPoint = new dangerPoint( new Point2D.Double(0,0), superDanger);
+	}
+
+	public boolean isRamDetected() {
+		Point2D.Double myPos = (Point2D.Double) myBot.getPosition().clone();
+		if ( ( myBot.getGameInfo().fightType().equals("1on1") || myBot.getGameInfo().fightType().equals("melee1on1") ) && (myBot.getGunManager().getTarget() != null ) ) {
+			fighterBot tmpEnemyBot = myBot.getGunManager().getTarget();
+			Point2D.Double pivotPnt = tmpEnemyBot.getPosition();
+			if ( pivotPnt.distance( myPos ) < 200 ) {
+				ramDetected = true;
+			} else {
+				ramDetected = false;
+			}
+		} else {
+			ramDetected = false;
+		}
+		return ramDetected;
 	}
 
 	public void manage() {
@@ -129,6 +163,7 @@ public class exactPathDangerMotion extends basicMotion {
 			// see difference between v1.6 and v1.8
 			// so we are back to search for good destination
 			// within a circle surrounding the  bot
+			double R = pathLength*robocode.Rules.MAX_VELOCITY * Math.random();
 			if ( ( myBot.getGameInfo().fightType().equals("1on1") || myBot.getGameInfo().fightType().equals("melee1on1") ) && (myBot.getGunManager().getTarget() != null ) ) {
 			//if ( false ) {
 				// 1on1 game type and I have target
@@ -140,12 +175,26 @@ public class exactPathDangerMotion extends basicMotion {
 					pivotPnt = tmpEnemyBot.getPosition();
 					headOnAngle = Math.toRadians( math.game_angles2cortesian(math.angle2pt( myPos, pivotPnt ) ) );
 					a = headOnAngle + Math.PI/2.;
-					if ( pivotPnt.distance( myPos ) < 200 ) {
+					double distToEnemy  = pivotPnt.distance( myPos );
+					if ( distToEnemy < 200 ) {
 						// enemy is ramming
-						double offset = 0*Math.PI/8;
+						double offset = 0;
+						double angleSpread = (Math.PI/2-offset);
+							R = 20*robocode.Rules.MAX_VELOCITY;
+						if ( distToEnemy < 10 ) {
+							angleSpread = Math.PI/5;
+							R = 20*robocode.Rules.MAX_VELOCITY;
+						}
+						if ( math.distanceEuclidian( myPos, pivotPnt) < (2*physics.robotHalfSize+1) ) {
+							// enemy almost in contact
+							// wide swings might be needed
+							//offset = 0*Math.PI/30;
+							//angleSpread = Math.PI/4;
+							R = 5*robocode.Rules.MAX_VELOCITY;
+						}
 						a += offset;
-						a += (Math.PI/2-offset)*Math.random();
-						//R = Math.max(10*robocode.Rules.MAX_VELOCITY, pivotPnt.distance( myPos ) );
+						a += angleSpread*Math.random();
+						//R = Math.max(5*robocode.Rules.MAX_VELOCITY, pivotPnt.distance( myPos ) );
 					} else {
 						// random spread to it
 						double angleSpread = Math.PI/4.;
@@ -163,7 +212,6 @@ public class exactPathDangerMotion extends basicMotion {
 				a= 2*Math.PI * Math.random();
 			}
 			double da = Math.PI/180.*math.signNoZero( math.shortest_arc( Math.toDegrees( headOnAngle - a ) ) );
-			double R = pathLength*robocode.Rules.MAX_VELOCITY * Math.random();
 			do {
 				pp.x = myPos.x + R*Math.cos( a ); 
 				pp.y = myPos.y + R*Math.sin( a ); 
