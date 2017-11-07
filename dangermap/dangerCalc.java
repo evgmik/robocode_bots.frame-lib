@@ -33,7 +33,8 @@ public class dangerCalc {
 	public static double calculateDangerFromEnemyWaves(long time, Point2D.Double dP, fighterBot myBot) {
 		double dL = 0;
 		for ( waveWithBullets eW : myBot.getEnemyWaves() ) {
-			dL += eW.getDanger( time, dP );
+			double curDangerLevel = eW.getDanger( time, dP );
+			dL += curDangerLevel;
 			if ( ( myBot.getGameInfo().fightType().equals("1on1") || myBot.getGameInfo().fightType().equals("melee1on1") ) ) {
 				break; // dbg do danger only from earliest wave
 			}
