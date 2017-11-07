@@ -196,14 +196,6 @@ public class waveWithBullets extends wave {
 		calcCombineDanger();
 	}
 
-	public double getFiringGuessFactor( double absFiringAngle ) {
-		double gf = 0;
-		if ( targetBot != null ) {
-			gf = getFiringGuessFactor( targetBot.getInfoBot(), absFiringAngle );
-		}
-		return gf;
-	}
-
 	public double getGFDanger( long time, safetyCorridor botShadow ) {
 		double dL =0;
 		// Let's calculate the danger due to GF stats
