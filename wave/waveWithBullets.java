@@ -5,6 +5,7 @@ package eem.frame.wave;
 import eem.frame.core.*;
 import eem.frame.bot.*;
 import eem.frame.gun.*;
+import eem.frame.dangermap.*;
 import eem.frame.misc.*;
 
 import robocode.Bullet;
@@ -29,6 +30,7 @@ public class waveWithBullets extends wave {
 	protected double[] shadows = null;
 	protected double meaMarkerLenth = 10;
 	protected double gfDangerMarkerScale = 300; // unity probability gives this length
+	protected double waveDL = 10;
 
 	public waveWithBullets( wave w, int numGuessFactorBins ) {
 		super( w.getFiredBot(), w.getFiredTime(), w.getBulletEnergy() );
@@ -320,6 +322,25 @@ public class waveWithBullets extends wave {
 		}
 		profiler.stop("waveWithBullets.getFiringSolutionsDanger");
 		return dL;
+	}
+
+	public double getWaveDanger( long time, dangerPathPoint dP ) {
+		double dL = 0;
+		Point2D.Double pos = dP.getBotStatPoint().getPosition();
+		double dist = Math.abs(pos.distance( firedPosition ) - getDistanceTraveledAtTime( time ) );
+		if ( dist <= physics.robotHalfDiagonal ) {
+			dP.onTheWave = true;
+			safetyCorridor botShadow = this.getSafetyCorridor( pos );
+			double corridorDangerForBot = getGFDanger( time, botShadow ) ;
+			//logger.dbg("at time " + time + " at point " + dP + " bot shadow " + botShadow + " its danger " + corridorDangerForBot );
+			dL += corridorDangerForBot;
+		}
+		return dL;
+	}
+	public double getDanger( long time, dangerPathPoint dP ) {
+		double dL = 0;
+		dL += getWaveDanger( time, dP );
+		return dL*waveDL;
 	}
 
 	public double getDanger( long time, Point2D.Double dP ) {

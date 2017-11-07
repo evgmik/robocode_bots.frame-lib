@@ -17,6 +17,19 @@ import java.awt.geom.Point2D;
 public class dangerCalc {
 	// calculates dangers in a point from myBot (any fighterBot) point of view
 
+	public static double calculateDangerFromEnemyWaves(long time, dangerPathPoint dP, fighterBot myBot) {
+		double dL = 0;
+		for ( waveWithBullets eW : myBot.getEnemyWaves() ) {
+			double curDangerLevel = eW.getDanger( time, dP );
+			dL += curDangerLevel;
+			//logger.dbg("wave danger fired at " + eW.getFiredTime() + " is " +  curDangerLevel );
+			if ( ( myBot.getGameInfo().fightType().equals("1on1") || myBot.getGameInfo().fightType().equals("melee1on1") ) ) {
+				break; // dbg do danger only from earliest wave
+			}
+		}
+		return dL;
+	}
+
 	public static double calculateDangerFromEnemyWaves(long time, Point2D.Double dP, fighterBot myBot) {
 		double dL = 0;
 		for ( waveWithBullets eW : myBot.getEnemyWaves() ) {
