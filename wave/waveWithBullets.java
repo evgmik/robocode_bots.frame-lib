@@ -350,7 +350,7 @@ public class waveWithBullets extends wave {
 		double dist = Math.abs(dP.distance( firedPosition ) - getDistanceTraveledAtTime( time ) );
 		dL += getWaveDanger( time, dP );
 		//profiler.stop("waveWithBullets.getDanger");
-		return dL*10;
+		return dL*waveDL;
 	}
 
 	public void markFiringSolutionWhichHitBotAt( Point2D.Double botPos, String enemyName, long time ) {
