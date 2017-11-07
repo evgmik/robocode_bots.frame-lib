@@ -52,7 +52,7 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 		dangers[3] = dangerCalc.calculateDangerFromEnemyBots(time, botStat.getPosition(), myBot);
 		//profiler.stop( "OtherBotsDanger" );
 		//profiler.start( "WaveDanger" );
-		dangers[4] = dangerCalc.calculateDangerFromEnemyWaves(time, botStat.getPosition(), myBot);
+		dangers[4] = dangerCalc.calculateDangerFromEnemyWaves(time, this, myBot);
 		if (dangers[4] != 0) {
 			onTheWave = true;
 		}
