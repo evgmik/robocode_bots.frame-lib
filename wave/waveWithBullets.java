@@ -207,8 +207,8 @@ public class waveWithBullets extends wave {
 	public double getGFDanger( long time, safetyCorridor botShadow ) {
 		double dL =0;
 		// Let's calculate the danger due to GF stats
-		double gfStrt = getFiringGuessFactor( botShadow.getMinAngle() );
-		double gfEnd  = getFiringGuessFactor( botShadow.getMaxAngle() );
+		double gfStrt = getAngleGF( botShadow.getMinAngle() );
+		double gfEnd  = getAngleGF( botShadow.getMaxAngle() );
 		if ( ((gfStrt < -1) || (gfStrt > 1)) && ((gfEnd < -1) || (gfEnd > 1)) ) {
 			// both edges are outside of MEA
 			// most likely we called this function to help
