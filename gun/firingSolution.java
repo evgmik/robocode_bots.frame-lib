@@ -192,7 +192,7 @@ public class firingSolution {
 		// aiming head on bots like rz.HawkOnFire
 		double fA = math.angleNorm360( firingAngle );
 		double bsA = ( botShadow.getMaxAngle() + botShadow.getMinAngle() )/2;
-		double dA = Math.abs(fA - bsA);
+		double dA = Math.abs( math.shortest_arc(fA - bsA) );
 		dL += bulletDanger * Math.exp( - 2*dA/botShadow.getCorridorSize() );
 
 		return dL;
