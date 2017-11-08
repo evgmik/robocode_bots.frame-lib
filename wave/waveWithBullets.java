@@ -218,7 +218,7 @@ public class waveWithBullets extends wave {
 			double gfCorridorSum = 0;
 			int cnt = 0;
 			for ( long i = iStrt; i <= iEnd; i++ ) {
-				gfCorridorSum += gfDanger[ (int)i];
+				gfCorridorSum += combGFdanger[ (int)i];
 				cnt++;
 			}
 			// now we normalize it
@@ -320,7 +320,6 @@ public class waveWithBullets extends wave {
 			dP.onTheWave = true;
 			safetyCorridor botShadow = this.getSafetyCorridor( pos );
 			double corridorDangerForBot = getGFDanger( time, botShadow ) ;
-			//logger.dbg("at time " + time + " at point " + dP + " bot shadow " + botShadow + " its danger " + corridorDangerForBot );
 			dL += corridorDangerForBot;
 		}
 		return dL;
