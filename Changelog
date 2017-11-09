@@ -73,6 +73,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v11.8
+
+Logic change
+
+- using average lateral velocity instead of average speed for kdTree
+  parameters
+
 ## v11.7
 
 Logic change
@@ -81,7 +88,7 @@ Logic change
 
 Enhancements
 
-- added profiling togle
+- added profiling toggle
 
 ## v11.6
 
