@@ -39,8 +39,6 @@ public class CoreBot extends AdvancedRobot
 	double absurdly_huge=1e6; // something huge
 	double desiredBodyRotationDirection = 0; // our robot body desired angle
 
-
-
 	public static long ticTime;
 	public int roundCnt = 0;
 	int nonexisting_coord = -10000;
@@ -355,7 +353,9 @@ public class CoreBot extends AdvancedRobot
 	}
 
 	public void winOrLoseRoundEnd() {
-		logger.routine( profiler.formatAll() );
+		if ( _gameinfo.isProfiling ) {
+			logger.routine( profiler.formatAll() );
+		}
 	}
 
 }

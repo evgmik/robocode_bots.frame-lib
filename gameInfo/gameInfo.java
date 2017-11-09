@@ -26,6 +26,8 @@ public class gameInfo implements botListener {
 	public botsManager _botsmanager;
 	public wavesManager _wavesManager;
 
+	public boolean isProfiling = false;
+
 	private boolean enableSleepIfHaveTime = true;
 	private timer timeReserve = null;
 
