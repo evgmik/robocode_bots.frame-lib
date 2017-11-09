@@ -42,6 +42,15 @@ public class dangerCalc {
 		return dL;
 	}
 
+	public static double calculateDangerFromSlowMotion(long time,  dangerPathPoint dP, fighterBot myBot) {
+		double slowDanger = .01;
+		double dL = 0;
+		if ( dP.onTheWave == true ) {
+			double speed = Math.abs( dP.getBotStatPoint().getSpeed() );
+			dL += slowDanger * ( robocode.Rules.MAX_VELOCITY - speed );
+		}
+		return dL;
+	}
 	public static double calculateDangerFromEnemyBots(long time,  Point2D.Double dP, fighterBot myBot) {
 		double dL = 0;
 		for ( fighterBot eB : myBot.getEnemyBots() ) {

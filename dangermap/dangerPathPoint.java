@@ -35,7 +35,7 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 	public double calculateDanger( fighterBot myBot ) {
 		//profiler.start( "dangerPathPoint_calculateDanger" );
 		double dL = 0;
-		double[] dangers = new double[5];
+		double[] dangers = new double[6];
 		long time = botStat.getTime();
 		//profiler.start( "SpacialPositionDanger" );
 		dangers[0] = dangerCalc.calculateDangerFromCorners(time, botStat.getPosition(), myBot);
@@ -56,6 +56,8 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 		if (dangers[4] != 0) {
 			onTheWave = true;
 		}
+		// call it after WaveDanger check, it uses onTheWave status
+		dangers[5] = dangerCalc.calculateDangerFromSlowMotion(time, this, myBot);
 		//profiler.stop( "WaveDanger" );
 		//logger.dbg( "dangers " + logger.arrayToTextPlot( dangers ) + " at time " + time + " at pos " + botStat.getPosition() );
 		//profiler.start( "SummingUp" );
