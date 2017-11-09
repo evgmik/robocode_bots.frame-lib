@@ -42,6 +42,7 @@ public class gunTreePoint  {
 		flippedLatVelCoord[1] = -inCoord[1]; // flipping latteralSpeed
 		flippedLatVelCoord[4] = -inCoord[5]; // -negMea --> posMea
 		flippedLatVelCoord[5] = -inCoord[4]; // -posMea --> negMea
+		flippedLatVelCoord[6] = -inCoord[4]; // flipping averageLatSpeed
 		return flippedLatVelCoord;
 	}
 
@@ -144,7 +145,7 @@ public class gunTreePoint  {
 		for (long i=1; i<=Ntics; i++ ) {
 			double decay=0.9;
 			weight *= decay;
-			averageSpeed += weight*tBot.getStatClosestToTime( time - i ).getSpeed();
+			averageSpeed += weight*tBot.getStatClosestToTime( time - i ).getLateralSpeed( fPos );
 			wSum += weight;
 		}
 		averageSpeed /= wSum;
