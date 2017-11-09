@@ -73,6 +73,16 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v11.7
+
+Logic change
+
+- added danger for slow motion while on the wave
+
+Enhancements
+
+- added profiling togle
+
 ## v11.6
 
 Enhancements
