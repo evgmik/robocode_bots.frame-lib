@@ -47,11 +47,6 @@ public class  wavesManager {
 		profiler.stop("checkForPassingOverBotsWaves");
 	}
 
-	public void add( InfoBot firedBot, long firedTime, double bulletEnergy )  {
-		wave w = new wave( firedBot, firedTime, bulletEnergy );
-		Waves.add(w);
-	}
-
 	public void add( wave w )  {
 		Waves.add( w );
 		waveCount.incrHashCounter( w.firedBot.getName() );
