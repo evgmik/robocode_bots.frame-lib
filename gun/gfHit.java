@@ -7,6 +7,8 @@ public class gfHit {
 	public double weight; // weight of this gf, i.e. how much we trust it
 	public double gfCoverage; // the bot shadow, i.e how many nearby bins are affected
 	public long   firedTime;  // time when the gun with this hit was fired
+	public boolean   realWave = false;  // was it on real or virtual wave
+	public boolean   realHit  = false;  // was it real or virtual hit
 
 	public gfHit( int b, double w ) {
 		gfBin = b;
