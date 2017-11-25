@@ -24,6 +24,7 @@ public class wave {
 	protected Color waveColor = new Color(0xff, 0x00, 0x00, 0x80);
 	protected Color waveUncertaintyColorLower = new Color(0x00, 0x00, 0xff, 0x80);
 	protected int count=0; // wave count for a particular bot
+	public boolean realWave = false; // if wave is real or virtual
 
 	public LinkedList<safetyCorridor> safetyCorridors = new LinkedList<safetyCorridor>();
 	// small safety corridors could be miscalculated, also they consume time to process

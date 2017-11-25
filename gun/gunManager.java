@@ -139,20 +139,27 @@ public class gunManager implements gunManagerInterface {
 		String2D key = new String2D( gunName, trgtBotName );
 
 		KdTree<gfHit> tree = getRealHitsGFKDTreeMap( trgtBotName );
+		KdTree<gfHit> generalTree = getTreeKDTreeMap( trgtBotName );
 		gunTreePoint gTP = new gunTreePoint( myBot, tBot, firedTime, bulletEnergy );
 		double [] pntCoord =  gTP.getPosition();
 		int i = (int)math.gf2bin( gf, numGuessFactorBins );
 		double binW = 1.0;
 		gfHit gfH = null;
 		gfH = new gfHit(i, binW);
+		gfH.realWave = true;
+		gfH.realHit  = true;
 		gfH.firedTime = firedTime;
 		tree.addPoint( pntCoord, gfH );
+		generalTree.addPoint( pntCoord, gfH );
 
 		// this uses game symmetry
 		int iFlipped = (int)math.gf2bin( -gf, numGuessFactorBins );
 		gfH = new gfHit(iFlipped, binW);
 		gfH.firedTime = firedTime;
+		gfH.realWave = true;
+		gfH.realHit  = true;
 		tree.addPoint( gTP.calcFlipedLateralVelocityPositionFromCoord(pntCoord), gfH ); // shall I decrease binW?
+		generalTree.addPoint( pntCoord, gfH );
 
 		// now we update all flying waves with realHit new dangers
 		// this should help master bot to shift from just hit GF
@@ -306,6 +313,13 @@ public class gunManager implements gunManagerInterface {
 			if ( w.equals( wB) ) {
 				wB.setMyWavePassedOverTargetFlag( trgtBotName, true );
 				wB.markFiringSolutionWhichHitBotAt( posBot, trgtBotName, time);
+				// registering real hit
+				double gf = wB.getPointGF( posHit );
+				//logger.dbg(myBot.getTime() + ": " + fireBotName + " hit " + trgtBotName + " at GF = " +gf + " with real bullet");
+				if ( gf < -1 || gf > 1) {
+					logger.error("error: GF out of range. It should be with in -1..1 but we got " + gf);
+				}
+				addRealHitGF( gf,  myBot.getGameInfo().getFighterBot( trgtBotName ).getInfoBot(),  w.getFiredTime(), w.getBulletEnergy() );
 			}
 		}
 	}
@@ -489,6 +503,8 @@ public class gunManager implements gunManagerInterface {
 		gfHit gfH = null;
 		gfH = new gfHit(iCenter, binW);
 		gfH.firedTime = w.getFiredTime();
+		gfH.realWave = w.realWave;
+		gfH.realHit  = false;
 		tree.addPoint( pntCoord, gfH );
 		if ( logKdTreePoints ) {
 			logger.dbg( "{\"treePoint\": {\"targetBot\": \"" + bot.getName() + "\", \"coord\": " + Arrays.toString( pntCoord ) + ", " + " \"gf\": " + gf + "} }" );
@@ -498,6 +514,8 @@ public class gunManager implements gunManagerInterface {
 		int iFlipped = (int)math.gf2bin( -gf, numGuessFactorBins );
 		gfH = new gfHit(iFlipped, binW);
 		gfH.firedTime = w.getFiredTime();
+		gfH.realWave = w.realWave;
+		gfH.realHit  = false;
 		tree.addPoint( gTP.calcFlipedLateralVelocityPositionFromCoord(pntCoord), gfH ); // shall I decrease binW?
 		profiler.stop("update gf tree");
 

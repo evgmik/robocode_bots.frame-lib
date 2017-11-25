@@ -71,6 +71,7 @@ public class masterBotGunManager extends gunManager {
 				myBot.proxy.setFireBullet(bestFiringSolution.bulletEnergy);
 				firedAt.incrHashCounter( targetBot.getName() );
 				wave nW = new wave( myBot.getInfoBot(), myBot.getTime(), bestFiringSolution.bulletEnergy );
+				nW.realWave = true;
 				// add safety corridors in enemy waves
 				for ( waveWithBullets wB: myBot.getEnemyWaves() ) {
 					wB.addSafetyCorridor( bestFiringSolution );
@@ -85,6 +86,7 @@ public class masterBotGunManager extends gunManager {
 				// fire virtual wave
 				if ( false || myBot.getTime() < physics.ticTimeFromTurnAndRound(200, 0) ) {
 					wave nW = new wave( myBot.getInfoBot(), myBot.getTime(), bestFiringSolution.bulletEnergy );
+					nW.realWave = false;
 					myBot.getGameInfo()._wavesManager.add( nW );
 					if (firingSolutions.size() > 0 && myBot.getTime() < physics.ticTimeFromTurnAndRound(200, 0) ) {
 						// since we have already calculated firing solutions

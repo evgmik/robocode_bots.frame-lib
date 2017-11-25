@@ -258,6 +258,7 @@ public class fighterBot extends fighterBotConfig implements waveListener, botLis
 				// Enemy energy drop due to fire is detected by one tic later thus -1
 				eDrop = Math.min( eDrop, robocode.Rules.MAX_BULLET_POWER );
 				wave w = new wave( getInfoBot(), getTime()-1, eDrop );
+				w.realWave = true;
 				_gameinfo._wavesManager.add( w );
 				//logger.dbg(getName() + " fired bullet with energy = " + eDrop );
 			}

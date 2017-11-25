@@ -19,6 +19,10 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 	boolean useCachedKdCluster = true;
 	boolean timeDecay = false;
 	double decayRate = 1; // how much per turn a weight is decreased. 1 is no decay
+	double realWaveWeight = 1;
+	double realHitWeight = 1;
+	double virtualWaveWeight = .2;
+	double virtualHitWeight = .8;
 
 	public kdtreeGuessFactorGun() {
 		this( 400, 3 ); //default
@@ -142,6 +146,18 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 			dist = Math.max( neigbor.distance, distThreshold );
 			binW0 *= scale;
 			binW0 *= bestDistance/dist;
+			
+			if ( neigbor.value.realWave ) {
+				binW0 *= realWaveWeight;
+			} else {
+				binW0 *= virtualWaveWeight;
+			}
+			if ( neigbor.value.realHit ) {
+				binW0 *= realHitWeight;
+			} else {
+				binW0 *= virtualHitWeight;
+			}
+
 
 			int iCenter = neigbor.value.gfBin;
 			double di0 =     neigbor.value.gfCoverage;
