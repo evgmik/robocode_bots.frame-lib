@@ -140,8 +140,9 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 			scale =  binsSumThreshold; // if we here, at least 1 neighbor is found
 			double binW0 = neigbor.value.weight; // fixme do gf  weights  and distances
 			if ( timeDecay ) {
-				binW0 *= Math.pow( decayRate, tnow - neigbor.value.firedTime );
-				//logger.dbg("time decay = " + (tnow - neigbor.value.firedTime) + " weight change " + Math.pow( decayRate, tnow - neigbor.value.firedTime ) );
+				double decayScale = Math.pow( decayRate, physics.getRound(tnow) - physics.getRound(neigbor.value.firedTime) );
+				binW0 *= decayScale;
+				//logger.dbg("time decay = " + (tnow - neigbor.value.firedTime) + " weight change " + decayScale );
 
 			}
 			dist = Math.max( neigbor.distance, distThreshold );
