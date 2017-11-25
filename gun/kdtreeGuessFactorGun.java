@@ -158,6 +158,9 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 			} else {
 				binW0 *= virtualHitWeight;
 			}
+			if ( neigbor.value.inferredHit ) {
+				binW0 *= inferredHitWeight;
+			}
 
 
 			int iCenter = neigbor.value.gfBin;
