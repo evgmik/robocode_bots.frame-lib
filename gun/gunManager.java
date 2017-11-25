@@ -148,6 +148,7 @@ public class gunManager implements gunManagerInterface {
 		gfH = new gfHit(i, binW);
 		gfH.realWave = true;
 		gfH.realHit  = true;
+		gfH.inferredHit  = false;
 		gfH.firedTime = firedTime;
 		tree.addPoint( pntCoord, gfH );
 		generalTree.addPoint( pntCoord, gfH );
@@ -158,6 +159,7 @@ public class gunManager implements gunManagerInterface {
 		gfH.firedTime = firedTime;
 		gfH.realWave = true;
 		gfH.realHit  = true;
+		gfH.inferredHit  = true;
 		tree.addPoint( gTP.calcFlipedLateralVelocityPositionFromCoord(pntCoord), gfH ); // shall I decrease binW?
 		generalTree.addPoint( pntCoord, gfH );
 
@@ -505,6 +507,7 @@ public class gunManager implements gunManagerInterface {
 		gfH.firedTime = w.getFiredTime();
 		gfH.realWave = w.realWave;
 		gfH.realHit  = false;
+		gfH.inferredHit  = false;
 		tree.addPoint( pntCoord, gfH );
 		if ( logKdTreePoints ) {
 			logger.dbg( "{\"treePoint\": {\"targetBot\": \"" + bot.getName() + "\", \"coord\": " + Arrays.toString( pntCoord ) + ", " + " \"gf\": " + gf + "} }" );
@@ -516,6 +519,7 @@ public class gunManager implements gunManagerInterface {
 		gfH.firedTime = w.getFiredTime();
 		gfH.realWave = w.realWave;
 		gfH.realHit  = false;
+		gfH.inferredHit  = true;
 		tree.addPoint( gTP.calcFlipedLateralVelocityPositionFromCoord(pntCoord), gfH ); // shall I decrease binW?
 		profiler.stop("update gf tree");
 
