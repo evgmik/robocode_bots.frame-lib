@@ -73,6 +73,14 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+## v11.9
+
+Logic change
+
+- keep track of virtual/real hits/waves
+- weights of above events are a bit different
+- TODO: there is double counting of virtual bullets if real hit happens
+
 ## v11.8
 
 Logic change
