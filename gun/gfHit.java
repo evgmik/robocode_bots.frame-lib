@@ -9,6 +9,7 @@ public class gfHit {
 	public long   firedTime;  // time when the gun with this hit was fired
 	public boolean   realWave = false;  // was it on real or virtual wave
 	public boolean   realHit  = false;  // was it real or virtual hit
+	public boolean   inferredHit  = false;  // true, if it was derived using game symmetry 
 
 	public gfHit( int b, double w ) {
 		gfBin = b;
