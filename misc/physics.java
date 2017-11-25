@@ -44,6 +44,10 @@ public class physics {
 		return Turn + (Round+1)*maxTurnsInRound;
 	}
 
+	public static long getRound ( long ticTime ) {
+		return (long) Math.floor(ticTime/maxTurnsInRound);
+	}
+
 	public static long getRoundStartTime(long ticTime) {
 		return (long) Math.floor(ticTime/maxTurnsInRound)*maxTurnsInRound;
 	}
