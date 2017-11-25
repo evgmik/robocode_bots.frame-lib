@@ -18,11 +18,12 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 	String kdTreeGunBaseName = "kdtGF";
 	boolean useCachedKdCluster = true;
 	boolean timeDecay = false;
-	double decayRate = 1; // how much per turn a weight is decreased. 1 is no decay
+	double decayRate = .8; // how much per turn a weight is decreased. 1 is no decay
 	double realWaveWeight = 1;
 	double realHitWeight = 1;
 	double virtualWaveWeight = .2;
 	double virtualHitWeight = .8;
+	double inferredHitWeight = .5; // how much trust in calculated from symmetry hits
 
 	public kdtreeGuessFactorGun() {
 		this( 400, 3 ); //default
