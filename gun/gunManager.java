@@ -160,7 +160,8 @@ public class gunManager implements gunManagerInterface {
 		gfH.realWave = true;
 		gfH.realHit  = true;
 		gfH.inferredHit  = true;
-		tree.addPoint( gTP.calcFlipedLateralVelocityPositionFromCoord(pntCoord), gfH ); // shall I decrease binW?
+		pntCoord = gTP.calcFlipedLateralVelocityPositionFromCoord(pntCoord);
+		tree.addPoint( pntCoord , gfH ); // shall I decrease binW?
 		generalTree.addPoint( pntCoord, gfH );
 
 		// now we update all flying waves with realHit new dangers
