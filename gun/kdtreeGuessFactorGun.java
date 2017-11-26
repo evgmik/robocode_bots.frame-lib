@@ -24,6 +24,8 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 	double virtualWaveWeight = .2;
 	double virtualHitWeight = .8;
 	double inferredHitWeight = .5; // how much trust in calculated from symmetry hits
+	double realHitWidth = 1; // width governs spread of the bins (kernel width)
+	double virtualHitWidth = 1;
 
 	public kdtreeGuessFactorGun() {
 		this( 400, 3 ); //default
@@ -166,6 +168,11 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 
 			int iCenter = neigbor.value.gfBin;
 			double di0 =     neigbor.value.gfCoverage;
+			if ( neigbor.value.realHit ) {
+				di0 *= realHitWidth;
+			} else {
+				di0 *= virtualHitWidth;
+			}
 
 			// smooth GF to neighbors
 			int minI = (int)math.putWithinRange( iCenter - 2*di0, 0, (numGuessFactorBins-1) );
