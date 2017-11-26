@@ -73,6 +73,15 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+# v11.9a
+
+Logic change
+
+- Added inferred gf hit attribute, for gf which I try to deduce from the game
+  symmetry
+- changed calculation of decay for GF, it takes in account only round
+- new function which returns tic Round number
+
 ## v11.9
 
 Logic change
