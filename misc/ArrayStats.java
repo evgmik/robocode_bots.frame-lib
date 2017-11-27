@@ -42,12 +42,12 @@ public class ArrayStats {
 	public double[] getProbDensity() {
 		//assume that array is all positive
 		double[] probDensity = new double[length];
-		double tot = sum;
+		double tot = sum - min*length;
 		for (int i=0; i < length; i++ ) {
 			if (tot == 0) {
 				probDensity[i] = 1./length; // to avoid division by zero
 			} else {
-				probDensity[i] = bins[i]/tot;
+				probDensity[i] = (bins[i]-min)/tot;
 			}
 		}
 		return probDensity;
