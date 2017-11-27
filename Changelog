@@ -73,6 +73,12 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+# v12.1
+
+Logic change
+
+- retune flattener
+
 # v12.0
 
 Logic change
