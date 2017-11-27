@@ -73,6 +73,21 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+# v12.0
+
+Logic change
+
+- Use safety zone concept. This is for non learning guns: if a bot was not hit
+  in a certain place it is probably safe place. Once certain threshold is
+  reached, switch to anti-GF behaviour, where all visited stats are avoided.
+- kdtreeGuessFactorGun added gfHit width attribute
+- probability density use smallest value as a base
+- realHitsGun initializes some values/attributes
+
+Bug-fix
+
+- gfHit coordinates are properly flipped now
+
 # v11.9a
 
 Logic change
