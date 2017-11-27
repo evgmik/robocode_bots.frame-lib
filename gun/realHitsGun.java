@@ -28,6 +28,11 @@ public class realHitsGun extends kdtreeGuessFactorGun {
 		color = new Color(0xff, 0x00, 0x00, 0x80);
 		//kdTreeGunBaseName = "kdRealHitsGF";
 		this.kdTreeGunBaseName = "realHitsGun";
+		this.realWaveWeight = 1;
+		this.realHitWeight = 1;
+		this.virtualWaveWeight = 0.0;
+		this.virtualHitWeight = 0.0;
+		double inferredHitWeight = .5; // how much trust in calculated from symmetry hits
 		this.neigborsNum = neigborsNum;
 		this.binsSumThreshold = binsSumThreshold;
 		this.antiGFavoider = antiGFavoider;
