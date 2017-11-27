@@ -254,27 +254,28 @@ public class gunManager implements gunManagerInterface {
 		g.realHitWidth  = 2.0; // wide avoidance area
 		// below assumes non learning enemy guns
 		// safety zone in places where bot visited but was not hit
-		g.virtualHitWeight =  -0.2; 
+		g.virtualHitWeight =   -0.05; 
 		g.virtualWaveWeight = 0.0;
-		g.virtualHitWidth  = 0.5; // narrow safety zone, we are sure only about visited GF
+		g.virtualHitWidth  = 2.0; // narrow safety zone, we are sure only about visited GF
 
 		baseGun bestGun = getBestGunAgainstBot( tBot );
 	        if (
 				!myBot.isItMasterBotDriver() 
 				&& bestGun.getName().equals("unknownGun")
-				&& (getUnknownGunPerformanceAgainstBot(  tBot ) > 0.10)
+				&& (getUnknownGunPerformanceAgainstBot(  tBot ) > 0.05)
 		) {
 			//logger.dbg("Anti-GF guns measure is on");
 			// looks like the enemy fire at the master bullets which
 			// we can't predict, let's give more weight to visited stats
+			//g.timeDecayOn(.6);
 			g.inferredHitWeight = 0.5;
 			g.realWaveWeight = 1.0;
 			g.realHitWeight = 1.0;
-			g.realHitWidth  = 2.0;
+			g.realHitWidth  = 0.5;
 			// avoid visited stats, anti learning-GF guns measure
-			g.virtualHitWeight =  0.4;
+			g.virtualHitWeight =  0.25;
 			g.virtualWaveWeight = 0.0;
-			g.virtualHitWidth  = 2.0;
+			g.virtualHitWidth  = 0.5;
 		}
 
 		g.getFiringSolutions( myBot, tBot.getInfoBot(), firedTime, bulletEnergy ); // this is a dummy but it sets tree point coordinates
