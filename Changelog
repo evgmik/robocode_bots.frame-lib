@@ -73,6 +73,16 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+# v12.2
+
+Logic change
+
+- non learning guns flattener redone
+
+Improvement
+
+- added safety net against supplied zero bot danger width
+
 # v12.1
 
 Logic change
