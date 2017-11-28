@@ -168,10 +168,11 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 
 			int iCenter = neigbor.value.gfBin;
 			double di0 =     neigbor.value.gfCoverage;
+			double eps = 1e-6; // smallest allowed width safety net
 			if ( neigbor.value.realHit ) {
-				di0 *= realHitWidth;
+				di0 *= Math.max(eps, realHitWidth);
 			} else {
-				di0 *= virtualHitWidth;
+				di0 *= Math.max(eps, virtualHitWidth);
 			}
 
 			// smooth GF to neighbors
