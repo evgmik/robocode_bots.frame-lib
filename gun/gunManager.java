@@ -253,7 +253,7 @@ public class gunManager implements gunManagerInterface {
 	        if (
 				!myBot.isItMasterBotDriver() 
 				&& bestGun.getName().equals("unknownGun")
-				&& (getUnknownGunPerformanceAgainstBot(  tBot ) > 0.05)
+				&& (getUnknownGunPerformanceAgainstBot(  tBot ) > 0.10)
 		) {
 			//logger.dbg("Anti-GF guns measure is on");
 			// looks like the enemy fire at the master bullets which
