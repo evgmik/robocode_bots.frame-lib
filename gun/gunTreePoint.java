@@ -164,7 +164,8 @@ public class gunTreePoint  {
 		x = timeSinceVelocityChange;
 		coord[6] = averageSpeed;
 		coord[7] = vBullet;
-		coord[8] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
+		//coord[8] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
+		coord[8] = 0.5*physics.getRound(fBot.getTime());
 
 		// weight coordinates
 		if ( !treeIsWeighted ) {
