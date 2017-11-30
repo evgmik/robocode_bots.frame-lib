@@ -73,6 +73,16 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+# v12.4
+
+Logic change
+
+- using round number (instead of number of bots) as dimension for gunTreePoint
+
+Improvement
+
+- added setRealHitWidth method
+
 # v12.3
 
 Logic change
