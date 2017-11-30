@@ -46,6 +46,11 @@ public class kdtreeGuessFactorGun extends guessFactorGun {
 		return this;
 	}
 
+	public kdtreeGuessFactorGun setRealHitWidth ( double realHitWidth ) {
+		this.realHitWidth = realHitWidth;
+		return this;
+	}
+
 	public void setName() {
 		this.gunName ="";
 		if ( timeDecay ) 
