@@ -138,6 +138,22 @@ public class gunTreePoint  {
 		double posMEA = MEAs[1];
 		double MEA    = MEAs[2];
 
+		// calculate time since last velocity change
+		long NticsCheck = 20;
+		double velocityChangeThreshold = 1;
+		double tVelChange=0;
+		for (long i = 1; i <= NticsCheck; i++ ) {
+			if ( Math.abs( latteralSpeed - 
+				tBot.  getStatClosestToTime( time - i )
+				.getLateralSpeed( 
+					fBot.getInfoBot().getPositionClosestToTime( time - i )
+					) 
+				) < velocityChangeThreshold ) {
+					tVelChange++;
+				
+				}
+		}
+
 		double averageSpeed=0;
 		long Ntics=10;
 		double weight = 1;
@@ -167,7 +183,7 @@ public class gunTreePoint  {
 		coord[6] = averageSpeed;
 		coord[7] = vBullet;
 		//coord[8] = 1/(1 + Math.max(0,(fBot.getEnemyBots().size()-1)) ); //max to avoid division by zero if the bot win the battle
-		coord[8] = 0.5*physics.getRound(fBot.getTime());
+		coord[8] = tVelChange;
 
 		// weight coordinates
 		if ( !treeIsWeighted ) {
