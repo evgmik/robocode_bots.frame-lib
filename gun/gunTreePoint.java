@@ -145,7 +145,9 @@ public class gunTreePoint  {
 		for (long i=1; i<=Ntics; i++ ) {
 			double decay=0.9;
 			weight *= decay;
-			averageSpeed += weight*tBot.getStatClosestToTime( time - i ).getLateralSpeed( fPos );
+			averageSpeed += weight*tBot.getStatClosestToTime( time - i ).getLateralSpeed( 
+				fBot.getInfoBot().getPositionClosestToTime( time - i )
+				);
 			wSum += weight;
 		}
 		averageSpeed /= wSum;
