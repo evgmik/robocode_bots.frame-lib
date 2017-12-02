@@ -73,6 +73,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+# v12.6
+
+Logic change
+
+- gunTreePoint: undo increased weight of average lateral speed. Back to v12.3
+- gunTreePoint: use last lateral speed change time instead of round number
+
 # v12.5
 
 Logic change
