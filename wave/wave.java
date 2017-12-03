@@ -186,6 +186,9 @@ public class wave {
 		safetyCorridor sC = null;
 
 		long t = Math.max( firedTime, fS.getFiredTime());
+		// slow bullets are still inside a bot for 1st 2 tics 
+		// thus they can be intercepted
+		t = t + 2; 
 		double d = 0;
 		double dist = firedPosition.distance( fS.getLocationAt ( t ) ) - getDistanceTraveledAtTime(t);
 		if ( dist > 0 ) {
