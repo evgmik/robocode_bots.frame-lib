@@ -189,17 +189,31 @@ public class wave {
 		double d = 0;
 		double dist = firedPosition.distance( fS.getLocationAt ( t ) ) - getDistanceTraveledAtTime(t);
 		if ( dist > 0 ) {
-			long tmax = t+20;
+			long tmax = t+50; // 1000px/20pxPerTic should be good enough
 			double distPrev = Double.NEGATIVE_INFINITY;
 			do {
 				t++ ;
 				distPrev = dist;
 				dist = firedPosition.distance( fS.getLocationAt ( t ) ) - getDistanceTraveledAtTime(t);
 			} while (dist > 0 && (dist < distPrev) && (t < tmax) );
-			if ( dist < distPrev ) {
-				// firing solution was approaching wave firing point
+			if ( (dist < 0) && (0 < distPrev) ) {
+				// firing solution was approaching wave front
+				// and intersected it in between two points below
 				Point2D.Double fsPos1 = fS.getLocationAt ( t );
 				Point2D.Double fsPos2 = fS.getLocationAt ( t-1 );
+
+				if ( 0 > ( firedPosition.distance( fsPos1 ) - getDistanceTraveledAtTime(t-1) ) ) {
+					// firing solution traveled beyond wave at t-1
+					// we need to correct intersection point
+					fsPos1 = intersectWithLine( t-1, fsPos1, fsPos2 );
+				}
+
+				if ( 0 < ( firedPosition.distance( fsPos2 ) - getDistanceTraveledAtTime(t) ) ) {
+					// firing solution was out of reach for wave at t
+					// we need to correct intersection point
+					fsPos2 = intersectWithLine( t, fsPos1, fsPos2 );
+				}
+
 
 				double hitAngle1 = math.angle2pt( firedPosition, fsPos1 );
 				double hitAngle2 = math.angle2pt( firedPosition, fsPos2 );
@@ -208,6 +222,28 @@ public class wave {
 			} 
 		}
 		return sC; 
+	}
+
+	public Point2D.Double intersectWithLine( long t, Point2D.Double LineEnd1, Point2D.Double LineEnd2) {
+		double R = getDistanceTraveledAtTime(t);
+		int Ntrials = 100;
+		double dx = (LineEnd2.getX() - LineEnd1.getX()) / (Ntrials -1);
+		double dy = (LineEnd2.getY() - LineEnd1.getY()) / (Ntrials -1);
+		double closestDist = Double.POSITIVE_INFINITY;
+		Point2D.Double testPos = null;
+		for ( int i=0; i < Ntrials; i++) {
+			testPos = new Point2D.Double(
+					LineEnd1.getX() + dx*i,
+					LineEnd1.getY() + dy*i
+					);
+			double dist = Math.abs( R - firedPosition.distance( testPos ) );
+			if ( dist < closestDist ) {
+				closestDist = dist;
+			} else {
+				break;
+			}	
+		}
+		return testPos;
 	}
 
 	public safetyCorridor getSafetyCorridor( fighterBot bot) {
