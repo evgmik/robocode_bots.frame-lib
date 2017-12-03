@@ -73,6 +73,13 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+
+# v12.7
+
+Bug fixes
+
+- in the bullets shadow code: the shadow size was often overestimated
+
 # v12.6
 
 Logic change
