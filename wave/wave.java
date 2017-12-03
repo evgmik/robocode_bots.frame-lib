@@ -226,23 +226,43 @@ public class wave {
 
 	public Point2D.Double intersectWithLine( long t, Point2D.Double LineEnd1, Point2D.Double LineEnd2) {
 		double R = getDistanceTraveledAtTime(t);
-		int Ntrials = 100;
-		double dx = (LineEnd2.getX() - LineEnd1.getX()) / (Ntrials -1);
-		double dy = (LineEnd2.getY() - LineEnd1.getY()) / (Ntrials -1);
-		double closestDist = Double.POSITIVE_INFINITY;
-		Point2D.Double testPos = null;
-		for ( int i=0; i < Ntrials; i++) {
-			testPos = new Point2D.Double(
-					LineEnd1.getX() + dx*i,
-					LineEnd1.getY() + dy*i
-					);
-			double dist = Math.abs( R - firedPosition.distance( testPos ) );
-			if ( dist < closestDist ) {
-				closestDist = dist;
-			} else {
-				break;
-			}	
+		// we will do bisection search
+		double dist;
+		// assigning proper ends for bisection
+		Point2D.Double posEnd = null, negEnd = null;
+		dist = R - firedPosition.distance( LineEnd1 );
+		if ( dist > 0 ) {
+			posEnd = (Point2D.Double) LineEnd1.clone();
+		} else {
+			negEnd = (Point2D.Double) LineEnd1.clone();
 		}
+		dist = R - firedPosition.distance( LineEnd2 );
+		if ( dist > 0 ) {
+			posEnd = (Point2D.Double) LineEnd2.clone();
+		} else {
+			negEnd = (Point2D.Double) LineEnd2.clone();
+		}
+		if ( posEnd == null || negEnd == null ) {
+			logger.error("Error: there is no solution for bisection intersect");
+			return LineEnd1;
+		}
+		double eps = 1e-3;
+		int Ntrials = 100;
+		Point2D.Double testPos = null;
+		while ( posEnd.distance( negEnd ) > eps && Ntrials > 0 ) {
+			Ntrials--;
+			testPos = new Point2D.Double(
+					(LineEnd2.getX() + LineEnd1.getX()) / 2,
+					(LineEnd2.getY() + LineEnd1.getY()) / 2
+					);
+			dist = R - firedPosition.distance( testPos );
+			if ( dist > 0 ) {
+				posEnd = testPos;
+			} else {
+				negEnd = testPos;
+			}
+		}
+
 		return testPos;
 	}
 
