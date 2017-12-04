@@ -51,6 +51,7 @@ public class gunManager implements gunManagerInterface {
 	protected HashMap<String, double[][]> assistedGFactorsMap = new HashMap<String, double[][]>();
 
 	protected int kdTreeSizeLimit = 10000;
+	protected int kdTreeGunHitMissSizeLimit = 10000;
 	protected HashMap<String, KdTree<gfHit>> guessFactorsKDTreeMap = new HashMap<String, KdTree<gfHit>>();
 	protected HashMap<String, KdTree<gfHit>> realHitsGFKDTreeMap = new HashMap<String, KdTree<gfHit>>();
 	int hitProbEstimateNeighborsNum = 100;
@@ -504,7 +505,7 @@ public class gunManager implements gunManagerInterface {
 	public KdTree<gunHitMissLog> getGunHitMissKDTree( String2D  key ) {
                 if ( !gunHitMissKDTreeMap.containsKey( key ) ) {
 			gunTreePoint gTP = new gunTreePoint();
-			KdTree.WeightedManhattan<gunHitMissLog> tree = new KdTree.WeightedManhattan<gunHitMissLog>( gTP.getKdTreeDims(), kdTreeSizeLimit );
+			KdTree.WeightedManhattan<gunHitMissLog> tree = new KdTree.WeightedManhattan<gunHitMissLog>( gTP.getKdTreeDims(), kdTreeGunHitMissSizeLimit );
 			tree.setWeights( gTP.getCoordWeights() );
 			gunHitMissKDTreeMap.put( key, tree );
                 }
