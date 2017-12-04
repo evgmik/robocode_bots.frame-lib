@@ -73,6 +73,16 @@ to avoid this.
 DONE: analyze missed bullets to see which gun the enemy was using. Cannot be
 done, this event is not provided for enemy bullets
 
+# v12.8
+
+Logic change
+
+- when look for safety shadow, allow bullet and wave to travel at least 2 tics
+
+Improvements
+
+- use bisection to find bullet intersecting a wave
+- hit-miss tree has its own size limit
 
 # v12.7
 
