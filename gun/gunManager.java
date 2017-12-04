@@ -857,7 +857,9 @@ public class gunManager implements gunManagerInterface {
 			double gunPerfRate = math.perfRate( hitByMyGun.getHashCounter(key) , firedAtEnemyByGun.getHashCounter(key) );
 			if ( myBot.isItMasterBotDriver() ) {
 				// overwriting global gun performance
+				//logger.dbg(g.getName() + " glob   perf = " + gunPerfRate );
 				gunPerfRate = refineGunPerformanceBasedOnKDTree( treeCoord, targetBot, g, gunPerfRate);
+				//logger.dbg(g.getName() + " kdtree perf = " + gunPerfRate );
 			}
 			for ( firingSolution fS: gunfSols ) {
 				double solQ = fS.getQualityOfSolution();
